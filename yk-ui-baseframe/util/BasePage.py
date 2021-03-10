@@ -1,0 +1,393 @@
+﻿#-*- coding:utf-8 -*-
+
+# from selenium import webdriver
+from selenium.webdriver.common.action_chains import ActionChains
+# from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+import time,logging
+from pykeyboard import PyKeyboard
+
+import util.runner as cf
+import datetime, os
+import win32gui
+import win32con
+
+class BasePage(object):
+
+
+    """description of class"""
+
+    #webdriver instance
+    def __init__(self, driver):
+        '''
+        initialize selenium webdriver, use chrome as default webdriver
+        '''
+        self.driver = driver
+        self.storage = None
+
+    def move_mouse_to_element(self, element):
+        '''
+        :param element:
+        :return: 移动鼠标到指定的元素上
+        '''
+        try:
+            type = element[0]
+            value = element[1]
+            if type == "id" or type == "ID" or type == "Id" or type == By.ID:
+                el = self.driver.find_element_by_id(value)
+            elif type == "name" or type == "NAME" or type == "Name" or type == By.NAME:
+                el = self.driver.find_element_by_name(value)
+            elif "class" in type or type == "CLASS" or type == "Class" or type == By.CLASS_NAME:
+                el = self.driver.find_element_by_class_name(value)
+            elif type == "link_text" or type == "LINK_TEXT" or type == "Link_text" or type == By.LINK_TEXT:
+                el = self.driver.find_element_by_link_text(value)
+            elif type == "xpath" or type == "XPATH" or type == "Xpath" or type == By.XPATH:
+                el = self.driver.find_element_by_xpath(value)
+            elif "css" in type or type == "CSS" or type == "Css" or type == By.CSS_SELECTOR:
+                el = self.driver.find_element_by_css_selector(value)
+            elif "tag" in type:
+                el = self.driver.find_element_by_tag_name(value)
+            else:
+                raise NameError("Please correct the type in function parameter")
+        except Exception as err:
+            raise ValueError("No such element found"+ str(element))
+        ActionChains(self.driver).move_to_element(el).perform()
+
+    def find_element(self,element):
+        '''
+        :param element:
+        :return: 找单个控件
+        '''
+        element = self.driver.find_element(*element)
+        self._mark(element)
+        return element
+
+    def find_elements(self,element,num):
+        '''
+        :param element: 找多个控件的第num个元素
+        :param num:
+        :return:
+        '''
+        try:
+            type = element[0]
+            value = element[1]
+            print('type:',type)
+            print('value:', value)
+            global elem
+            if type == "id" or type == "ID" or type=="Id":
+                elem = self.driver.find_elements_by_id(value)
+
+            elif type == "name" or type == "NAME" or type=="Name":
+                elem = self.driver.find_elements_by_name(value)
+
+            elif type == "class" or type == "CLASS" or type=="Class":
+                elem = self.driver.find_elements_by_class_name(value)
+
+            elif type == "link_text" or type == "LINK_TEXT" or type=="Link_text":
+                elem = self.driver.find_elements_by_link_text(value)
+
+            elif type == "xpath" or type == "XPATH" or type=="Xpath":
+                elem = self.driver.find_elements_by_xpath(value)
+
+            elif type == "css" or type == "CSS" or type=="Css":
+                elem = self.driver.find_elements_by_css_selector(value)
+            else:
+                raise NameError("Please correct the type in function parameter")
+        except Exception as err:
+            logging.info('the len(elem) : %s' % str(len(elem)))
+            raise ValueError("No such element found"+ str(element))
+        print(len(elem))
+        return elem[num]
+
+    def find_elements_list(self, element):
+        try:
+            type = element[0]
+            value = element[1]
+            print('type:',type)
+            global elem
+            if type == "id" or type == "ID" or type=="Id":
+                elem = self.driver.find_elements_by_id(value)
+
+            elif type == "name" or type == "NAME" or type=="Name":
+                elem = self.driver.find_elements_by_name(value)
+
+            elif type == "class" or type == "CLASS" or type=="Class":
+                elem = self.driver.find_elements_by_class_name(value)
+
+            elif type == "link_text" or type == "LINK_TEXT" or type=="Link_text":
+                elem = self.driver.find_elements_by_link_text(value)
+
+            elif type == "xpath" or type == "XPATH" or type=="Xpath":
+                elem = self.driver.find_elements_by_xpath(value)
+
+            elif type == "css" or type == "CSS" or type=="Css":
+                elem = self.driver.find_elements_by_css_selector(value)
+            else:
+                raise NameError("Please correct the type in function parameter")
+        except Exception as err:
+            logging.info('the len(elem) : %s' % str(len(elem)))
+            raise ValueError("No such element found"+ str(element))
+        return elem
+
+    def is_elem_visible(self,element):
+        '''
+        :param element:
+        :return: 判断元素是不是可以点击
+        '''
+        type = element[0]
+        value = element[1]
+        if type == "id" or type == "ID" or type == "Id":
+            el = self.driver.find_element_by_id(value).is_displayed()
+        elif type == "name" or type == "NAME" or type == "Name":
+            el = self.driver.find_element_by_name(value).is_displayed()
+        elif "class" in type or type == "CLASS" or type == "Class":
+            el = self.driver.find_element_by_class_name(value).is_displayed()
+        elif type == "link_text" or type == "LINK_TEXT" or type == "Link_text":
+            el = self.driver.find_element_by_link_text(value).is_displayed()
+        elif type == "xpath" or type == "XPATH" or type == "Xpath":
+            el = self.driver.find_element_by_xpath(value).is_displayed()
+        elif "css" in type or type == "CSS" or type == "Css":
+            el = self.driver.find_element_by_css_selector(value).is_displayed()
+        else:
+            el = self.driver.find_element_by_tag_name(value).is_displayed()
+        return el
+
+    def is_exist_element(self,element,timeout=3):
+        '''
+        :param element:
+        :return: 检查是否存在唯一控件
+        '''
+        start_time = time.time()
+        flag = False
+        while time.time() - start_time <= timeout:
+            elem = None
+            try:
+                type = element[0]
+                value = element[1]
+                if type == "id" or type == "ID" or type=="Id" or type == By.ID:
+                    elem = self.driver.find_element_by_id(value)
+                elif type == "name" or type == "NAME" or type=="Name" or type == By.NAME:
+                    elem = self.driver.find_element_by_name(value)
+
+                elif type == "class" or type == "CLASS" or type=="Class" or type=='class name' or type == By.CLASS_NAME:
+                    elem = self.driver.find_element_by_class_name(value)
+
+                elif "link" in type or type == "link_text" or type == "LINK_TEXT" or type=="Link_text" or type=='link text' or type == By.LINK_TEXT:
+                    elem = self.driver.find_element_by_link_text(value)
+
+                elif type == "xpath" or type == "XPATH" or type=="Xpath" or type == By.XPATH:
+                    elem = self.driver.find_element_by_xpath(value)
+
+                elif type == "css" or type == "CSS" or type=="Css" or type=="css selector" or type == By.CSS_SELECTOR:
+                    elem = self.driver.find_element_by_css_selector(value)
+                else:
+                    raise NameError("Please correct the type in function parameter")
+            except Exception as e:
+                print(e)
+            finally:
+                if elem:
+                    flag = True
+                    break
+        if not flag:
+            print('未找到元素：')
+            print(element)
+        else:
+            self._mark(elem)
+        cf._step_screenshot(driver= self.driver, ty="is_exist", type_name="判断元素", msg=str(element)+str(flag))
+        return flag
+
+    def get_page_info(self):
+        '''
+        :return: 页面信息
+        '''
+        info = self.driver.page_source
+        return info
+
+    def switch_to_alert(self):
+        '''
+        :return: 关闭弹框
+        '''
+        alert = self.driver.switch_to_alert()
+        time.sleep(3)
+        alert.dismiss()
+
+    def switch_to_windows(self):
+        '''
+        :return:跳转到新的页面
+        '''
+        return self.driver.switch_to_window(self.driver.window_handles[1])
+
+    def switch_to_active_element(self):
+        '''
+        :return: 跳转到活跃的页面
+        '''
+        return self.driver.switch_to.active_element
+
+    def refresh(self):
+        '''
+        :return: 刷新当前界面
+        '''
+        self.driver.refresh()
+
+    def send_keys(self,keywords):
+        '''
+        :param keywords: 暂时支持TAB，回车，右建，ESC和输入字符串
+        :return: 模拟键盘输入
+        '''
+        k = PyKeyboard()
+        if "{" not in keywords:
+            k.type_string(keywords)
+        elif "TAB" in keywords:
+            k.tap_key(k.tab_key)
+        elif "ENTER" in keywords:
+            # k.press_key(k.enter_key)
+            # k.release_key(k.enter_key)
+            k.tap_key(k.enter_key)
+        elif "RIGHT" in keywords:
+            # k.press_key(k.right_key)
+            # k.release_key(k.right_key)
+            k.tap_key(k.right_key)
+        elif "ESC" in keywords:
+            k.tap_key(k.escape_key)
+        elif "BACKSPACE" in keywords:
+            k.tap_key(k.backspace_key)
+        else:
+            logging.info("keywords : %s is not support " % keywords)
+
+
+    def open(self,url):
+        '''
+        Open web url
+
+        Usage:
+        self.open(url)
+        '''
+        if url != "":
+            self.driver.get(url)
+        else:
+            raise ValueError("please provide a base url")
+
+    def type(self,element,text):
+        '''
+        Operation input box.
+
+        Usage:
+        self.type(element,text)
+        '''
+        element.send_keys(text)
+
+    
+    def enter(self,element):
+        '''
+        Keyboard: hit return
+
+        Usage:
+        self.enter(element)
+        '''
+        element.send_keys(Keys.RETURN)
+    
+
+    def click(self,element):
+        '''
+        Click page element, like button, image, link, etc.
+        '''
+        element.click()
+
+
+    def quit(self):
+        '''
+        Quit webdriver
+        '''
+        self.driver.quit()
+
+
+    def getAttribute(self, element, attribute):
+        '''
+        Get element attribute
+
+        '''
+        return element.get_attribute(attribute)
+
+    def getText(self, element):
+        '''
+        Get text of a web element
+
+        '''
+        return element.text
+
+    def getTitle(self):
+        '''
+        Get window title
+        '''
+        return self.driver.title
+
+    def getCurrentUrl(self):
+        '''
+        Get current url
+        '''
+        return self.driver.current_url
+
+    def getScreenshot(self,targetpath):
+        '''
+        Get current screenshot and save it to target path
+        '''
+        self.driver.get_screenshot_as_file(targetpath)
+
+    def maximizeWindow(self):
+        '''
+        Maximize current browser window
+        '''
+        self.driver.maximize_window()
+
+    def back(self):
+        '''
+        Goes one step backward in the browser history.
+        '''
+        self.driver.back()
+
+    def forward(self):
+        """
+        Goes one step forward in the browser history.
+        """
+        self.driver.forward()
+
+    def getWindowSize(self):
+        """
+        Gets the width and height of the current window.
+        """
+        return self.driver.get_window_size()
+
+    def upload(self, filepath):
+        """
+        非input标签上传操作,与windows弹窗进行交互
+        :param filepath: 文件绝对路径
+        :return:
+        """
+        dialog = win32gui.FindWindow("#32770", "打开") # 一级窗口
+        comboBoxEx32 = win32gui.FindWindowEx(dialog, 0, "ComboBoxEx32", None) # 二级
+        comboBox = win32gui.FindWindowEx(comboBoxEx32, 0, "ComboBox", None) # 三级
+        edit = win32gui.FindWindowEx(comboBox, 0, "Edit", None) # 四级
+        button = win32gui.FindWindowEx(dialog, 0, "Button", None) # 四级
+
+        win32gui.SendMessage(edit, win32con.WM_SETTEXT, None, filepath) # 发送文件路径
+        win32gui.SendMessage(dialog, win32con.WM_COMMAND, 1, button) # 点击打开按钮
+
+    def wait_eleVisible(self, controls, wait_times=10, poll_frequencey=0.5):
+        """
+        显性等待元素可见
+        :param controls: 元素定位
+        :param wait_times: 等待时间
+        :param poll_frequencey: 时间间隔查询一次
+        :return:
+        """
+        WebDriverWait(self.driver, timeout=wait_times, poll_frequency=poll_frequencey).until(EC.visibility_of_all_elements_located(controls))
+
+    def _mark(self, el):
+        mark_flag, _ = cf._decide_config("mark")
+        if mark_flag:
+            self.driver.execute_script("arguments[0].setAttribute('style', arguments[1]);", el,
+                                       'border: 5px solid red;')
+    #

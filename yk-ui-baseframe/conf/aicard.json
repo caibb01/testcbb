@@ -1,0 +1,21 @@
+{
+    "project_name": "AICardProject",
+    "project_name_zh": "AI云店Web自动化项目",
+    "desc": "这里是描述",
+    "report_mode": true,
+    "email_mode": [
+        "chenyz01@mingyuanyun.com",
+        "zhengw@mingyuanyun.com",
+        "linzs01@mingyuanyun.com",
+        "yet03@mingyuanyun.com"
+    ],
+    "retry": 0,
+    "receiver": [],
+    "screen": [
+        "fail",
+        "is_exist"
+    ],
+    "mark": true,
+    "driver_always_open": false,
+    "auto_open_driver": true
+}

@@ -1,0 +1,78 @@
+{
+    "start_time": "2020-06-02 18:16:09",
+    "start_timestamp": 1591092969.5084682,
+    "total_time": 9.1,
+    "end_time": "2020-06-02 18:16:18",
+    "end_timestamp": 1591092978.574497,
+    "results": [
+        {
+            "start_time": "2020-06-02 18:16:09",
+            "start_timestamp": 1591092969.5084682,
+            "cases_info": [
+                {
+                    "case_name": "test_case_01",
+                    "start_time": "2020-06-02 18:16:09",
+                    "start_timestamp": 1591092969.5084682,
+                    "case_doc": "AI名片测试用例",
+                    "success": false,
+                    "trace": "BaseException: 故意的 测试截图\n",
+                    "is_failure": false,
+                    "is_error": true,
+                    "failed_line_num": 33,
+                    "screen": [
+                        {
+                            "type": "is_exist",
+                            "type_name": "判断元素",
+                            "msg": "('css selector', '#org_name')True",
+                            "filename": "is_exist_20200602181616.png",
+                            "path": "D:\\04-Project\\Work\\WebTestProject\\outputs\\AICardProject\\20200602181609\\image\\is_exist_20200602181616.png",
+                            "timestamp": 1591092976.533863,
+                            "current_time": "2020-06-02 18:16:16"
+                        },
+                        {
+                            "type": "fail",
+                            "type_name": "用例执行失败",
+                            "msg": "",
+                            "filename": "fail_20200602181618.png",
+                            "path": "D:\\04-Project\\Work\\WebTestProject\\outputs\\AICardProject\\20200602181609\\image\\fail_20200602181618.png",
+                            "timestamp": 1591092978.1875,
+                            "current_time": "2020-06-02 18:16:18"
+                        }
+                    ],
+                    "source": {
+                        "code": [
+                            "    def test_case_01(self):\n",
+                            "        \"\"\"\n",
+                            "        AI名片测试用例\n",
+                            "        \"\"\"\n",
+                            "        print(self.__class__.__name__)\n",
+                            "        self.loginLogic.login(username=self.__data['username'],\n",
+                            "                              password=self.__data['password'],\n",
+                            "                              orgname=self.__data['orgname'])\n",
+                            "        time.sleep(1)\n",
+                            "        raise BaseException(\"故意的 测试截图\")\n"
+                        ],
+                        "start": 24
+                    },
+                    "end_time": "2020-06-02 18:16:18",
+                    "end_timestamp": 1591092978.574497,
+                    "total_time": 9.066
+                }
+            ],
+            "author": "佚名",
+            "module_name": "test_AICardTestCase",
+            "project_name": "AICardProject",
+            "project_name_zh": "AI云店Web自动化项目",
+            "end_timestamp": 1591092978.574497,
+            "end_time": "2020-06-02 18:16:18",
+            "total_time": 9.1
+        }
+    ],
+    "error": 1,
+    "failed": 0,
+    "success": 0,
+    "case_num": 1,
+    "passrate": "0.00%",
+    "project_name": "AICardProject",
+    "project_name_zh": "AI云店Web自动化项目"
+}
