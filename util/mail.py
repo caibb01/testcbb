@@ -99,10 +99,10 @@ if __name__ == '__main__':
     template = env.get_template("report_template.html", TEMPLATE_PATH)
     email_html = template.render({"results": result})
     e = Email(title="优化测试报告邮件",
-              receiver=['chenyz01@mingyuanyun.com'],
+              receiver=['xxx@mingyuanyun.com'],
               server='smtp.exmail.qq.com',
-              sender='chenyz01@mingyuanyun.com',
-              password='Chenyz#321',
+              sender='xxx@mingyuanyun.com',
+              password='xxx',
               sender_name="优化测试报告邮件",
               html=email_html)
     e.send()

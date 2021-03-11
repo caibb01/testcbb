@@ -259,8 +259,8 @@ class Runner():
             e = Email(title="优化测试报告邮件",
                       receiver=receiver,
                       server='smtp.exmail.qq.com',
-                      sender='chenyz01@mingyuanyun.com',
-                      password='Chenyz#321',
+                      sender='xxx@mingyuanyun.com',
+                      password='xxx',
                       sender_name="优化测试报告邮件",
                       html=self.email_html)
             e.send()
