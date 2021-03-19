@@ -1,35 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2796e951-6e00-4ea1-af29-838ded1f55f1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/cases/AICardProject/case/settingConfiguration/test_basicInfo.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cases/AICardProject/logic/settingConfigurationLG/basicInfoLg.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cases/AICardProject/page/settingConfigurationPO/basicInfoPO.py" afterDir="false" />
+    <list default="true" id="2796e951-6e00-4ea1-af29-838ded1f55f1" name="Default Changelist" comment="忽略/.idea">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cases/AICardProject/case/settingConfiguration/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/cases/AICardProject/case/settingConfiguration/debug.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cases/AICardProject/case/settingConfiguration/test_miniProgramJump.py" beforeDir="false" afterPath="$PROJECT_DIR$/cases/AICardProject/case/settingConfiguration/test_miniProgramJump.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cases/AICardProject/logic/MenuManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/cases/AICardProject/logic/MenuManager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cases/AICardProject/logic/settingConfigurationLG/miniProgramJumpLg.py" beforeDir="false" afterPath="$PROJECT_DIR$/cases/AICardProject/logic/settingConfigurationLG/miniProgramJumpLg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cases/AICardProject/page/settingConfigurationPO/miniProgramJumpPO.py" beforeDir="false" afterPath="$PROJECT_DIR$/cases/AICardProject/page/settingConfigurationPO/miniProgramJumpPO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/BasePage.py" beforeDir="false" afterPath="$PROJECT_DIR$/util/BasePage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/util/storage.json" beforeDir="false" afterPath="$PROJECT_DIR$/util/storage.json" afterDir="false" />
     </list>
+    <ignored path="$PROJECT_DIR$/venv/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/TestCaseProject$Unittests_in_test_DemoTestCase_py.coverage" NAME="Unittests in test_DemoTestCase.py Coverage Results" MODIFIED="1589548047418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/DemoProject" />
     <SUITE FILE_PATH="coverage/TestCaseProject$mail.coverage" NAME="mail Coverage Results" MODIFIED="1571221117607" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/untils" />
-    <SUITE FILE_PATH="coverage/TestCaseProject$Unittests_in_test_DemoTestCase02_py.coverage" NAME="Unittests in test_DemoTestCase02.py Coverage Results" MODIFIED="1589339392366" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/DemoProject" />
+    <SUITE FILE_PATH="coverage/TestCaseProject$Unittests_in_runner02_py.coverage" NAME="Unittests in runner02.py Coverage Results" MODIFIED="1589549957221" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/TestCaseProject$Unittests_in_test_DemoTestCase_py.coverage" NAME="Unittests in test_DemoTestCase.py Coverage Results" MODIFIED="1589548047418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/DemoProject" />
     <SUITE FILE_PATH="coverage/WebTestProject$runner.coverage" NAME="runner Coverage Results" MODIFIED="1589785286777" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/until" />
+    <SUITE FILE_PATH="coverage/TestCaseProject$runner02.coverage" NAME="runner02 Coverage Results" MODIFIED="1589550374218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/until" />
+    <SUITE FILE_PATH="coverage/WebTestProject$run.coverage" NAME="run Coverage Results" MODIFIED="1589785914018" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/WebTestProject$Unittests_in_runner_copy_py.coverage" NAME="Unittests in runner_copy.py Coverage Results" MODIFIED="1589784966704" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/until" />
     <SUITE FILE_PATH="coverage/TestCaseProject$runner.coverage" NAME="runner Coverage Results" MODIFIED="1570874061058" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/untils" />
     <SUITE FILE_PATH="coverage/WebTestProject$Unittests_in_runner_py.coverage" NAME="Unittests in runner.py Coverage Results" MODIFIED="1589785035961" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/until" />
-    <SUITE FILE_PATH="coverage/WebTestProject$run.coverage" NAME="run Coverage Results" MODIFIED="1589785914018" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TestCaseProject$Unittests_in_runner02_py.coverage" NAME="Unittests in runner02.py Coverage Results" MODIFIED="1589549957221" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/TestCaseProject$runner02.coverage" NAME="runner02 Coverage Results" MODIFIED="1589550374218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/until" />
-    <SUITE FILE_PATH="coverage/WebTestProject$Unittests_in_runner_copy_py.coverage" NAME="Unittests in runner_copy.py Coverage Results" MODIFIED="1589784966704" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/until" />
+    <SUITE FILE_PATH="coverage/TestCaseProject$Unittests_in_test_DemoTestCase02_py.coverage" NAME="Unittests in test_DemoTestCase02.py Coverage Results" MODIFIED="1589339392366" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/cases/DemoProject" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="597295009">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="gitignore" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="PLAIN_TEXT" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="txt" value="12" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="PLAIN_TEXT" value="12" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="6" lean-forward="true" selection-start-column="6" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -73,13 +109,47 @@
       <find>test</find>
     </findStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/.gitignore" />
+      </list>
+    </option>
+  </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="77" />
+    <option name="width" value="1555" />
+    <option name="height" value="1050" />
+  </component>
   <component name="ProjectId" id="1j5RT2AaJSFdRLj3PsFfFZYRscp" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="yk-ui-baseframe" type="b2602c69:ProjectViewProjectNode" />
+              <item name="yk-ui-baseframe" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -88,7 +158,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SearchEverywhereHistoryKey" value=",&#9;null&#9;null" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/cases/AICardProject/page/settingConfigureationPO" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -105,6 +175,18 @@
       <recent name="D:\04-Project\Python\TestCaseProject\cases\DemoProject\case" />
       <recent name="D:\04-Project\Python\TestCaseProject\cases\DemoProject" />
     </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
   </component>
   <component name="RunManager" selected="Python tests.Unittests in test_basicInfo.py">
     <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -160,6 +242,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;$PROJECT_DIR$/cases/AICardProject/case/contentManagement/test_articleContent.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
@@ -174,6 +257,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;$PROJECT_DIR$/cases/AICardProject/case/settingConfiguration/test_basicInfo.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
@@ -188,6 +272,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;$PROJECT_DIR$/cases/AICardProject/case/contentManagement/test_imageContent.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
@@ -202,6 +287,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="_new_additionalArguments" value="&quot;&quot;" />
       <option name="_new_target" value="&quot;$PROJECT_DIR$/cases/AICardProject/case/settingConfiguration/test_miniProgramJump.py&quot;" />
       <option name="_new_targetType" value="&quot;PATH&quot;" />
@@ -256,13 +342,52 @@
       <option name="presentableId" value="Default" />
       <updated>1569830494157</updated>
     </task>
+    <task id="LOCAL-00001" summary="忽略/.idea">
+      <created>1616138460458</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1616138460458</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Favorites" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Python Console" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info anchor="bottom" id="Event Log" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="SciView" />
+      <window_info anchor="right" id="Database" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="忽略/.idea" />
+    <option name="LAST_COMMIT_MESSAGE" value="忽略/.idea" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1051" y="393" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1603682240281">
@@ -293,5 +418,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="1035" y="311" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1603683921419" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" lean-forward="true" selection-start-column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
   </component>
 </project>
