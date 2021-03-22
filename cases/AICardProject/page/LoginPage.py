@@ -1,6 +1,6 @@
 # coding=utf-8
 from selenium.webdriver.common.by import By
-from util.BasePage import BasePage
+from myweb.core.BasePage import BasePage
 from time import sleep
 
 class LoginPage(BasePage):

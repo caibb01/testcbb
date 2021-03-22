@@ -1,7 +1,7 @@
 # coding=utf-8
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from util.BasePage import BasePage
+from myweb.core.BasePage import BasePage
 import time
 
 class PopupManagementPage(BasePage):

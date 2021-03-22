@@ -1,7 +1,7 @@
 #coding:utf-8
 # coding=utf-8
 from selenium.webdriver.common.by import By
-from util.BasePage import BasePage
+from myweb.core.BasePage import BasePage
 import sys
 from cases.AICardProject.page.contentManagementPO.videoManagementPO import videoManagementPO
 from time import sleep

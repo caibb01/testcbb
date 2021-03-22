@@ -10,10 +10,12 @@ from selenium.webdriver.common.keys import Keys
 import time,logging
 from pykeyboard import PyKeyboard
 
-import util.runner as cf
+import myweb.core.runner as cf
 import datetime, os
-import win32gui
-import win32con
+import platform
+if(platform.system()=='Windows'):
+    import win32gui
+    import win32con
 
 class BasePage(object):
 
@@ -374,6 +376,27 @@ class BasePage(object):
 
         win32gui.SendMessage(edit, win32con.WM_SETTEXT, None, filepath) # 发送文件路径
         win32gui.SendMessage(dialog, win32con.WM_COMMAND, 1, button) # 点击打开按钮
+
+    def upload_new(self, path, el, loading_el=None, end_el=None, timeout=10):
+        """
+
+        :param image_path: 文件地址
+        :param el: 上传文件元素
+        :param loading_el: 可以表明元素正在loading的元素（例如upload-progress）
+        :param end_el: 可以表明元素已经结束上传的元素（例如finish-load-progress）
+        :param timeout: 上传文件的总时长，超出时间则会抛出异常
+        :return:
+        """
+        start_time = time.time()
+        if self.is_exist_element(el):
+            self.find_element(el).send_keys(image_path)
+        while time.time() - start_time <= timeout:
+            if loading_el and (not self.is_exist_element(loading_el)):
+                break
+            if self.is_exist_element(end_el):
+                break
+        else:
+            raise Exception("upload image timeout!")
 
     def wait_eleVisible(self, controls, wait_times=10, poll_frequencey=0.5):
         """

@@ -1,6 +1,6 @@
 # coding=utf-8
 from selenium.webdriver.common.by import By
-from util.BasePage import BasePage
+from myweb.core.BasePage import BasePage
 import sys
 from cases.AICardProject.page.LoginPage import LoginPage
 from cases.AICardProject.page.displayConfigurationPO.ManagerBlankPagePage import ManagerBlankPagePage

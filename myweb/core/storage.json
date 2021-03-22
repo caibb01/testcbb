@@ -1,0 +1,10 @@
+{
+    "info": [],
+    "timestamp": "20210322194814",
+    "project": "DemoProject",
+    "configPath": "/Users/zero/Documents/01-project/02-work/yk-ui-baseframe/conf/demo.json",
+    "imagePath": "/Users/zero/Documents/01-project/02-work/yk-ui-baseframe/outputs/DemoProject/20210322194814/image",
+    "resultPath": "/Users/zero/Documents/01-project/02-work/yk-ui-baseframe/outputs/DemoProject/20210322194814/result.json",
+    "module_name": "test_DemoTestCase02",
+    "case_name": "test_case_02"
+}

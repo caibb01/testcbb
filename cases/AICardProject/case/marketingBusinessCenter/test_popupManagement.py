@@ -1,8 +1,8 @@
 # -*- encoding=utf8 -*-
 import os, sys, datetime
-from util.runner import My4wTestCase
-from util.config import JsonConfig
-from util.util import get_time
+from myweb.core.runner import My4wTestCase
+from myweb.utils.config import JsonConfig
+from myweb.tools.util import get_time
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.marketingBusinessCenterLG.PopupManagementLogic import PopupManagementLogic
 

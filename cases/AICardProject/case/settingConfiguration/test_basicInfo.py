@@ -2,7 +2,7 @@ import os
 import sys
 import unittest
 
-from util.runner import My4wTestCase
+from myweb.core.runner import My4wTestCase
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.settingConfigurationLG.basicInfoLg import BasicInfoLg
 from selenium import webdriver
