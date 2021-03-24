@@ -14,13 +14,6 @@ BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file
 CASE_PATH = os.path.join(BASE_PATH, 'cases')
 OUTPUT_PATH = os.path.join(BASE_PATH, 'outputs')
 DATA_PATH = os.path.join(BASE_PATH, 'data')
-
-print("=========================")
-print(os.path.abspath(__file__))
-print(os.path.dirname(os.path.abspath(__file__)))
-print(BASE_PATH)
-
-#C:\Users\Linzs01\Desktop\WebTestProject\cases\AICardProject\data\loginInfo.json
 CONFIG_PATH = os.path.join(BASE_PATH, 'conf')
 TEMPLATE_PATH = os.path.join(BASE_PATH, 'template')
 STORAGE_PATH = os.path.join(BASE_PATH, 'myweb', 'core', 'storage.json')
@@ -142,6 +135,7 @@ class Runner():
     def __init__(self, config_name=CONFIG):
         self.config_path = os.path.join(CONFIG_PATH, config_name)
         self.config_name = config_name
+        self.global_config = _get_global_config()
         # 缓存文件 存储正在执行的任务项目名称、时间戳
         self.storage_path = STORAGE_PATH
         self.storage = None
@@ -264,8 +258,8 @@ class Runner():
             e = Email(title="优化测试报告邮件",
                       receiver=receiver,
                       server='smtp.exmail.qq.com',
-                      sender='chenyz01@mingyuanyun.com',
-                      password='Chenyz#321',
+                      sender=self.global_config['email']['username'],
+                      password=self.global_config['email']['password'],
                       sender_name="优化测试报告邮件",
                       html=self.email_html)
             e.send()
