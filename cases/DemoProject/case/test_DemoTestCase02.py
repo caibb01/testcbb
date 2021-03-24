@@ -1,4 +1,4 @@
-from util.runner import My4wTestCase
+from myweb.core.runner import My4wTestCase
 import unittest
 import time
 

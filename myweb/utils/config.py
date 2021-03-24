@@ -1,6 +1,6 @@
 import json
 import os
-from util.runner import DATA_PATH
+from myweb.core.runner import DATA_PATH
 
 class JsonConfig():
     def __init__(self, path):
@@ -19,8 +19,3 @@ class JsonConfig():
 
 _configPath = os.path.join(DATA_PATH, 'config.json')
 conf = JsonConfig(_configPath).get()
-
-
-if __name__ == '__main__':
-    config = JsonConfig(r'C:\Users\Linzs01\Desktop\WebTestProject\cases\AICardProject\data\AICardTestCase.json')
-    print(config.get())

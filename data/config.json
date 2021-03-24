@@ -1,3 +1,7 @@
 {
-  "driverPath": "D:\\YKWebAutomation\\chromedriver80106.exe"
+  "driverPath": "",
+  "email": {
+    "username": "",
+    "password": ""
+  }
 }

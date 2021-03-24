@@ -1,6 +1,6 @@
 #-*- coding:utf-8 -*-
 from selenium.webdriver.common.by import By
-from util.BasePage import BasePage
+from myweb.core.BasePage import BasePage
 from time import sleep
 from selenium.webdriver.support.wait import WebDriverWait
 # from selenium.webdriver.common.keys import Keys

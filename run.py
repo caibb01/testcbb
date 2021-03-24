@@ -1,4 +1,4 @@
-from util.runner import Runner
+from myweb.core.runner import Runner
 
 
 

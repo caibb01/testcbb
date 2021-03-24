@@ -78,31 +78,6 @@ class Email(object):
                 print('发送邮件<{0}>成功! 收件人：<{1}>。如果没有收到邮件，请检查垃圾箱，''同时检查收件人地址是否正确'.format(self.__title, self.__receiver))
                 flag = True
             finally:
-                print('test')
                 smtp_server.quit()
                 return flag
 
-
-if __name__ == '__main__':
-    import jinja2
-    import os
-
-    BASE_PATH = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
-    TEMPLATE_PATH = os.path.join(BASE_PATH, 'template')
-
-    result = []
-    env = jinja2.Environment(
-        loader=jinja2.FileSystemLoader(TEMPLATE_PATH),
-        extensions=(),
-        autoescape=True
-    )
-    template = env.get_template("report_template.html", TEMPLATE_PATH)
-    email_html = template.render({"results": result})
-    e = Email(title="优化测试报告邮件",
-              receiver=['xxx@mingyuanyun.com'],
-              server='smtp.exmail.qq.com',
-              sender='xxx@mingyuanyun.com',
-              password='xxx',
-              sender_name="优化测试报告邮件",
-              html=email_html)
-    e.send()

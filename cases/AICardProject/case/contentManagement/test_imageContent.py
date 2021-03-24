@@ -1,6 +1,6 @@
 # -*- encoding=utf8 -*-
-from util.runner import My4wTestCase
-from util.config import JsonConfig
+from myweb.core.runner import My4wTestCase
+from myweb.utils.runner import JsonConfig
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.contentManagementLG.imageContentLg import imageContentLg
 

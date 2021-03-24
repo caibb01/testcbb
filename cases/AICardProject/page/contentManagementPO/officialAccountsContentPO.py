@@ -1,5 +1,5 @@
 ﻿# -*- coding:utf-8 -*-
-from util.BasePage import BasePage
+from myweb.core.BasePage import BasePage
 from selenium.webdriver.common.by import By
 import time, logging
 from time import sleep

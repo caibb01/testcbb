@@ -23,14 +23,14 @@
 │  └─DemoProject
 │      └─20200518150248
 ├─template ----- 邮件报告模板
-├─util ----- 支撑框架的脚本文件
+├─myweb ----- 支撑框架的脚本文件
 ├─run.py ----- 执行文件
 
 ```
 
 **cases**
 
-这个目录用于存放项目的用例文件，形式建议基于PO模式（page-object），case目录下的用例脚本需要基于继承于util.runner文件下的My4wTestCase
+这个目录用于存放项目的用例文件，形式建议基于PO模式（page-object），case目录下的用例脚本需要基于继承于myweb.core.runner文件下的My4wTestCase
 
 ```tree
 ├─cases
@@ -44,7 +44,7 @@
 
 ```python
 # -*- encoding=utf8 -*-
-from util.runner import My4wTestCase
+from myweb.core.runner import My4wTestCase
 
 class DemoTestCase(My4wTestCase):
     __author__ = "zero"
@@ -81,7 +81,7 @@ class DemoTestCase(My4wTestCase):
 **run.py**
 
 ```python
-from util.runner import Runner
+from myweb.core.runner import Runner
 
 
 if __name__ == '__main__':

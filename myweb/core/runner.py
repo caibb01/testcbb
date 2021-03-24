@@ -8,18 +8,30 @@ import json
 import time
 import jinja2
 from selenium import webdriver
-from .mail import Email
+from myweb.utils.mail import Email
 
-BASE_PATH = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
+BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
 CASE_PATH = os.path.join(BASE_PATH, 'cases')
 OUTPUT_PATH = os.path.join(BASE_PATH, 'outputs')
 DATA_PATH = os.path.join(BASE_PATH, 'data')
 CONFIG_PATH = os.path.join(BASE_PATH, 'conf')
 TEMPLATE_PATH = os.path.join(BASE_PATH, 'template')
-STORAGE_PATH = os.path.join(BASE_PATH, 'until', 'storage.json')
+STORAGE_PATH = os.path.join(BASE_PATH, 'myweb', 'core', 'storage.json')
 CONFIG = 'single.json'
 
 STORAGE = None
+
+
+def _get_global_config(config_name=None):
+    """
+    获取项目全局的配置文件信息（例如driver_path）
+    :return:
+    """
+    config_path = config_name if config_name else 'config.json'
+    f = open(os.path.join(DATA_PATH, config_path), 'r', encoding='utf-8')
+    config = json.load(f)
+    f.close()
+    return config
 
 
 def _get_config(config_name=None):
@@ -108,15 +120,22 @@ def _step_screenshot(driver, ty, type_name, msg):
             "current_time": current_time
         })
         _set_storage(storage)
-
     else:
         print("driver 类型不正确 截图失败 driver: %s ; type: %s" % (driver, type(driver)))
+
+
+def _decide_config(el):
+    config = _get_config()
+    if (el in config.keys() and config[el]):
+        return True, config[el]
+    return False, None
 
 
 class Runner():
     def __init__(self, config_name=CONFIG):
         self.config_path = os.path.join(CONFIG_PATH, config_name)
         self.config_name = config_name
+        self.global_config = _get_global_config()
         # 缓存文件 存储正在执行的任务项目名称、时间戳
         self.storage_path = STORAGE_PATH
         self.storage = None
@@ -139,14 +158,20 @@ class Runner():
         runner = unittest.TextTestRunner()
         runner.run(discover)
 
-        if not ('retry' in self.config.keys() and not self.config['retry']):
-            self._run_fail_case()
+        retry_mode, retry_times = _decide_config('retry')
+        report_mode, _ = _decide_config('report_mode')
+        email_mode, receiver = _decide_config('email_mode')
 
-        if not ('report_mode' in self.config.keys() and not self.config['report_mode']):
+        if retry_mode:
+            self._run_fail_case(retry=retry_times)
+
+        if report_mode:
             self._get_result()
             self._report()
-            if 'email_mode' in self.config.keys() and self.config['email_mode']:
-                self._mail()
+            if email_mode:
+                print("send email...")
+                self._mail(receiver=receiver)
+
 
         self._tearDown_config()
 
@@ -191,6 +216,14 @@ class Runner():
                             results["results"][r]["cases_info"].append(results["results"][-1]["cases_info"][0])
                             break
                     results["results"].pop(-1)
+                    results['error'] = len(
+                        [0 for r in results['results'] for c in r['cases_info'] if c['is_error']])
+                    results['failed'] = len(
+                        [0 for r in results['results'] for c in r['cases_info'] if c['is_failure']])
+                    results['success'] = len(
+                        [0 for r in results['results'] for c in r['cases_info'] if c['success']])
+                    results['case_num'] = len(
+                        [0 for r in results['results'] for _ in r['cases_info']])
                     self._set_result(content=results)
                     break
             else:
@@ -208,22 +241,29 @@ class Runner():
         template = env.get_template("report_template.html", TEMPLATE_PATH)
         self.email_html = template.render({"results": self.result})
 
+        self.mail_report_path = os.path.join(OUTPUT_PATH, STORAGE['project'], 'report.html')
+        f = open(self.mail_report_path, "w", encoding='utf-8')
+        f.write(self.email_html)
+        f.close()
+
         # output_file = os.path.join(root_dir, "summary.html")
         # with io.open(output_file, 'w', encoding="utf-8") as f:
         #     f.write(html)
         # pass
 
-    def _mail(self):
-        self.receiver = self.config['receiver'] if self.config['receiver'] else []
+    def _mail(self, receiver=None):
 
-        e = Email(title="优化测试报告邮件",
-                  receiver=self.receiver,
-                  server='smtp.exmail.qq.com',
-                  sender='xxx@mingyuanyun.com',
-                  password='xxx',
-                  sender_name="优化测试报告邮件",
-                  html=self.email_html)
-        e.send()
+        if receiver:
+
+            e = Email(title="优化测试报告邮件",
+                      receiver=receiver,
+                      server='smtp.exmail.qq.com',
+                      sender=self.global_config['email']['username'],
+                      password=self.global_config['email']['password'],
+                      sender_name="优化测试报告邮件",
+                      html=self.email_html)
+            e.send()
+
 
     def _get_result(self):
         self.file_path = os.path.join(OUTPUT_PATH, self.config['project_name'], self.config['output'])
@@ -272,6 +312,13 @@ class My4wTestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        if _decide_config("auto_open_driver")[0]:
+            cls._global_config = _get_global_config()
+            option = webdriver.ChromeOptions()
+            # 浏览器默认不关闭
+            option.add_experimental_option("detach", True)
+            cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
+
         config_path = os.path.join(CONFIG_PATH, CONFIG)
         cls._config = cls._get_result(cls, config_path)
         cls._output = cls._config[
@@ -301,6 +348,13 @@ class My4wTestCase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        if not _decide_config("driver_always_open")[0]:
+            # 浏览器常关配置，设置为True则不会自动关闭浏览器
+            if isinstance(cls.driver, webdriver.Remote):
+                print("driver quit!")
+                cls.driver.quit()
+            else:
+                print("关闭浏览器失败 driver: %s" % cls.driver)
 
         cls._results['end_timestamp'] = time.time()
         cls._results['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -339,6 +393,7 @@ class My4wTestCase(unittest.TestCase):
         all_results_info['project_name_zh'] = cls._config[
             'project_name_zh'] if 'project_name' in cls._config.keys() else None
 
+        print(all_results_info['case_num'])
         cls._write_result(cls, result_path, all_results_info)
 
     def setUp(self):
