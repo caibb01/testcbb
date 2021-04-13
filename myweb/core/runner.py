@@ -306,7 +306,7 @@ class Runner():
         # f.close()
 
 
-class My4wTestCase(unittest.TestCase):
+class TestCase(unittest.TestCase):
     __author__ = '佚名'
     driver = None
 

@@ -1,5 +1,5 @@
 # -*- encoding=utf8 -*-
-from myweb.core.runner import My4wTestCase
+from myweb.core.runner import TestCase
 from myweb.utils.runner import JsonConfig
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.contentManagementLG.imageContentLg import imageContentLg
@@ -9,7 +9,7 @@ import os, sys
 import time
 
 
-class test_imageContent(My4wTestCase):
+class test_imageContent(TestCase):
     __author__ = "zero"
     # 当前模块名
     __module = sys._getframe().f_code.co_name

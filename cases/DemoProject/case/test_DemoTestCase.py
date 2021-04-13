@@ -1,9 +1,9 @@
 # -*- encoding=utf8 -*-
-from myweb.core.runner import My4wTestCase
+from myweb.core.runner import TestCase
 import time
 
 
-class DemoTestCase(My4wTestCase):
+class DemoTestCase(TestCase):
     __author__ = "zero"
 
     def test_case_01(self):

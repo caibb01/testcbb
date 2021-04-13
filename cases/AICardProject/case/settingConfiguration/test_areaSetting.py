@@ -2,13 +2,13 @@ import os
 import sys
 import unittest
 
-from myweb.core.runner import My4wTestCase
+from myweb.core.runner import TestCase
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.settingConfigurationLG.areaSettingLg import AreaSettingLg
 from selenium import webdriver
 import time
 
-class test_areaSetting(My4wTestCase):
+class test_areaSetting(TestCase):
     __author__ = "yeting"
     # 当前模块名
     __module = sys._getframe().f_code.co_name

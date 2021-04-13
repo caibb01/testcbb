@@ -30,7 +30,7 @@
 
 **cases**
 
-这个目录用于存放项目的用例文件，形式建议基于PO模式（page-object），case目录下的用例脚本需要基于继承于myweb.core.runner文件下的My4wTestCase
+这个目录用于存放项目的用例文件，形式建议基于PO模式（page-object），case目录下的用例脚本需要基于继承于myweb.core.runner文件下的TestCase
 
 ```tree
 ├─cases
@@ -44,9 +44,9 @@
 
 ```python
 # -*- encoding=utf8 -*-
-from myweb.core.runner import My4wTestCase
+from myweb.core.runner import TestCase
 
-class DemoTestCase(My4wTestCase):
+class DemoTestCase(TestCase):
     __author__ = "zero"
 
     def test_case_01(self):
@@ -134,7 +134,7 @@ mark:是否高亮选择/点击元素
 
 driver_always_open:是否需要浏览器执行后不关闭
 
-auto_open_driver:是否打开webDriver # 启动driver的方法写在My4wTestCase.setUpClass
+auto_open_driver:是否打开webDriver # 启动driver的方法写在TestCase.setUpClass
 
 持续补充...
 

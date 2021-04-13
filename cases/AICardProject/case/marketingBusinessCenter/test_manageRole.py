@@ -1,5 +1,5 @@
 # -*- encoding=utf8 -*-
-from myweb.core.runner import My4wTestCase
+from myweb.core.runner import TestCase
 from myweb.utils.runner import JsonConfig
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.marketingBusinessCenterLG.ManageRoleLogic import ManageRoleLogic
@@ -7,7 +7,7 @@ import os, sys, datetime
 import unittest
 
 
-class ManageRoleCase(My4wTestCase):
+class ManageRoleCase(TestCase):
     __author__ = "chenyz01"
     # 当前模块名
     __module = sys._getframe().f_code.co_name

@@ -1,5 +1,5 @@
 # -*- encoding=utf8 -*-
-from myweb.core.runner import My4wTestCase
+from myweb.core.runner import TestCase
 from myweb.utils.runner import JsonConfig
 from myweb.tools.util import get_time
 from cases.AICardProject.logic.LoginLogic import LoginLogic
@@ -8,7 +8,7 @@ import os, sys, datetime
 import unittest
 
 
-class ManagerBlankPageCase(My4wTestCase):
+class ManagerBlankPageCase(TestCase):
     __author__ = "chenyz01"
     # 当前模块名
     __module = sys._getframe().f_code.co_name
