@@ -1,8 +1,8 @@
-from myweb.core.runner import My4wTestCase
+from myweb.core.runner import TestCase
 import unittest
 import time
 
-class DemoTestCase02(My4wTestCase):
+class DemoTestCase02(TestCase):
     def test_case_01(self):
         """
         test_case_01 success

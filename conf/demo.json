@@ -3,6 +3,8 @@
     "project_name_zh": "测试项目",
     "desc": "中文字符",
     "report_mode": true,
-    "email_mode": false,
-    "retry": 3
+    "retry": 3,
+    "email_mode": [
+        ""
+    ]
 }

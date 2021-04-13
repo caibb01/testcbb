@@ -1,13 +1,13 @@
 # -*- encoding=utf8 -*-
 import os, sys, datetime
-from myweb.core.runner import My4wTestCase
+from myweb.core.runner import TestCase
 from myweb.utils.config import JsonConfig
 from myweb.tools.util import get_time
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.marketingBusinessCenterLG.PopupManagementLogic import PopupManagementLogic
 
 
-class PopupManagementCase(My4wTestCase):
+class PopupManagementCase(TestCase):
     __author__ = "chenyz01"
     # 当前模块名
     __module = sys._getframe().f_code.co_name

@@ -1,7 +1,7 @@
 # -*- encoding=utf8 -*-
 import unittest
 
-from myweb.core.runner import My4wTestCase
+from myweb.core.runner import TestCase
 from myweb.utils.runner import JsonConfig
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.settingConfigurationLG.miniProgramJumpLg import miniProgramJumpLg
@@ -10,7 +10,7 @@ from selenium import webdriver
 import os, sys
 import time
 
-class test_miniProgramJump(My4wTestCase):
+class test_miniProgramJump(TestCase):
     __author__ = "yeting"
     # 当前模块名
     __module = sys._getframe().f_code.co_name

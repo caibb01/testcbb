@@ -1,5 +1,5 @@
 # -*- encoding=utf8 -*-
-from myweb.core.runner import My4wTestCase
+from myweb.core.runner import TestCase
 from myweb.utils.runner import JsonConfig, conf
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from selenium import webdriver
@@ -7,7 +7,7 @@ import os, sys
 import time
 
 
-class AICardTestCase(My4wTestCase):
+class AICardTestCase(TestCase):
     __author__ = "zero"
     # 当前模块名
     __module = sys._getframe().f_code.co_name
