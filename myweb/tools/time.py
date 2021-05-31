@@ -13,7 +13,3 @@ def get_time(is_future, format='%Y/%m/%d %H:%M', **kwargs):
     get_time = (today + datetime.timedelta(**kwargs)) if is_future else (today - datetime.timedelta(**kwargs))
     return get_time.strftime(format)
 
-
-if __name__ == '__main__':
-    t = get_time(True, days=2)
-    print(t)

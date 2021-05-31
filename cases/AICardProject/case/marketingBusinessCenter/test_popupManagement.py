@@ -2,7 +2,7 @@
 import os, sys, datetime
 from myweb.core.runner import TestCase
 from myweb.utils.config import JsonConfig
-from myweb.tools.util import get_time
+from myweb.tools.time import get_time
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.marketingBusinessCenterLG.PopupManagementLogic import PopupManagementLogic
 
