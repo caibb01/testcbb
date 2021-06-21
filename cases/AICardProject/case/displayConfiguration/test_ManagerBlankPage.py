@@ -1,6 +1,6 @@
 # -*- encoding=utf8 -*-
 from myweb.core.runner import TestCase
-from myweb.utils.runner import JsonConfig
+from myweb.utils.config import JsonConfig
 from myweb.tools.time import get_time
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.displayConfigurationLG.ManagerBlankPageLogic import ManagerBlankPageLogic

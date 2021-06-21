@@ -1,6 +1,6 @@
 # -*- encoding=utf8 -*-
 from myweb.core.runner import TestCase
-from myweb.utils.runner import JsonConfig, conf
+from myweb.utils.config import JsonConfig, conf
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from selenium import webdriver
 import os, sys

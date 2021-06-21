@@ -1,6 +1,6 @@
 # -*- encoding=utf8 -*-
 from myweb.core.runner import TestCase
-from myweb.utils.runner import JsonConfig
+from myweb.utils.config import JsonConfig
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.marketingBusinessCenterLG.ManageRoleLogic import ManageRoleLogic
 import os, sys, datetime

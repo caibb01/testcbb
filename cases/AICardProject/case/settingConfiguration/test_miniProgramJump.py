@@ -2,7 +2,7 @@
 import unittest
 
 from myweb.core.runner import TestCase
-from myweb.utils.runner import JsonConfig
+from myweb.utils.config import JsonConfig
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.settingConfigurationLG.miniProgramJumpLg import miniProgramJumpLg
 
