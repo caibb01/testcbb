@@ -8,6 +8,8 @@ import json
 import time
 import jinja2
 from selenium import webdriver
+
+from myweb.tools.support_atmp.support_atmp_run import report_result_to_atmp
 from myweb.utils.mail import Email
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
@@ -317,7 +319,7 @@ class TestCase(unittest.TestCase):
             option = webdriver.ChromeOptions()
             # 浏览器默认不关闭
             option.add_experimental_option("detach", True)
-            cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
+            # cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
 
         config_path = os.path.join(CONFIG_PATH, CONFIG)
         cls._config = cls._get_result(cls, config_path)
@@ -348,13 +350,13 @@ class TestCase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        if not _decide_config("driver_always_open")[0]:
-            # 浏览器常关配置，设置为True则不会自动关闭浏览器
-            if isinstance(cls.driver, webdriver.Remote):
-                print("driver quit!")
-                cls.driver.quit()
-            else:
-                print("关闭浏览器失败 driver: %s" % cls.driver)
+        # if not _decide_config("driver_always_open")[0]:
+        #     # 浏览器常关配置，设置为True则不会自动关闭浏览器
+        #     if isinstance(cls.driver, webdriver.Remote):
+        #         print("driver quit!")
+        #         cls.driver.quit()
+        #     else:
+        #         print("关闭浏览器失败 driver: %s" % cls.driver)
 
         cls._results['end_timestamp'] = time.time()
         cls._results['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -415,6 +417,8 @@ class TestCase(unittest.TestCase):
         self._storage = _get_storage()
         self._storage["case_name"] = self._testMethodName
         _set_storage(self._storage)
+        # 定义测试编号
+        self.test_code = ""
 
     def tearDown(self):
         sys_info = self._outcome.errors[-1][-1]
@@ -445,6 +449,7 @@ class TestCase(unittest.TestCase):
         # 每次用例执行完毕之后，将单个用例结果写入result
         # 记录操作信息
         self._storage = _get_storage()
+        print(self._storage)
         if self._storage["info"]:
             for i in self._storage["info"]:
                 self._result["screen"].append(i)
@@ -456,6 +461,13 @@ class TestCase(unittest.TestCase):
         self._result['end_timestamp'] = time.time()
         self._result['total_time'] = round(self._result['end_timestamp'] - self._result['start_timestamp'], 3)
         self._results['cases_info'].append(self._result)
+
+        if self._result["success"] is True:
+            print(self.test_code)
+            report_result_to_atmp(self.test_code,"pass",self._result["start_timestamp"])
+        else:
+            report_result_to_atmp(self.test_code,"fail",self._result["start_timestamp"])
+
 
     def __getattribute__(self, item):
         # 基本照抄MiniTest写法（Minium提供的TestCase）
@@ -482,6 +494,9 @@ class TestCase(unittest.TestCase):
         f = open(file_name, "w", encoding='utf-8')
         json.dump(result, f, indent=4, ensure_ascii=False)
         f.close()
+
+
+
 
 
 _get_storage()
