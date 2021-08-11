@@ -1,6 +1,6 @@
 {
     "is_report_result_to_atmp": true,
-    "atmp_url": "http://10.10.4.53:8080/atmp",
+    "atmp_url": "http://10.10.4.53:8080/regress-atmp",
     "schema_id": "c1fd836b-88af-11e7-a102-000c29ce8469",
     "tester_id": "c0cddd13-d3f5-11eb-bb81-0242ac110003",
     "parameter": {
