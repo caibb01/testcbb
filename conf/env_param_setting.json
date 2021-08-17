@@ -1,0 +1,21 @@
+{
+  "test_env":"test",
+  "test":{
+    "url":"https://test-qmyxcg.myscrm.com.cn/login.shtml",
+    "username": "yktest",
+    "password": "yk_123456",
+    "orgname": "fangzhiadmin_test"
+  },
+  "g0":{
+    "url":"https://test-qmyxcg.myscrm.com.cn/login.shtml",
+    "username": "xx",
+    "password": "yk_123456",
+    "orgname": "gzminjieadmin_test"
+  },
+  "g1":{
+    "url":"https://test-qmyxcg.myscrm.com.cn/login.shtml",
+    "username": "xx",
+    "password": "yk_123456",
+    "orgname": "gzminjieadmin_test"
+  }
+}
