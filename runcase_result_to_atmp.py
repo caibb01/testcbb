@@ -23,22 +23,22 @@ if __name__ == '__main__':
     # 获取执行环境
 
     # 执行环境路径
-    env_file = "env_param_setting.json"
+    env_file = ["env_param_setting.json"]
 
     num = len(sys.argv)
     if num == 2:
         env = sys.argv[1]
-        env_param_path = os.path.join(CONFIG_PATH, env_file)
-        env_param = JsonConfig(env_param_path).get()
-        env_param["test_env"] = env
-        JsonConfig(env_param_path).set(env_param)
+        for file in env_file:
+            env_param_path = os.path.join(CONFIG_PATH, file)
+            env_param = JsonConfig(env_param_path).get()
+            env_param["test_env"] = env
+            JsonConfig(env_param_path).set(env_param)
 
     # 清理本地缓存
     delay_sec = 3
     delete_task_log_data = {"node_id": file_content["parameter"]["node_id"], "server_id": file_content["parameter"]["server_id"]}
     api_request = HttpRequest()
     res = api_request.sendPost(file_content["atmp_url"] + "/edi/delete_task_logs",data=delete_task_log_data)
-    print(res)
     # requests.post(file_content["atmp_url"] + "/edi/delete_task_logs",data=delete_task_log_data)
     time.sleep(delay_sec)
 
