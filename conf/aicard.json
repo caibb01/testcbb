@@ -4,10 +4,7 @@
     "desc": "这里是描述",
     "report_mode": true,
     "email_mode": [
-        "chenyz01@mingyuanyun.com",
-        "zhengw@mingyuanyun.com",
-        "linzs01@mingyuanyun.com",
-        "yet03@mingyuanyun.com"
+        "huangl08@mingyuanyun.com"
     ],
     "retry": 0,
     "receiver": [],

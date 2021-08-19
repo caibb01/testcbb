@@ -9,8 +9,15 @@ BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.dirname(os.pat
 ATMP_CONFIG_PATH = os.path.join(BASE_PATH, 'conf')
 ATMP_FILE = "run_atmp_param.json"
 
+
 def report_result_to_atmp(test_code,case_exec_result,start_timestamp):
     """上报结果给ATMP系统"""
+    if len(test_code) > 0:
+        for test in test_code:
+            report_one_case_to_atmp(test,case_exec_result,start_timestamp)
+
+
+def report_one_case_to_atmp(test_code,case_exec_result,start_timestamp):
     atmp_config_path = os.path.join(ATMP_CONFIG_PATH, ATMP_FILE)
 
     # 判断配置文件是否存在
@@ -21,8 +28,6 @@ def report_result_to_atmp(test_code,case_exec_result,start_timestamp):
         json_file = JsonConfigATMP(atmp_config_path)
         file_content = json_file.get()
         # 判断是否开启上传结果到ATMP系统
-        print("==>")
-        print(file_content)
         if file_content["is_report_result_to_atmp"] is True and file_content["parameter"]["batch_no"] != "":
             file_content["parameter"]["log_result"] = case_exec_result
             file_content["parameter"]["task_log_id"] = str(uuid.uuid1())
@@ -47,10 +52,9 @@ def report_result_to_atmp(test_code,case_exec_result,start_timestamp):
                 post_result = r.sendPost(file_content["atmp_url"] + "/edi/add_task_log",
                                        data=file_content["parameter"])
                 assert post_result["code"] == 0
-                return post_result
+                # return post_result
             except Exception as e:
                 return e
-
 
 def update_atmp_config_firetime_start():
     """更新配置文件中firetime_start字段为执行时间为带毫秒的时间格式"""
