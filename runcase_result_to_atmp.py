@@ -36,7 +36,7 @@ if __name__ == '__main__':
 
     # 清理本地缓存
     delay_sec = 3
-    delete_task_log_data = {"node_id": file_content["parameter"]["node_id"], "server_id": file_content["parameter"]["server_id"]}
+    delete_task_log_data = {"node_id": file_content["parameter"]["node_id"], "task_id": file_content["parameter"]["task_id"]}
     api_request = HttpRequest()
     res = api_request.sendPost(file_content["atmp_url"] + "/edi/delete_task_logs",data=delete_task_log_data)
     # requests.post(file_content["atmp_url"] + "/edi/delete_task_logs",data=delete_task_log_data)
@@ -61,12 +61,6 @@ if __name__ == '__main__':
     headers = {"Content-Type":"application/x-www-form-urlencoded"}
     result = requests.post(url=file_content["atmp_url"] + "/edi/generate_task_schema",data=generate_task_schema_data,headers=headers)
     task_id = json.loads(result.content)["data"]
-
-    # 将log提交到atmp
-    submit_data = {"node_id": file_content["parameter"]["node_id"] , "task_id": task_id}
-    print(submit_data)
-    result = requests.post(url=file_content["atmp_url"] + "/edi/submit_task_log",data=submit_data,headers=headers)
-    print(result.content.decode('utf8'))
 
     update_statics_data = {"task_id": task_id}
     result = requests.post(url=file_content["atmp_url"] + "/edi/update_statics",data=update_statics_data,headers=headers)
