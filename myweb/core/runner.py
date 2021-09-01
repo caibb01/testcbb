@@ -174,7 +174,6 @@ class Runner():
                 print("send email...")
                 self._mail(receiver=receiver)
 
-
         self._tearDown_config()
 
     def _run_fail_case(self, retry=2):
@@ -198,7 +197,7 @@ class Runner():
             module = r["module_name"]
             class_name = r["class_name"]
             for c in r["cases_info"]:
-                if c["success"] != True:
+                if c["success"] is True:
                     case_name = c["case_name"]
                     fail_info.append("%s.%s.%s" % (module, class_name, case_name))
         return fail_info
@@ -256,7 +255,6 @@ class Runner():
     def _mail(self, receiver=None):
 
         if receiver:
-
             e = Email(title="优化测试报告邮件",
                       receiver=receiver,
                       server='smtp.exmail.qq.com',
@@ -265,7 +263,6 @@ class Runner():
                       sender_name="优化测试报告邮件",
                       html=self.email_html)
             e.send()
-
 
     def _get_result(self):
         self.file_path = os.path.join(OUTPUT_PATH, self.config['project_name'], self.config['output'])
@@ -464,10 +461,9 @@ class TestCase(unittest.TestCase):
 
         if self._result["success"] is True:
             print(self.test_code)
-            report_result_to_atmp(self.test_code,"pass",self._result["start_timestamp"])
+            report_result_to_atmp(self.test_code, "pass", self._result["start_timestamp"], self._result["end_timestamp"], "预期与实际结果一致")
         else:
-            report_result_to_atmp(self.test_code,"fail",self._result["start_timestamp"])
-
+            report_result_to_atmp(self.test_code, "fail", self._result["start_timestamp"], self._result["end_timestamp"], self._result["trace"])
 
     def __getattribute__(self, item):
         # 基本照抄MiniTest写法（Minium提供的TestCase）
@@ -494,9 +490,6 @@ class TestCase(unittest.TestCase):
         f = open(file_name, "w", encoding='utf-8')
         json.dump(result, f, indent=4, ensure_ascii=False)
         f.close()
-
-
-
 
 
 _get_storage()

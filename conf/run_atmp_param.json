@@ -1,18 +1,23 @@
 {
     "is_report_result_to_atmp": true,
     "atmp_url": "http://10.10.4.53:8080/regress-atmp",
-    "schema_id": "c1fd836b-88af-11e7-a102-000c29ce8469",
+    "schema_id": "2dbb8285-0ac5-11ec-bb81-0242ac110003",
     "tester_id": "c0cddd13-d3f5-11eb-bb81-0242ac110003",
     "parameter": {
         "task_log_id": "",
         "server_id": "737e1eb2-518d-11e7-9ab3-000c29ce8469",
         "node_id": "b0a84280-7b86-4de7-b9b8-c6fa24831447",
+        "task_id": "",
         "batch_no": "",
-        "group_code": "X0101",
+        "group_code": "YK010301",
         "test_code": "",
         "test_type": "function",
-        "run_pos": 0,
+        "run_concurrent": 0,
+        "run_cycle": 0,
         "firetime_start": "",
-        "log_result": ""
+        "firetime_end": "",
+        "log_time": 0.0,
+        "log_result": "",
+        "memo": ""
     }
 }

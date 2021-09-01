@@ -7,7 +7,7 @@ class DemoTestCase(TestCase):
     __author__ = "zero"
 
     def test_case_01(self):
-        self.test_code = ["C11001","C11002"]
+        self.test_code = ["C00001", ]
         """
         第一个用例 成功
         """
@@ -16,7 +16,7 @@ class DemoTestCase(TestCase):
         pass
 
     def test_case_02(self):
-        self.test_code = ["C12001"]
+        self.test_code = ["C00002"]
         """
         第二个用例 失败
         """
@@ -36,4 +36,5 @@ class DemoTestCase(TestCase):
 
 if __name__ == '__main__':
     import unittest
+
     unittest.main()
