@@ -10,3 +10,13 @@ def get_env_params(file="env_param_setting.json"):
     # 获取设置的环境对应的环境变量
     test_env = env_param["test_env"]
     return env_param[test_env]
+
+
+# 获取执行环境
+def get_exec_env(file="env_param_setting.json"):
+    env_param_path = os.path.join(CONFIG_PATH, file)
+    env_param = JsonConfig(env_param_path).get()
+
+    # 获取设置的环境对应的环境变量
+    test_env = env_param["test_env"]
+    return test_env
