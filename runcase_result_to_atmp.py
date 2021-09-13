@@ -9,7 +9,6 @@ import requests
 from myweb.core.runner import Runner, CONFIG_PATH
 import time
 
-from myweb.utils.HttpRequest import HttpRequest
 from myweb.utils.config import JsonConfig
 
 if __name__ == '__main__':
@@ -34,12 +33,20 @@ if __name__ == '__main__':
             env_param["test_env"] = env
             JsonConfig(env_param_path).set(env_param)
 
-    # 清理本地缓存
+    # 在atmp平台创建任务
+    generate_task_schema_data = {"schema_id": file_content["schema_id"], "tester": file_content["tester_id"]}
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    result = requests.post(url=file_content["atmp_url"] + "/edi/generate_task_schema", data=generate_task_schema_data, headers=headers)
+    print(result.content.decode('utf8'))
+    task_id = json.loads(result.content)["data"]
+    file_content["parameter"]["task_id"] = task_id
+    json_file.set(file_content)
+
+    # 在atmp平台清理执行结果
     delay_sec = 3
     delete_task_log_data = {"node_id": file_content["parameter"]["node_id"], "task_id": file_content["parameter"]["task_id"]}
-    api_request = HttpRequest()
-    res = api_request.sendPost(file_content["atmp_url"] + "/edi/delete_task_logs",data=delete_task_log_data)
-    # requests.post(file_content["atmp_url"] + "/edi/delete_task_logs",data=delete_task_log_data)
+    result = requests.post(url=file_content["atmp_url"] + "/edi/delete_task_logs", data=delete_task_log_data)
+    print(result.content.decode('utf8'))
     time.sleep(delay_sec)
 
     # 判断是否开启上传结果到ATMP系统
@@ -56,23 +63,25 @@ if __name__ == '__main__':
     r = Runner(config_name=config_path)
     r.run()
 
-    # 在atmp平台创建任务
-    generate_task_schema_data={"schema_id": file_content["schema_id"], "tester": file_content["tester_id"]}
-    headers = {"Content-Type":"application/x-www-form-urlencoded"}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/generate_task_schema",data=generate_task_schema_data,headers=headers)
-    task_id = json.loads(result.content)["data"]
-
+    # 在atmp平台更新测试任务
     update_statics_data = {"task_id": task_id}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/update_statics",data=update_statics_data,headers=headers)
+    result = requests.post(url=file_content["atmp_url"] + "/edi/update_statics", data=update_statics_data, headers=headers)
     print(result.content.decode('utf8'))
 
-    # 发送企业微信消息
+    # 在atmp平台发送企业微信消息
     # data={"task_id": task_id, "send_type": "weixin"}
     # result = requests.post(url=file_content["atmp_url"] + "/edi/send_report",data=data,headers=headers)
     # print(result.content.decode('utf8'))
 
-
     # 执行完用例后将批次号置为空
     if file_content["is_report_result_to_atmp"] is True:
+        file_content["parameter"]["task_log_id"] = ""
+        file_content["parameter"]["task_id"] = ""
         file_content["parameter"]["batch_no"] = ""
+        file_content["parameter"]["test_code"] = ""
+        file_content["parameter"]["firetime_start"] = ""
+        file_content["parameter"]["firetime_end"] = ""
+        file_content["parameter"]["log_time"] = 0.000
+        file_content["parameter"]["log_result"] = ""
+        file_content["parameter"]["memo"] = ""
         json_file.set(file_content)
