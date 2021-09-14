@@ -197,7 +197,7 @@ class Runner():
             module = r["module_name"]
             class_name = r["class_name"]
             for c in r["cases_info"]:
-                if c["success"] is True:
+                if c["success"] is False:
                     case_name = c["case_name"]
                     fail_info.append("%s.%s.%s" % (module, class_name, case_name))
         return fail_info
