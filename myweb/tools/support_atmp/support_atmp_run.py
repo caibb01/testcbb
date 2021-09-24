@@ -33,7 +33,7 @@ def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_ti
             file_content["parameter"]["task_log_id"] = str(uuid.uuid1())
             assert "" != test_code
             file_content["parameter"]["test_code"] = test_code
-            print(test_code)
+            file_content["parameter"]["tester"] = file_content["tester_id"]
 
             # 转换时间戳为带毫秒的时间格式
             file_content["parameter"]["firetime_start"] = cvt_timestamp(start_timestamp)
@@ -45,11 +45,12 @@ def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_ti
                 # 调用ATMP上传结果
                 print("调用ATMP系统接口")
                 print(file_content)
+                headers = {"Content-Type": "application/json", "User-Id": file_content["tester_id"]}
                 r = HttpRequest()
-                post_result = r.sendPost(file_content["atmp_url"] + "/edi/add_task_log",
+                post_result = r.sendPost(file_content["atmp_url"] + "/edi/add_task_log", headers=headers,
                                          data=file_content["parameter"])
                 assert post_result["code"] == 0
-                post_result = r.sendPost(file_content["atmp_url"] + "/edi/update_task_log",
+                post_result = r.sendPost(file_content["atmp_url"] + "/edi/update_task_log", headers=headers,
                                          data=file_content["parameter"])
                 assert post_result["code"] == 0
             except Exception as e:

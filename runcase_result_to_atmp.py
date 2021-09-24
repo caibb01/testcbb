@@ -35,8 +35,8 @@ if __name__ == '__main__':
 
     # 在atmp平台创建任务
     generate_task_schema_data = {"schema_id": file_content["schema_id"], "tester": file_content["tester_id"]}
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/generate_task_schema", data=generate_task_schema_data, headers=headers)
+    headers = {"Content-Type": "application/x-www-form-urlencoded", "User-Id": file_content["tester_id"]}
+    result = requests.post(url=file_content["atmp_url"] + "/edi/generate_task_schema", headers=headers, data=generate_task_schema_data)
     print(result.content.decode('utf8'))
     task_id = json.loads(result.content)["data"]
     file_content["parameter"]["task_id"] = task_id
@@ -45,7 +45,7 @@ if __name__ == '__main__':
     # 在atmp平台清理执行结果
     delay_sec = 3
     delete_task_log_data = {"node_id": file_content["parameter"]["node_id"], "task_id": file_content["parameter"]["task_id"]}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/delete_task_logs", data=delete_task_log_data)
+    result = requests.post(url=file_content["atmp_url"] + "/edi/delete_task_logs", headers=headers, data=delete_task_log_data)
     print(result.content.decode('utf8'))
     time.sleep(delay_sec)
 
@@ -65,13 +65,13 @@ if __name__ == '__main__':
 
     # 在atmp平台更新测试任务
     update_statics_data = {"task_id": task_id}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/update_statics", data=update_statics_data, headers=headers)
+    result = requests.post(url=file_content["atmp_url"] + "/edi/update_statics", headers=headers, data=update_statics_data)
     print(result.content.decode('utf8'))
 
     # 在atmp平台发送企业微信消息
-    # data={"task_id": task_id, "send_type": "weixin"}
-    # result = requests.post(url=file_content["atmp_url"] + "/edi/send_report",data=data,headers=headers)
-    # print(result.content.decode('utf8'))
+    data = {"task_id": task_id, "send_type": "weixin"}
+    result = requests.post(url=file_content["atmp_url"] + "/edi/send_report", headers=headers, data=data)
+    print(result.content.decode('utf8'))
 
     # 执行完用例后将批次号置为空
     if file_content["is_report_result_to_atmp"] is True:
