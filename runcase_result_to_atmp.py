@@ -65,7 +65,7 @@ if __name__ == '__main__':
 
     # 在atmp平台更新测试任务
     update_statics_data = {"task_id": task_id}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/update_statics", headers=headers, data=update_statics_data)
+    result = requests.post(url=file_content["atmp_url"] + "/edi/update_task_result", headers=headers, data=update_statics_data)
     print(result.content.decode('utf8'))
 
     # 在atmp平台发送企业微信消息
