@@ -32,6 +32,8 @@ if __name__ == '__main__':
             env_param = JsonConfig(env_param_path).get()
             env_param["test_env"] = env
             JsonConfig(env_param_path).set(env_param)
+        file_content["parameter"]["server_id"] = file_content["server_id"][env]
+        json_file.set(file_content)
 
     # 在atmp平台创建任务
     generate_task_schema_data = {"schema_id": file_content["schema_id"], "tester": file_content["tester_id"]}

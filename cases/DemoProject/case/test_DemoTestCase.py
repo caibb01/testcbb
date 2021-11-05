@@ -1,6 +1,7 @@
 # -*- encoding=utf8 -*-
 from myweb.core.runner import TestCase
 import time
+from myweb.tools.support_atmp.is_skip_case import is_skip
 
 
 class DemoTestCase(TestCase):
@@ -11,9 +12,10 @@ class DemoTestCase(TestCase):
         """
         第一个用例 成功
         """
-        time.sleep(0.2)
-        print("另一种方式执行")
-        pass
+        if is_skip(self.test_code):
+            time.sleep(0.2)
+            print("另一种方式执行")
+            pass
 
     def test_case_02(self):
         self.test_code = ["C00002"]
