@@ -463,7 +463,8 @@ class TestCase(unittest.TestCase):
             print(self.test_code)
             report_result_to_atmp(self.test_code, "pass", self._result["start_timestamp"], self._result["end_timestamp"], "预期与实际结果一致")
         else:
-            report_result_to_atmp(self.test_code, "fail", self._result["start_timestamp"], self._result["end_timestamp"], self._result["trace"])
+            report_result_to_atmp(self.test_code, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
+                                  self._result["trace"])
 
     def __getattribute__(self, item):
         # 基本照抄MiniTest写法（Minium提供的TestCase）
