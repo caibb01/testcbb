@@ -10,20 +10,17 @@ ATMP_CONFIG_PATH = os.path.join(BASE_PATH, 'conf')
 ATMP_FILE = "run_atmp_param.json"
 
 
-def report_result_to_atmp(test_code, case_exec_result, start_timestamp, end_timestamp, memo):
+def report_result_to_atmp(test_codes, case_exec_result, start_timestamp, end_timestamp, memo):
     """上报结果给ATMP系统"""
-    if len(test_code) > 0:
-        for test in test_code:
-            report_one_case_to_atmp(test, case_exec_result, start_timestamp, end_timestamp, memo)
+    if len(test_codes) > 0:
+        for test_code in test_codes:
+            report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_timestamp, memo)
 
 
 def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_timestamp, memo):
     atmp_config_path = os.path.join(ATMP_CONFIG_PATH, ATMP_FILE)
 
     # 判断配置文件是否存在
-    print("==>")
-    print(atmp_config_path)
-    print(os.path.exists(atmp_config_path))
     if os.path.exists(atmp_config_path):
         json_file = JsonConfigATMP(atmp_config_path)
         file_content = json_file.get()
@@ -55,6 +52,40 @@ def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_ti
                 assert post_result["code"] == 0
             except Exception as e:
                 return e
+
+
+def check_case(test_codes):
+    """
+    是否跳过执行
+    :param test_codes:
+    :return:
+    """
+    run_flag = False
+    atmp_config_path = os.path.join(ATMP_CONFIG_PATH, ATMP_FILE)
+    # 判断配置文件是否存在
+    if os.path.exists(atmp_config_path):
+        json_file = JsonConfigATMP(atmp_config_path)
+        file_content = json_file.get()
+        headers = {"Content-Type": "application/json;charset=UTF-8", "User-Id": file_content["tester_id"]}
+        data_param = {
+            "node_id": file_content["parameter"]["node_id"],
+            "task_id": file_content["parameter"]["task_id"],
+            "tc_status": "auto"
+        }
+        try:
+            r = HttpRequest()
+            result = r.sendPost(url=file_content["atmp_url"] + "/edi/get_node_tcs", headers=headers,
+                                data=data_param)
+            exec_case_code_list = result["data"]
+            print(exec_case_code_list)
+            if len(test_codes) > 0:
+                for case_code in test_codes:
+                    for exec_case_code in exec_case_code_list:
+                        if case_code in exec_case_code:
+                            return True
+        except:
+            print("edi/get_node_tcs接口调用失败")
+    return run_flag
 
 
 def cvt_timestamp(ct):

@@ -9,7 +9,7 @@ import time
 import jinja2
 from selenium import webdriver
 
-from myweb.tools.support_atmp.support_atmp_run import report_result_to_atmp
+from myweb.tools.support_atmp.support_atmp_run import report_result_to_atmp, check_case
 from myweb.utils.mail import Email
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
@@ -491,6 +491,11 @@ class TestCase(unittest.TestCase):
         f = open(file_name, "w", encoding='utf-8')
         json.dump(result, f, indent=4, ensure_ascii=False)
         f.close()
+
+    def _check_case(self, test_codes):
+        self.test_code = test_codes
+        run_flag = check_case(test_codes)
+        return run_flag
 
 
 _get_storage()

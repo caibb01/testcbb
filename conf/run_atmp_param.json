@@ -6,9 +6,9 @@
     "parameter": {
         "task_log_id": "",
         "server_id": "0c4ccc7b-330a-11ec-b97c-0242ac110003",
-        "node_id": "07f982ca-66a6-11e9-8c64-000c29d6aa4f",
-        "task_id": "3aee8e09-ab26-4166-9597-06040a82317a",
-        "batch_no": "",
+        "node_id": "b0a84280-7b86-4de7-b9b8-c6fa24831447",
+        "task_id": "c324400a-50b8-4833-b4cf-e2dee4db8ed8",
+        "batch_no": "20211109160025.035",
         "group_code": "YK010301",
         "test_code": "",
         "test_type": "function",
