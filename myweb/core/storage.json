@@ -1,10 +1,10 @@
 {
     "info": [],
-    "timestamp": "20211110151335",
+    "timestamp": "20211110174040",
     "project": "DemoProject",
-    "configPath": "D:\\lab\\python\\pycharm\\yk-ui-baseframe\\conf\\demo_atmp.json",
-    "imagePath": "D:\\lab\\python\\pycharm\\yk-ui-baseframe\\outputs\\DemoProject\\20211110151335\\image",
-    "resultPath": "D:\\lab\\python\\pycharm\\yk-ui-baseframe\\outputs\\DemoProject\\20211110151335\\result.json",
+    "configPath": "d:\\lab\\python\\pycharm\\yk-ui-baseframe\\conf\\demo_atmp.json",
+    "imagePath": "d:\\lab\\python\\pycharm\\yk-ui-baseframe\\outputs\\DemoProject\\20211110174040\\image",
+    "resultPath": "d:\\lab\\python\\pycharm\\yk-ui-baseframe\\outputs\\DemoProject\\20211110174040\\result.json",
     "module_name": "test_DemoTestCase02",
-    "case_name": "test_case_01"
+    "case_name": "test_case_03"
 }

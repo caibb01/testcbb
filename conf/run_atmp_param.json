@@ -13,7 +13,7 @@
         "test_type": "function",
         "run_concurrent": 0,
         "run_cycle": 0,
-        "tester": "",
+        "tester": "ed82b619-a388-11e3-bcd5-3148d8615fb9",
         "firetime_start": "",
         "firetime_end": "",
         "log_time": 0.0,

@@ -37,20 +37,18 @@ def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_ti
             file_content["parameter"]["log_time"] = end_timestamp - start_timestamp
             file_content["parameter"]["memo"] = memo
             json_file.set(file_content)
-            try:
-                # 调用ATMP上传结果
-                print("调用ATMP系统接口")
-                print(file_content)
-                headers = {"Content-Type": "application/json", "User-Id": file_content["tester_id"]}
-                r = HttpRequest()
-                post_result = r.sendPost(file_content["atmp_url"] + "/edi/add_task_log", headers=headers,
-                                         data=file_content["parameter"])
-                assert post_result["code"] == 0
-                post_result = r.sendPost(file_content["atmp_url"] + "/edi/update_task_log", headers=headers,
-                                         data=file_content["parameter"])
-                assert post_result["code"] == 0
-            except Exception as e:
-                return e
+
+            # 调用ATMP上传结果
+            print("调用ATMP系统接口")
+            print(file_content)
+            headers = {"Content-Type": "application/json", "User-Id": file_content["tester_id"]}
+            r = HttpRequest()
+            post_result = r.sendPost(file_content["atmp_url"] + "/edi/add_task_log", headers=headers,
+                                     data=file_content["parameter"])
+            assert post_result["code"] == 0
+            post_result = r.sendPost(file_content["atmp_url"] + "/edi/update_task_log", headers=headers,
+                                     data=file_content["parameter"])
+            assert post_result["code"] == 0
 
 
 def check_case(test_codes):
@@ -71,19 +69,16 @@ def check_case(test_codes):
             "task_id": file_content["parameter"]["task_id"],
             "tc_status": "auto"
         }
-        try:
-            r = HttpRequest()
-            result = r.sendPost(url=file_content["atmp_url"] + "/edi/get_node_tcs", headers=headers,
-                                data=data_param)
-            exec_case_code_list = result["data"]
-            print(exec_case_code_list)
-            if len(test_codes) > 0:
-                for case_code in test_codes:
-                    for exec_case_code in exec_case_code_list:
-                        if case_code in exec_case_code:
-                            return True
-        except:
-            print("edi/get_node_tcs接口调用失败")
+        r = HttpRequest()
+        result = r.sendPost(url=file_content["atmp_url"] + "/edi/get_node_tcs", headers=headers,
+                            data=data_param)
+        exec_case_code_list = result["data"]
+        print(exec_case_code_list)
+        if test_codes is not None and len(test_codes) > 0:
+            for case_code in test_codes:
+                for exec_case_code in exec_case_code_list:
+                    if case_code in exec_case_code:
+                        return True
     return run_flag
 
 

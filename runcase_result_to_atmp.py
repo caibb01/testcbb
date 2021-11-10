@@ -24,7 +24,7 @@ if __name__ == '__main__':
     env_file = ["env_param_setting.json"]
 
     num = len(sys.argv)
-    if num == 2:
+    if num >= 2:
         env = sys.argv[1]
         for file in env_file:
             env_param_path = os.path.join(CONFIG_PATH, file)
@@ -32,6 +32,14 @@ if __name__ == '__main__':
             env_param["test_env"] = env
             JsonConfig(env_param_path).set(env_param)
         file_content["parameter"]["server_id"] = file_content["server_id"][env]
+        json_file.set(file_content)
+    if num >= 3:
+        schema = sys.argv[2]
+        file_content["schema_id"] = schema
+        json_file.set(file_content)
+    if num >= 4:
+        tester = sys.argv[3]
+        file_content["tester_id"] = tester
         json_file.set(file_content)
 
     # 在atmp平台创建任务
