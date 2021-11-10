@@ -333,6 +333,7 @@ class TestCase(unittest.TestCase):
             if not os.path.exists(cls._image_file_path):
                 os.makedirs(cls._image_file_path)
         _setUp_storage(config_name=CONFIG, output=cls._output)
+        cls.run_flag = None
 
         cls._results = {
             "start_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -463,7 +464,7 @@ class TestCase(unittest.TestCase):
         self._results['cases_info'].append(self._result)
 
         report_to_atmp = _decide_config("report_to_atmp")[0]
-        if report_to_atmp:
+        if report_to_atmp and self._check_case(self.test_code):
             if self._result["success"] is True:
                 print(self.test_code)
                 report_result_to_atmp(self.test_code, "pass", self._result["start_timestamp"], self._result["end_timestamp"],
@@ -499,13 +500,14 @@ class TestCase(unittest.TestCase):
         f.close()
 
     def _check_case(self, test_codes):
-        self.test_code = test_codes
+        if self.test_code is None:
+            self.test_code = test_codes
         report_to_atmp = _decide_config("report_to_atmp")[0]
-        if report_to_atmp:
-            run_flag = check_case(test_codes)
-            print("是否跳过执行：" + str(self.test_code) + " -> " + str(run_flag))
-            return run_flag
-        return True
+        if report_to_atmp and self.run_flag is None:
+            self.run_flag = check_case(test_codes)
+            print("是否执行用例：" + str(self.test_code) + " -> " + str(self.run_flag))
+        return self.run_flag
+
 
 _get_storage()
 
