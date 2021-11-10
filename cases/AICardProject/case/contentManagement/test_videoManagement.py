@@ -23,6 +23,7 @@ class test_imageContent(TestCase):
         self.loginLogic = LoginLogic(self.driver)
         self.videoManagementLg = videoManagementLg(self.driver)
 
+
     def test_case_01(self):
         """
         AI名片测试用例

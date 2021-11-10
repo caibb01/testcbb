@@ -18,8 +18,6 @@ if(platform.system()=='Windows'):
     import win32con
 
 class BasePage(object):
-
-
     """description of class"""
 
     #webdriver instance
@@ -406,7 +404,8 @@ class BasePage(object):
         :param poll_frequencey: 时间间隔查询一次
         :return:
         """
-        WebDriverWait(self.driver, timeout=wait_times, poll_frequency=poll_frequencey).until(EC.visibility_of_all_elements_located(controls))
+        result = WebDriverWait(self.driver, timeout=wait_times, poll_frequency=poll_frequencey).until(EC.visibility_of_all_elements_located(controls))
+        return result
 
     def _mark(self, el):
         mark_flag, _ = cf._decide_config("mark")

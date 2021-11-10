@@ -80,6 +80,30 @@ class JsonConfigATMP():
         json.dump(data, f, indent=4, ensure_ascii=False)
         f.close()
 
+def get_atmp_need_exec_cases(task_id):
+    """获取需要执行的用例"""
+    atmp_config_path = os.path.join(ATMP_CONFIG_PATH, ATMP_FILE)
+
+    # 判断配置文件是否存在
+    if os.path.exists(atmp_config_path):
+        json_file = JsonConfigATMP(atmp_config_path)
+        file_content = json_file.get()
+        node_id = file_content["parameter"]["node_id"]
+        info_params = {
+            "node_id": node_id,
+            "task_id": task_id,
+            "tc_status": "auto"
+            }
+        print(info_params)
+        r = HttpRequest()
+        headers = {"Content-Type": "application/json", "User-Id": file_content["tester_id"]}
+        try:
+            post_result = r.sendPost(file_content["atmp_url"] + "/edi/get_node_tcs", headers=headers,
+                                             data=info_params)
+            return post_result
+        except:
+            print("/edi/get_node_tcs 接口请求报错")
+
 
 if __name__ == "__main__":
     print("OK")

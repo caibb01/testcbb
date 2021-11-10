@@ -9,14 +9,13 @@ class LoginPage(BasePage):
         "用户名输入框": (By.CSS_SELECTOR, "#user_name"),
         "密码输入框": (By.CSS_SELECTOR, "#password"),
         "登录按钮": (By.CSS_SELECTOR, "#login_btn"),
-        "关闭登录广告弹窗": (By.XPATH, "/html/body/div[7]/div/div/div[1]/button"),
+        "关闭登录广告弹窗": (By.XPATH, "//button[@class='ui-dialog-close']"),
         "登录蒙层": (By.XPATH, "/html/body/div[6]/div/a"),
         "获取登录用户名": (By.XPATH, '//*[@id="js_user_name"]'),
         "点击智慧名片测试版": (
         By.XPATH, './/*[text()="智慧名片测试版"]/../../div/div[@class="yzh-caro-box"]/div/ul/li/a/div[text()="AI名片"]'),
         "检查是否打开AI云店": (By.XPATH, '//*[@id="app"]/div/div/div[2]/div[1]/div/div[1]/div[2]/p[2]')
     }
-
     def login(self, username, password, orgname):
         if self.is_exist_element(self.controls["企业号输入框"], 5):
             self.find_element(self.controls["企业号输入框"]).send_keys(orgname)
@@ -34,7 +33,7 @@ class LoginPage(BasePage):
             # 关闭弹窗，弹窗有时候不是唯一的,这里对元素进行判断
             self.find_element(self.controls["关闭登录广告弹窗"]).click()
             sleep(2)
-            self.find_element(self.controls["登录蒙层"]).click()
+            # self.find_element(self.controls["登录蒙层"]).click()
         # 检查是否登录成功
         logintext = self.find_element(self.controls["获取登录用户名"])
         if logintext == loginuser:

@@ -17,16 +17,17 @@ class test_basicInfo(TestCase):
                                '%s.json' % __module)
 
     def setUp(self):
-        super(test_basicInfo, self).setUp()
-        self.driver = webdriver.Chrome(r"D:\AICar\WebTestProject\chromedriver.exe")
-        self.loginLogic = LoginLogic(self.driver)
-        self.basicInfoLg = BasicInfoLg(self.driver)
-        self.loginLogic.login(username='yktest', password='yk_123456', orgname='gzminjieadmin_test')
-        self.loginLogic.logincheck()
-        self.loginLogic.openAI()
+        # super(test_basicInfo, self).setUp()
+        # self.driver = webdriver.Chrome(r"D:\AICar\WebTestProject\chromedriver.exe")
+        # self.loginLogic = LoginLogic(self.driver)
+        # self.basicInfoLg = BasicInfoLg(self.driver)
+        # self.loginLogic.login(username='yktest', password='yk_123456', orgname='gzminjieadmin_test')
+        # self.loginLogic.logincheck()
+        # self.loginLogic.openAI()
+        pass
 
     def tearDown(self):
-        super(test_basicInfo, self).tearDown()
+        # super(test_basicInfo, self).tearDown()
         self.driver.close()
 
     @unittest.skip("")
@@ -48,10 +49,12 @@ class test_basicInfo(TestCase):
         time.sleep(3)
 
     def test_case_04_all_pic_upload(self):
-        self.basicInfoLg.all_pic_upload()
-        self.basicInfoLg.save_all_info()
+        self.test_code="C002"
+        print("zhixing")
+        # self.basicInfoLg.all_pic_upload()
+        # self.basicInfoLg.save_all_info()
         time.sleep(3)
 
-    if __name__ == '__main__':
-        import unittest
-        unittest.main()
+if __name__ == '__main__':
+    import unittest
+    unittest.main()

@@ -30,8 +30,7 @@ class articleContent(BasePage):
         "编辑文章": (By.XPATH, '//*[@id="app"]/div/div/div[2]/div[2]/div[2]/div/div/div[3]/div/div/div/div/div/table/tbody/tr[1]/td[8]/span/button[1]'),
         "发布文章": (By.XPATH, '//*[@id="app"]/div/div/div[2]/div[2]/div[2]/div/div/div[3]/div/div/div/div/div/table/tbody/tr[1]/td[5]/button/span'),
         "确认发布": (By.XPATH, '/html/body/div[6]/div/div[2]/div/div[2]/div/div/div[2]/button[2]'),
-        "保存": (By.XPATH, "/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div/div[1]/div[7]/div/button[1]"),
-        "保存": (By.XPATH, "/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div/div[1]/div[7]/div/button[1]"),
+        "保存": (By.XPATH, "/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div/div[1]/div[7]/div/button[1]")
 
     }
     # 图片文件路径

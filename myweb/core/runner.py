@@ -156,7 +156,6 @@ class Runner():
         except:
             raise Exception("File '{0}' not exist <project_name>".format(self.config_path))
         discover = unittest.defaultTestLoader.discover(self.case_path, pattern="test*.py", top_level_dir=None)
-
         runner = unittest.TextTestRunner()
         runner.run(discover)
 
@@ -466,6 +465,7 @@ class TestCase(unittest.TestCase):
             report_result_to_atmp(self.test_code, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
                                   self._result["trace"])
 
+    # def check(self,code):
     def __getattribute__(self, item):
         # 基本照抄MiniTest写法（Minium提供的TestCase）
         attr = super().__getattribute__(item)
