@@ -420,7 +420,7 @@ class TestCase(unittest.TestCase):
         self._storage["case_name"] = self._testMethodName
         _set_storage(self._storage)
         # 定义测试编号
-        self.test_code = ""
+        self.test_code = None
 
     def tearDown(self):
         sys_info = self._outcome.errors[-1][-1]

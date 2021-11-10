@@ -40,7 +40,7 @@ class test_videoContent(TestCase):
 
     def test_01_addVideo(self):
         # 新增视频
-        self.test_code = ["C00060"]
+        if not self._check_case(["C00060"]): return
         params = {
             "videoPath": getFilePath('xjdsp.mp4'),
             "imgPath": getFilePath('th.jpg'),
@@ -51,7 +51,7 @@ class test_videoContent(TestCase):
 
     def test_02_updateVideo(self):
         # 编辑视频
-        self.test_code = ["C00061"]
+        if not self._check_case(["C00061"]): return
         params = {
             "videoPath": os.path.join(self.IMAGE_PATH, 'xjdsp.mp4'),
             "imgPath": os.path.join(self.IMAGE_PATH, 'video.jpg'),
@@ -68,7 +68,7 @@ class test_videoContent(TestCase):
     )
     def test_03_queryVideo(self, data):
         # 搜索视频
-        self.test_code = ["C00062","C00063"]
+        if not self._check_case(["C00062","C00063"]): return
         params = {
             "videoName": data['videoName']
         }
@@ -76,12 +76,12 @@ class test_videoContent(TestCase):
 
     def test_04_delVideo(self):
         # 删除视频
-        self.test_code = ["C00064"]
+        if not self._check_case(["C00064"]): return
         self.videoManagementLg.delVideo()
 
     def test_05_page_turning(self):
         # 翻页
-        self.test_code = ["C00065"]
+        if not self._check_case(["C00065"]): return
         self.videoManagementLg.page_turning()
 
     @classmethod

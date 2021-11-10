@@ -11,29 +11,16 @@ class DemoTestCase(TestCase):
         第一个用例 成功
         """
         if not self._check_case(["C00001"]): return
-        time.sleep(0.2)
-        print("另一种方式执行")
+        time.sleep(0.1)
         pass
 
-
-def test_case_02(self):
-    if self._check_case(["C0000X"]): return
-    """
-    第二个用例 失败
-    """
-    # print("test_case_01 fail")
-    time.sleep(0.2)
-    # print(time.time())
-    # self.assertEqual(1, 2)
-
-
-# def test_case_03(self):
-#     self.test_code = "C12001"
-#     """
-#     第三个用例 失败
-#     """
-#     time.sleep(0.2)
-#     # raise Exception
+    def test_case_02(self):
+        """
+        第二个用例 失败
+        """
+        if not self._check_case(["C00002x"]): return
+        self.assertEqual(1, 2)
+        time.sleep(0.2)
 
 
 if __name__ == '__main__':

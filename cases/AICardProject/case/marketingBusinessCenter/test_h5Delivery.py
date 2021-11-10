@@ -42,7 +42,7 @@ class test_h5Delivery(TestCase):
     )
     def test_case_01_save_h5(self, data):
         # 新增h5
-        self.test_code = ["C00188"]
+        if not self._check_case(["C00188"]): return
         params = {
             'name': data['name'],
             'project': data['project']
@@ -52,19 +52,19 @@ class test_h5Delivery(TestCase):
 
     def test_case_02_h5_detail(self):
         # 查看h5
-        self.test_code = ["C00189"]
+        if not self._check_case(["C00189"]): return
         self.h5DeliveryLg.h5_detail()
         time.sleep(3)
 
     def test_case_03_customer_detail(self):
         # 导出客户明细
-        self.test_code = ["C00190"]
+        if not self._check_case(["C00190"]): return
         self.h5DeliveryLg.customer_detail()
         time.sleep(3)
 
     def test_case_04_copy_link(self):
         # 复制链接
-        self.test_code = ["C00191"]
+        if not self._check_case(["C00191"]): return
         self.h5DeliveryLg.copy_link()
         time.sleep(3)
 
@@ -73,7 +73,7 @@ class test_h5Delivery(TestCase):
     )
     def test_case_05_search_h5(self, data):
         # 列表查询
-        self.test_code = ["C00194","C00195"]
+        if not self._check_case(["C00194","C00195"]): return
         params = {
             'name': data['name']
         }
@@ -82,13 +82,13 @@ class test_h5Delivery(TestCase):
 
     def test_case_06_delete_h5(self):
         # 删除h5
-        self.test_code = ["C00197"]
+        if not self._check_case(["C00197"]): return
         self.h5DeliveryLg.delete_h5()
         time.sleep(3)
 
     def test_case_07_page_turning(self):
         # 翻页
-        self.test_code = ["C00198"]
+        if not self._check_case(["C00198"]): return
         self.h5DeliveryLg.page_turning()
         time.sleep(3)
 

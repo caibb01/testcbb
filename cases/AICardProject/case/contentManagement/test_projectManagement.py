@@ -42,7 +42,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_01_close_project(self, data):
         '''关闭项目'''
-        self.test_code = ["C00007"]
+        if not self._check_case(["C00007"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -52,7 +52,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_02_publish_project(self,data):
         '''发布项目(包含项目已关联区域，未关联区域，项目被禁用)'''
-        self.test_code = ["C00001","C00002","C00004","C00006"]
+        if not self._check_case(["C00001","C00002","C00004","C00006"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -62,7 +62,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_03_edit_project(self, data):
         '''编辑项目'''
-        self.test_code = ["C00008"]
+        if not self._check_case(["C00008"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -74,7 +74,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_04_select_project(self,data):
         '''选择或输入系统项目名称'''
-        self.test_code = ["C00009","C00010"]
+        if not self._check_case(["C00009","C00010"]): return
         params = {
             'parameter': {
                 'project_Type': data['project_Type'],
@@ -86,7 +86,7 @@ class test_projectManagement(TestCase):
 
     def test_05_select_city(self):
         '''根据所属城市，查询项目'''
-        self.test_code = ["C00011"]
+        if not self._check_case(["C00011"]): return
         self.projectManagementLg.select_city_lg()
 
     @data([{'publishStatus': '全部'}],
@@ -97,7 +97,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_06_select_publish_status(self,data):
         '''根据发布状态，查询项目'''
-        self.test_code = ["C00012"]
+        if not self._check_case(["C00012"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -109,7 +109,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_07_query(self,data):
         '''根据项目系统名称、所属城市、发布状态，查询项目'''
-        self.test_code = ["C00013"]
+        if not self._check_case(["C00013"]): return
         params = {
             'publishStatus': data['publishStatus'],
             'parameter': {
@@ -124,7 +124,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_08_reception_list(self,data):
         '''打开接待列表，项目接待列表-人员选择,勾选checkbox'''
-        self.test_code = ["C00014","C00016","C00020"]
+        if not self._check_case(["C00014","C00016","C00020"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -134,7 +134,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_09_reception_list_people_search(self,data):
         '''项目接待列表-人员搜索'''
-        self.test_code = ["C00015"]
+        if not self._check_case(["C00015"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -144,7 +144,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_11_reception_list_people_hide(self,data):
         '''项目接待列表-人员隐藏'''
-        self.test_code = ["C00017"]
+        if not self._check_case(["C00017"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -154,7 +154,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_12_reception_list_people_sort(self,data):
         '''项目接待列表-人员排序'''
-        self.test_code = ["C00018"]
+        if not self._check_case(["C00018"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -164,7 +164,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_13_reception_list_remove_personnel(self,data):
         '''项目接待列表-删除人员'''
-        self.test_code = ["C00019"]
+        if not self._check_case(["C00019"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -181,12 +181,12 @@ class test_projectManagement(TestCase):
 
     def test_15_copy_page_path(self):
         '''复制页面路径'''
-        self.test_code = ["C00021"]
+        if not self._check_case(["C00021"]): return
         self.projectManagementLg.copy_page_path_lg()
 
     def test_16_page_switching(self):
         '''切换每页显示条数，切换下一页/上一页/跳至x页'''
-        self.test_code = ["C00022"]
+        if not self._check_case(["C00022"]): return
         self.projectManagementLg.page_switching_lg()
 
     def tearDown(self):

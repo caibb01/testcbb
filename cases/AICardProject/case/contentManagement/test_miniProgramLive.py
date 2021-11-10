@@ -52,17 +52,17 @@ class test_miniProgramLive(TestCase):
 
     def test_02_open_mini_Program_Live(self):
         '''开启小程序直播'''
-        self.test_code = ["C00108"]
+        if not self._check_case(["C00108"]): return
         self.miniProgramLiveLg.open_mini_Program_Live_lg()
 
     def test_03_close_mini_Program_Live(self):
         '''关闭小程序直播'''
-        self.test_code = ["C00109"]
+        if not self._check_case(["C00109"]): return
         self.miniProgramLiveLg.close_mini_Program_Live_lg()
 
     def test_04_mini_Program_Live_documentation(self):
         '''打开小程序直播说明文档'''
-        self.test_code = ["C00110"]
+        if not self._check_case(["C00110"]): return
         self.miniProgramLiveLg.mini_Program_Live_documentation_lg()
 
     def tearDown(self):

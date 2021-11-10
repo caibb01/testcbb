@@ -49,7 +49,7 @@ class test_basicInfo(TestCase):
     @unpack
     def test_01_short_for_mini_program(self, data):
         '''小程序简称'''
-        self.test_code = ["C00143"]
+        if not self._check_case(["C00143"]): return
         params = {
             'name': data['name']
         }
@@ -59,7 +59,7 @@ class test_basicInfo(TestCase):
     @unpack
     def test_02_corporate_image_chart(self, data):
         '''企业形象图的上传图片、重新上传、删除'''
-        self.test_code = ["C00144"]
+        if not self._check_case(["C00144"]): return
         params = {
             'path': data['path']
         }
@@ -69,7 +69,7 @@ class test_basicInfo(TestCase):
     @unpack
     def test_03_corporate_logo(self, data):
         '''企业LOGO的上传图片、重新上传、删除'''
-        self.test_code = ["C00145"]
+        if not self._check_case(["C00145"]): return
         params = {
             'path': data['path']
         }
@@ -79,7 +79,7 @@ class test_basicInfo(TestCase):
     @unpack
     def test_04_authorization_background_image(self, data):
         '''授权背景图的上传图片、重新上传、删除'''
-        self.test_code = ["C00146"]
+        if not self._check_case(["C00146"]): return
         params = {
             'path': data['path']
         }
@@ -89,7 +89,7 @@ class test_basicInfo(TestCase):
     @unpack
     def test_05_poster_on_moments(self, data):
         '''朋友圈海报（安卓）的上传图片、重新上传、删除'''
-        self.test_code = ["C00147"]
+        if not self._check_case(["C00147"]): return
         params = {
             'path': data['path']
         }
@@ -99,7 +99,7 @@ class test_basicInfo(TestCase):
     @unpack
     def test_06_workbench_icon(self, data):
         '''工作台图标，开或关，上传图片、重新上传、删除'''
-        self.test_code = ["C00148"]
+        if not self._check_case(["C00148"]): return
         params = {
             'path': data['path']
         }
@@ -109,7 +109,7 @@ class test_basicInfo(TestCase):
     @unpack
     def test_07_map_marker_icon(self, data):
         '''地图标记图标的上传图片、重新上传、删除'''
-        self.test_code = ["C00149"]
+        if not self._check_case(["C00149"]): return
         params = {
             'path': data['path']
         }
@@ -119,7 +119,7 @@ class test_basicInfo(TestCase):
     @unpack
     def test_08_intelligent_customer_service(self, data):
         '''智能客服：开启或关闭,添加机器人'''
-        self.test_code = ["C00150"]
+        if not self._check_case(["C00150"]): return
         params = {
             'parmeter': {
                 'name': data['name'],
@@ -133,7 +133,7 @@ class test_basicInfo(TestCase):
     @unpack
     def test_09_intelligent_customer_service_configuration(self, data):
         '''智能客服-机器人配置快捷提问,保存'''
-        self.test_code = ["C00151"]
+        if not self._check_case(["C00151"]): return
         params = {
             'question': data['question']
         }
@@ -144,7 +144,7 @@ class test_basicInfo(TestCase):
     @unpack
     def test_10_cancel_intelligent_customer_service_configuration(self, data):
         '''智能客服-机器人配置快捷提问，取消保存'''
-        self.test_code = ["C00153"]
+        if not self._check_case(["C00153"]): return
         params = {
             'question': data['question']
         }
@@ -152,14 +152,14 @@ class test_basicInfo(TestCase):
 
     def test_11_delete_robot(self):
         '''智能客服：删除机器人'''
-        self.test_code = ["C00154"]
+        if not self._check_case(["C00154"]): return
         self.BasicInfoLg.delete_robot_lg()
 
     @data([{'name': 't' + str(randint(100, 999))}])
     @unpack
     def test_12_number_of_visits(self, data):
         '''浏览人次名称自定义:开或关，自定义名称'''
-        self.test_code = ["C00155", "C00156", "C00157"]
+        if not self._check_case(["C00155", "C00156", "C00157"]): return
         params = {
             'name': data['name']
         }
@@ -167,27 +167,27 @@ class test_basicInfo(TestCase):
 
     def test_13_leave_advice(self):
         '''留电通知开或关，勾选置业顾问、行销人员、全民经纪人'''
-        self.test_code = ["C00158", "C00159"]
+        if not self._check_case(["C00158", "C00159"]): return
         self.BasicInfoLg.leave_advice_lg()
 
     def test_14_other_settings_01(self):
         '''其他设置，勾选允许查看服务轨迹'''
-        self.test_code = ["C00160"]
+        if not self._check_case(["C00160"]): return
         self.BasicInfoLg.other_settings_01_lg()
 
     def test_15_other_settings_02(self):
         '''其他设置，勾选允许云会员'''
-        self.test_code = ["C00161"]
+        if not self._check_case(["C00161"]): return
         self.BasicInfoLg.other_settings_02_lg()
 
     def test_16_save(self):
         '''保存'''
-        self.test_code = ["C00162"]
+        if not self._check_case(["C00162"]): return
         self.BasicInfoLg.save_lg()
 
     def test_17_cancel_save(self):
         '''取消保存'''
-        self.test_code = ["C00163"]
+        if not self._check_case(["C00163"]): return
         self.BasicInfoLg.cancel_save_lg()
 
     def tearDown(self):

@@ -37,7 +37,7 @@ class test_LabelManagement(TestCase):
 
     def test_case_01_switch_to_tab(self):
         # 切换标签页
-        self.test_code = ["C00077"]
+        if not self._check_case(["C00077"]): return
         self.labelManagementLg.switch_to_tab("报名活动")
         self.labelManagementLg.switch_to_tab("优惠券")
         self.labelManagementLg.switch_to_tab("原创文章")
@@ -51,7 +51,7 @@ class test_LabelManagement(TestCase):
     )
     def test_case_02_new_label(self, data):
         # 项目楼盘-新增标签
-        self.test_code = ["C00078"]
+        if not self._check_case(["C00078"]): return
         params = {
             'label_name': data['label_name'],
             'project_name': data['project_name']
@@ -61,19 +61,19 @@ class test_LabelManagement(TestCase):
 
     def test_case_03_del_association(self):
         # 删除关联关系
-        self.test_code = ["C00079"]
+        if not self._check_case(["C00079"]): return
         self.labelManagementLg.del_association()
         time.sleep(3)
 
     def test_case_04_label_sort(self):
         # 关联数据排序
-        self.test_code = ["C00080"]
+        if not self._check_case(["C00080"]): return
         self.labelManagementLg.label_sort()
         time.sleep(3)
 
     def test_case_05_del_label(self):
         # 删除标签
-        self.test_code = ["C00081"]
+        if not self._check_case(["C00081"]): return
         self.labelManagementLg.del_label()
         time.sleep(3)
     @data(
@@ -81,16 +81,16 @@ class test_LabelManagement(TestCase):
     )
     def test_case_06_add_association(self, data):
         # 添加关联关系
-        self.test_code = ["C00082","C00083"]
+        if not self._check_case(["C00082","C00083"]): return
         params = {
-            "city_name": data["city_name"]
+            "city_name": data["city_name"]): return
         }
         self.labelManagementLg.add_association(params)
         time.sleep(3)
 
     def test_case_07_page_turning(self):
         # 点击上一页
-        self.test_code = ["C00084"]
+        if not self._check_case(["C00084"]): return
         self.labelManagementLg.page_turning()
         time.sleep(3)
 

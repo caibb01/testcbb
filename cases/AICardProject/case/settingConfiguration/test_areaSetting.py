@@ -45,7 +45,7 @@ class test_areaSetting(TestCase):
     @unpack
     def test_01_open_location_matching_settings(self, data):
         '''定位匹配设置-开启定位重定向'''
-        self.test_code = ["C00131"]
+        if not self._check_case(["C00131"]): return
         params = {
             'name': data['name']
         }
@@ -56,7 +56,7 @@ class test_areaSetting(TestCase):
     @unpack
     def test_02_close_location_matching_settings(self, data):
         '''定位匹配设置-关闭定位重定向'''
-        self.test_code = ["C00132"]
+        if not self._check_case(["C00132"]): return
         params = {
             'name': data['name']
         }
@@ -68,7 +68,7 @@ class test_areaSetting(TestCase):
     @unpack
     def test_03_add_area_01(self,data):
         '''新增区域,不关联项目'''
-        self.test_code = ["C00133"]
+        if not self._check_case(["C00133"]): return
         params = {
                 'area_name':data['area_name']
         }
@@ -80,7 +80,7 @@ class test_areaSetting(TestCase):
     @unpack
     def test_04_add_area_02(self, data):
         '''新增区域,关联项目'''
-        self.test_code = ["C00134"]
+        if not self._check_case(["C00134"]): return
         params = {
             'area_name': data['area_name']
         }
@@ -91,7 +91,7 @@ class test_areaSetting(TestCase):
     @unpack
     def test_05_edit_area(self,data):
         '''编辑区域'''
-        self.test_code = ["C00135","C00136"]
+        if not self._check_case(["C00135","C00136"]): return
         params = {
                 'area_name': data['area_name']
         }
@@ -102,7 +102,7 @@ class test_areaSetting(TestCase):
     @unpack
     def test_06_edit_area_delete_area(self,data):
         '''编辑区域,删除辖区范围'''
-        self.test_code = ["C00137"]
+        if not self._check_case(["C00137"]): return
         params = {
             'area_name': data['area_name']
         }
@@ -114,7 +114,7 @@ class test_areaSetting(TestCase):
     @unpack
     def test_07_delete_area(self,data):
         '''删除区域'''
-        self.test_code = ["C00138"]
+        if not self._check_case(["C00138"]): return
         #新增区域
         params = {
             'area_name': data['area_name']
@@ -127,13 +127,13 @@ class test_areaSetting(TestCase):
 
     def test_08_unbound_project(self):
         '''打开未绑定项目'''
-        self.test_code = ["C00139"]
+        if not self._check_case(["C00139"]): return
         self.areaSettingLg.unbound_project_lg()
         sleep(3)
 
     def test_09_page_switching(self):
         '''切换每页显示条数，切换下一页/上一页/跳至x页'''
-        self.test_code = ["C00140"]
+        if not self._check_case(["C00140"]): return
         self.areaSettingLg.unbound_project_lg()
         self.areaSettingLg.page_switching_lg()
         sleep(3)

@@ -42,7 +42,7 @@ class test_ImageManagement(TestCase):
     )
     def test_case_01_upload_image(self, data):
         # 上传图片
-        self.test_code = ["C00054"]
+        if not self._check_case(["C00054"]): return
         params = {
             'title': data['title'],
             'path': data['path']
@@ -55,7 +55,7 @@ class test_ImageManagement(TestCase):
     )
     def test_case_02_image_detail(self, data):
         # 图片详情
-        self.test_code = ["C00055"]
+        if not self._check_case(["C00055"]): return
         params = {
             'title': data['title'],
             'path': data['path']
@@ -65,13 +65,13 @@ class test_ImageManagement(TestCase):
 
     def test_case_03_delete_image(self):
         # 删除图片
-        self.test_code = ["C00056"]
+        if not self._check_case(["C00056"]): return
         self.imageManagementLg.delete_image()
         time.sleep(3)
 
     def test_case_04_page_turning(self):
         # 翻页
-        self.test_code = ["C00057"]
+        if not self._check_case(["C00057"]): return
         self.imageManagementLg.page_turning()
         time.sleep(3)
 
