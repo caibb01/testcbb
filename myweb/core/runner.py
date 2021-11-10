@@ -11,6 +11,7 @@ from selenium import webdriver
 
 from myweb.tools.support_atmp.support_atmp_run import report_result_to_atmp, check_case
 from myweb.utils.mail import Email
+from  selenium.webdriver.chrome.options import Options
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
 CASE_PATH = os.path.join(BASE_PATH, 'cases')
@@ -314,8 +315,11 @@ class TestCase(unittest.TestCase):
         if _decide_config("auto_open_driver")[0]:
             cls._global_config = _get_global_config()
             option = webdriver.ChromeOptions()
+            # chrome_options = Options()
+            # chrome_options.add_argument('--headless')
             # 浏览器默认不关闭
             option.add_experimental_option("detach", True)
+            # cls.driver = webdriver.Chrome(cls._global_config['driverPath'],chrome_options = chrome_options)
             # cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
 
         config_path = os.path.join(CONFIG_PATH, CONFIG)
@@ -446,7 +450,6 @@ class TestCase(unittest.TestCase):
         # 每次用例执行完毕之后，将单个用例结果写入result
         # 记录操作信息
         self._storage = _get_storage()
-        print(self._storage)
         if self._storage["info"]:
             for i in self._storage["info"]:
                 self._result["screen"].append(i)
@@ -503,7 +506,6 @@ class TestCase(unittest.TestCase):
             print("是否跳过执行：" + str(self.test_code) + " -> " + str(run_flag))
             return run_flag
         return True
-
 
 _get_storage()
 

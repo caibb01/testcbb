@@ -1,10 +1,19 @@
 {
     "project_name": "AICardProject",
-    "project_name_zh": "AI云店Web自动化项目",
-    "desc": "这里是描述",
+    "project_name_zh": "AI云店Web自动化项目-生产G0迭代checklist回归验证",
+    "desc": "",
     "report_mode": true,
     "email_mode": [
-        "huangl08@mingyuanyun.com"
+        "lips02@mingyuanyun.com",
+        "chenjj06@mingyuanyun.com",
+        "wanglz02@mingyuanyun.com",
+        "yet03@mingyuanyun.com",
+        "mal10@mingyuanyun.com",
+        "xiaoy15@mingyuanyun.com",
+        "zhouyh02@mingyuanyun.com",
+        "guogy01@mingyuanyun.com",
+        "mabb01@mingyuanyun.com",
+        "wangzm01@mingyuanyun.com"
     ],
     "retry": 0,
     "receiver": [],
@@ -14,5 +23,6 @@
     ],
     "mark": true,
     "driver_always_open": false,
-    "auto_open_driver": true
+    "auto_open_driver": true,
+    "output": ""
 }

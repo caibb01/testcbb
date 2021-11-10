@@ -1,43 +1,107 @@
-# -*- encoding=utf8 -*-
+#-*- coding:utf-8 -*-
+
+import os
+import unittest
 from myweb.core.runner import TestCase
 from cases.AICardProject.logic.LoginLogic import LoginLogic
-from cases.AICardProject.logic.contentManagementLG.officialAccountsContentLg import officialAccountsContentLg
-
-from selenium import webdriver
-import os, sys
+from cases.AICardProject.logic.contentManagementLG.officialAccountsManagementLg import OfficialAccountsManagementLg
 import time
+from myweb.utils.config import JsonConfig
+from ddt import ddt, data
+from faker import Faker
+from myweb.tools.env_params import get_env_params
+import datetime
+
+@ddt
+class test_officialAccounts(TestCase):
+    __author__ = "zhouyh"
+    # 登录配置数据
+    __data_path = os.path.join(os.path.abspath(os.path.join(os.path.abspath(__file__), "../../..")), 'data','loginInfo.json')
+    # 获取登录数据
+    __login_data = JsonConfig(__data_path).get()
+    # 获取假数据
+    fakeinfo = Faker(locale="zh_CN")
+    # 获取当前时间戳
+    now_time = datetime.datetime.now().strftime('%H%M%S')
+    # 获取图片路径
+    image_path = os.path.join(os.path.abspath(os.path.join(os.path.abspath(__file__), "../../..")), 'data', 'image', 'th.jpg')
+    new_image_path = os.path.join(os.path.abspath(os.path.join(os.path.abspath(__file__), "../../..")), 'data', 'image', '01.jpg')
 
 
-class test_officialAccountsContent(TestCase):
-    __author__ = "zero"
-    # 当前模块名
-    __module = sys._getframe().f_code.co_name
-    # 当前用例数据绝对路径
-    __data_path = os.path.join(os.path.split(os.path.dirname(os.path.abspath(__file__)))[0], 'data',
-                               '%s.json' % __module)
-    # # 获取用例数据
-    # __data = JsonConfig(__data_path).get()
+    @classmethod
+    def setUpClass(cls):
+        super(test_officialAccounts, cls).setUpClass()
+        cls.loginLogic = LoginLogic(cls.driver)
+        cls.env_param = get_env_params()
+        cls.officialAccountsManagementLg = OfficialAccountsManagementLg(cls.driver)
+        cls.loginLogic.login(url = cls.env_param['url'],
+                             username=cls.env_param['username'],
+                             password=cls.env_param['password'],
+                             orgname=cls.env_param['orgname'])
+        cls.loginLogic.logincheck(cls.env_param['loginuser'])
+        cls.loginLogic.openAI(cls.env_param['ai_xpath'])
+        cls.officialAccountsManagementLg.into_officialAccounts_page()
 
-    def setUp(self):
-        super(test_officialAccountsContent, self).setUp()
-        self.driver = webdriver.Chrome(r"D:\AICar\WebTestProject\chromedriver.exe")
-        self.loginLogic = LoginLogic(self.driver)
-        self.officialAccountsContentLg = officialAccountsContentLg(self.driver)
+    @data(
+        {'title': "UI测试" + now_time, 'content': fakeinfo.text(20), 'url': 'uitest',
+         "project_name": '全局', 'city_name': '全局', 'path': image_path}
+    )
+    def test_case_01_newOfficialAccounts(self, data):
+        # 新增公众号文章
+        self.test_code = ["C00025"]
+        params = {
+            'title': data['title'],
+            'content': data['content'],
+            'url': data['url'],
+            'project_name': data['project_name'],
+            'city_name': data['city_name'],
+            'path': data['path'],
+        }
+        self.officialAccountsManagementLg.newOfficialAccounts(params)
+        time.sleep(3)
 
-    def test_case_01(self):
-        """
-        AI名片测试用例
-        """
-        self.loginLogic.login(username='yktest', password='yk_123456', orgname='gzminjieadmin_test')
-        # self.loginLogic.login(username=self.__data['username'],
-        #                       password=self.__data['password'],
-        #                       orgname=self.__data['orgname'])
-        self.loginLogic.logincheck()
-        self.loginLogic.openAI()
-        self.officialAccountsContentLg.officialAccounts()
+    @data(
+        {'title': "UI测试" + now_time, 'content': fakeinfo.text(20), 'url': 'uitest',
+         "project_name": '全局', 'city_name': '全局', 'path': new_image_path}
+    )
+    def test_case_02_updateOfficialAccounts(self, data):
+        # 编辑公众号文章
+        self.test_code = ["C00026"]
+        params = {
+            'title': data['title'],
+            'content': data['content'],
+            'url': data['url'],
+            'project_name': data['project_name'],
+            'city_name': data['city_name'],
+            'path': data['path'],
+        }
+        self.officialAccountsManagementLg.updateOfficialAccounts(params)
+        time.sleep(3)
+
+    def test_case_03_delOfficialAccounts(self):
+        # 删除公众号文章
+        self.test_code = ["C00027"]
+        self.officialAccountsManagementLg.delOfficialAccounts()
         time.sleep(3)
 
 
+    def test_case_04_queryOfficialAccounts(self):
+        # 搜索公众号文章
+        self.test_code = ["C00028","C00029"]
+        self.officialAccountsManagementLg.queryOfficialAccounts("全局")
+        time.sleep(3)
+
+    def test_case_05_page_turning(self):
+        # 翻页
+        self.test_code = ["C00030"]
+        self.officialAccountsManagementLg.page_turning()
+
+
+    @classmethod
+    def tearDownClass(cls):
+        super(test_officialAccounts, cls).tearDownClass()
+        cls.driver.close()
+
+
 if __name__ == '__main__':
-    import unittest
     unittest.main()

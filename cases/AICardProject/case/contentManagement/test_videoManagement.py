@@ -1,42 +1,95 @@
 # -*- encoding=utf8 -*-
+import sys
+import time
+import os
+import unittest
+from ddt import ddt, data
+from myweb.tools.getpath import getFilePath
+from myweb.utils.config import JsonConfig
 from myweb.core.runner import TestCase
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.contentManagementLG.videoManagementLg import videoManagementLg
-from selenium import webdriver
-import os, sys
-import time
+from myweb.tools.env_params import get_env_params
 
-
-class test_imageContent(TestCase):
-    __author__ = "zero"
+@ddt
+class test_videoContent(TestCase):
+    __author__ = "wangliagnzheng"
     # 当前模块名
-    __module = sys._getframe().f_code.co_name
-    # 当前用例数据绝对路径
-    __data_path = os.path.join(os.path.split(os.path.dirname(os.path.abspath(__file__)))[0], 'data',
-                               '%s.json' % __module)
-    # # 获取用例数据
-    # __data = JsonConfig(__data_path).get()
+    # __module = sys._getframe().f_code.co_name
+    # 登录配置数据
+    __data_path = os.path.join(os.path.abspath(os.path.join(os.path.abspath(__file__), "../../..")), 'data',
+                               'loginInfo.json')
+    # 获取登录数据
+    __login_data = JsonConfig(__data_path).get()
+    # 获取图片路径
+    IMAGE_PATH = os.path.join(os.path.abspath(os.path.join(os.path.abspath(__file__), "../../..")), 'data', 'image')
 
-    def setUp(self):
-        super(test_imageContent, self).setUp()
-        self.driver = webdriver.Chrome(r"D:\AICar\WebTestProject\chromedriver.exe")
-        self.loginLogic = LoginLogic(self.driver)
-        self.videoManagementLg = videoManagementLg(self.driver)
+    @classmethod
+    def setUpClass(cls):
+        super(test_videoContent, cls).setUpClass()
+        cls.loginLogic = LoginLogic(cls.driver)
+        cls.env_param = get_env_params()
+        cls.loginLogic.login(url=cls.env_param['url'],
+                             username=cls.env_param['username'],
+                             password=cls.env_param['password'],
+                             orgname=cls.env_param['orgname'])
+        cls.loginLogic.logincheck(cls.env_param['loginuser'])
+        cls.loginLogic.openAI(cls.env_param['ai_xpath'])
+        cls.videoManagementLg = videoManagementLg(cls.driver)
+        cls.videoManagementLg.into_video_page()
 
-    def test_case_01(self):
-        """
-        AI名片测试用例
-        """
-        self.loginLogic.login(username='yktest', password='yk_123456', orgname='gzminjieadmin_test')
-        # self.loginLogic.login(username=self.__data['username'],
-        #                       password=self.__data['password'],
-        #                       orgname=self.__data['orgname'])
-        self.loginLogic.logincheck()
-        self.loginLogic.openAI()
-        self.videoManagementLg.videoManagement()
+    def test_01_addVideo(self):
+        # 新增视频
+        self.test_code = ["C00060"]
+        params = {
+            "videoPath": getFilePath('xjdsp.mp4'),
+            "imgPath": getFilePath('th.jpg'),
+            "titleName": "新的视频",
+            "proName": "全局"
+        }
+        self.videoManagementLg.addVideo(params)
+
+    def test_02_updateVideo(self):
+        # 编辑视频
+        self.test_code = ["C00061"]
+        params = {
+            "videoPath": os.path.join(self.IMAGE_PATH, 'xjdsp.mp4'),
+            "imgPath": os.path.join(self.IMAGE_PATH, 'video.jpg'),
+            "titleName": "更新视频",
+            "proName": "项目"
+        }
+        #self.videoManagementLg.videoManagement(params)
         time.sleep(3)
+        self.videoManagementLg.updateVideo(params)
 
+    @data(
+        {"videoName": "更新"},
+        {"videoName": "更新视频"}
+    )
+    def test_03_queryVideo(self, data):
+        # 搜索视频
+        self.test_code = ["C00062","C00063"]
+        params = {
+            "videoName": data['videoName']
+        }
+        self.videoManagementLg.queryVideo(params)
+
+    def test_04_delVideo(self):
+        # 删除视频
+        self.test_code = ["C00064"]
+        self.videoManagementLg.delVideo()
+
+    def test_05_page_turning(self):
+        # 翻页
+        self.test_code = ["C00065"]
+        self.videoManagementLg.page_turning()
+
+    @classmethod
+    def tearDownclass(cls):
+        super(test_videoContent, cls).tearDownclass()
+        cls.driver.close()
 
 if __name__ == '__main__':
-    import unittest
     unittest.main()
+
+
