@@ -52,17 +52,15 @@ if __name__ == '__main__':
     print(result.content.decode('utf8'))
     time.sleep(delay_sec)
 
-    # 判断是否开启上传结果到ATMP系统
-    if file_content["is_report_result_to_atmp"] is True:
-        ct = time.time()
-        local_time = time.localtime(ct)
-        data_head = time.strftime("%Y%m%d%H%M%S", local_time)
-        data_secs = (ct - int(ct)) * 1000
-        time_stamp = "%s.%03d" % (data_head, data_secs)
-        file_content["parameter"]["batch_no"] = time_stamp
-        json_file.set(file_content)
+    ct = time.time()
+    local_time = time.localtime(ct)
+    data_head = time.strftime("%Y%m%d%H%M%S", local_time)
+    data_secs = (ct - int(ct)) * 1000
+    time_stamp = "%s.%03d" % (data_head, data_secs)
+    file_content["parameter"]["batch_no"] = time_stamp
+    json_file.set(file_content)
 
-    config_path = "demo.json"
+    config_path = "demo_atmp.json"
     r = Runner(config_name=config_path)
     r.run()
 
@@ -80,14 +78,13 @@ if __name__ == '__main__':
     print(result.content.decode('utf8'))
     """
     # 执行完用例后将批次号置为空
-    if file_content["is_report_result_to_atmp"] is True:
-        file_content["parameter"]["task_log_id"] = ""
-        file_content["parameter"]["task_id"] = ""
-        file_content["parameter"]["batch_no"] = ""
-        file_content["parameter"]["test_code"] = ""
-        file_content["parameter"]["firetime_start"] = ""
-        file_content["parameter"]["firetime_end"] = ""
-        file_content["parameter"]["log_time"] = 0.000
-        file_content["parameter"]["log_result"] = ""
-        file_content["parameter"]["memo"] = ""
-        json_file.set(file_content)
+    file_content["parameter"]["task_log_id"] = ""
+    file_content["parameter"]["task_id"] = ""
+    file_content["parameter"]["batch_no"] = ""
+    file_content["parameter"]["test_code"] = ""
+    file_content["parameter"]["firetime_start"] = ""
+    file_content["parameter"]["firetime_end"] = ""
+    file_content["parameter"]["log_time"] = 0.000
+    file_content["parameter"]["log_result"] = ""
+    file_content["parameter"]["memo"] = ""
+    json_file.set(file_content)

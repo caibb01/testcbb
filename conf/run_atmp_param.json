@@ -1,5 +1,4 @@
 {
-    "is_report_result_to_atmp": true,
     "atmp_url": "http://10.10.4.53/regress-atmp",
     "schema_id": "2dbb8285-0ac5-11ec-bb81-0242ac110003",
     "tester_id": "ed82b619-a388-11e3-bcd5-3148d8615fb9",
@@ -7,8 +6,8 @@
         "task_log_id": "",
         "server_id": "0c4ccc7b-330a-11ec-b97c-0242ac110003",
         "node_id": "b0a84280-7b86-4de7-b9b8-c6fa24831447",
-        "task_id": "c324400a-50b8-4833-b4cf-e2dee4db8ed8",
-        "batch_no": "20211109160025.035",
+        "task_id": "",
+        "batch_no": "",
         "group_code": "YK010301",
         "test_code": "",
         "test_type": "function",

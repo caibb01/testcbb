@@ -17,7 +17,7 @@ class DemoTestCase(TestCase):
 
 
 def test_case_02(self):
-    if self._check_case(["C00002"]): return
+    if self._check_case(["C0000X"]): return
     """
     第二个用例 失败
     """

@@ -6,5 +6,6 @@
     "retry": 0,
     "email_mode": [
         ""
-    ]
+    ],
+    "report_to_atmp": true
 }

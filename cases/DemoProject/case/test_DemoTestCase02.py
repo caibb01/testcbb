@@ -8,7 +8,7 @@ class DemoTestCase02(TestCase):
         """
         test_case_01 success
         """
-        # self.test_code="C11002"
+        if not self._check_case(["C0000Y"]): return
         # # print("test_case_01 success")
         # # print("另2种方式执行")
         # time.sleep(1)

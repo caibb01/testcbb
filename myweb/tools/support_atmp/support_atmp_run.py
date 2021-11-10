@@ -19,13 +19,12 @@ def report_result_to_atmp(test_codes, case_exec_result, start_timestamp, end_tim
 
 def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_timestamp, memo):
     atmp_config_path = os.path.join(ATMP_CONFIG_PATH, ATMP_FILE)
-
     # 判断配置文件是否存在
     if os.path.exists(atmp_config_path):
         json_file = JsonConfigATMP(atmp_config_path)
         file_content = json_file.get()
         # 判断是否开启上传结果到ATMP系统
-        if file_content["is_report_result_to_atmp"] is True and file_content["parameter"]["batch_no"] != "":
+        if file_content["parameter"]["batch_no"] != "":
             file_content["parameter"]["log_result"] = case_exec_result
             file_content["parameter"]["task_log_id"] = str(uuid.uuid1())
             assert "" != test_code

@@ -459,12 +459,15 @@ class TestCase(unittest.TestCase):
         self._result['total_time'] = round(self._result['end_timestamp'] - self._result['start_timestamp'], 3)
         self._results['cases_info'].append(self._result)
 
-        if self._result["success"] is True:
-            print(self.test_code)
-            report_result_to_atmp(self.test_code, "pass", self._result["start_timestamp"], self._result["end_timestamp"], "预期与实际结果一致")
-        else:
-            report_result_to_atmp(self.test_code, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
-                                  self._result["trace"])
+        report_to_atmp = _decide_config("report_to_atmp")[0]
+        if report_to_atmp:
+            if self._result["success"] is True:
+                print(self.test_code)
+                report_result_to_atmp(self.test_code, "pass", self._result["start_timestamp"], self._result["end_timestamp"],
+                                      "预期与实际结果一致")
+            else:
+                report_result_to_atmp(self.test_code, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
+                                      self._result["trace"])
 
     def __getattribute__(self, item):
         # 基本照抄MiniTest写法（Minium提供的TestCase）
@@ -494,8 +497,12 @@ class TestCase(unittest.TestCase):
 
     def _check_case(self, test_codes):
         self.test_code = test_codes
-        run_flag = check_case(test_codes)
-        return run_flag
+        report_to_atmp = _decide_config("report_to_atmp")[0]
+        if report_to_atmp:
+            run_flag = check_case(test_codes)
+            print("是否跳过执行：" + str(self.test_code) + " -> " + str(run_flag))
+            return run_flag
+        return True
 
 
 _get_storage()
