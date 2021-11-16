@@ -84,6 +84,11 @@ if __name__ == '__main__':
     result = requests.post(url=file_content["atmp_url"] + "/edi/send_report", headers=headers, data=data)
     print(result.url)
     print(result.content.decode('utf8'))
+
+    data = {"task_id": task_id, "send_type": "email"}
+    result = requests.post(url=file_content["atmp_url"] + "/edi/send_report", headers=headers, data=data)
+    print(result.url)
+    print(result.content.decode('utf8'))
     """
     # 执行完用例后将批次号置为空
     file_content["parameter"]["task_log_id"] = ""
