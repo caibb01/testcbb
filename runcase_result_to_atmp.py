@@ -3,12 +3,10 @@
 import json
 import os
 import sys
-
-import requests
-
-from myweb.core.runner import Runner, CONFIG_PATH
 import time
+from myweb.core.runner import Runner, CONFIG_PATH
 from myweb.utils.config import JsonConfig
+from myweb.tools.support_atmp_run import atmp_post
 
 if __name__ == '__main__':
     # 开启上传结果到atmp系统时，更新配置中的批次号
@@ -44,20 +42,15 @@ if __name__ == '__main__':
 
     # 在atmp平台创建任务
     generate_task_schema_data = {"schema_id": file_content["schema_id"], "tester": file_content["tester_id"]}
-    headers = {"Content-Type": "application/x-www-form-urlencoded", "User-Id": file_content["tester_id"]}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/generate_task_schema", headers=headers, data=generate_task_schema_data)
-    print(result.url)
-    print(result.content.decode('utf8'))
-    task_id = json.loads(result.content)["data"]
+    result = atmp_post(file_content, "/edi/generate_task_schema", generate_task_schema_data)
+    task_id = result["data"]
     file_content["parameter"]["task_id"] = task_id
     json_file.set(file_content)
 
     # 在atmp平台清理执行结果
     delay_sec = 3
     delete_task_log_data = {"node_id": file_content["parameter"]["node_id"], "task_id": file_content["parameter"]["task_id"]}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/delete_task_logs", headers=headers, data=delete_task_log_data)
-    print(result.url)
-    print(result.content.decode('utf8'))
+    result = atmp_post(file_content, "/edi/delete_task_logs", delete_task_log_data)
     time.sleep(delay_sec)
 
     ct = time.time()
@@ -74,21 +67,15 @@ if __name__ == '__main__':
 
     # 在atmp平台更新测试任务
     update_statics_data = {"task_id": task_id}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/update_task_result", headers=headers, data=update_statics_data)
-    print(result.url)
-    print(result.content.decode('utf8'))
+    result = atmp_post(file_content, "/edi/update_task_result", update_statics_data)
 
     # 在atmp平台发送企业微信消息
     """
     data = {"task_id": task_id, "send_type": "weixin"}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/send_report", headers=headers, data=data)
-    print(result.url)
-    print(result.content.decode('utf8'))
+    result = send_atmp(file_content, "/edi/send_report", data)
 
     data = {"task_id": task_id, "send_type": "email"}
-    result = requests.post(url=file_content["atmp_url"] + "/edi/send_report", headers=headers, data=data)
-    print(result.url)
-    print(result.content.decode('utf8'))
+    result = send_atmp(file_content, "/edi/send_report", data)
     """
     # 执行完用例后将批次号置为空
     file_content["parameter"]["task_log_id"] = ""

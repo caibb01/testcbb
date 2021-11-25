@@ -3,7 +3,7 @@
 import os, json
 import time
 import uuid
-from myweb.utils.HttpRequest import HttpRequest
+import requests
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))[0]
 ATMP_CONFIG_PATH = os.path.join(BASE_PATH, 'conf')
@@ -40,14 +40,9 @@ def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_ti
 
             # 调用ATMP上传结果
             print("调用ATMP系统接口")
-            print(file_content)
-            headers = {"Content-Type": "application/json", "User-Id": file_content["tester_id"]}
-            r = HttpRequest()
-            post_result = r.sendPost(file_content["atmp_url"] + "/edi/add_task_log", headers=headers,
-                                     data=file_content["parameter"])
+            post_result = atmp_json(file_content, "/edi/add_task_log", file_content["parameter"])
             assert post_result["code"] == 0
-            post_result = r.sendPost(file_content["atmp_url"] + "/edi/update_task_log", headers=headers,
-                                     data=file_content["parameter"])
+            post_result = atmp_json(file_content, "/edi/update_task_log", file_content["parameter"])
             assert post_result["code"] == 0
 
 
@@ -63,23 +58,43 @@ def check_case(test_codes):
     if os.path.exists(atmp_config_path):
         json_file = JsonConfigATMP(atmp_config_path)
         file_content = json_file.get()
-        headers = {"Content-Type": "application/json;charset=UTF-8", "User-Id": file_content["tester_id"]}
         data_param = {
             "node_id": file_content["parameter"]["node_id"],
             "task_id": file_content["parameter"]["task_id"],
             "tc_status": "auto"
         }
-        r = HttpRequest()
-        result = r.sendPost(url=file_content["atmp_url"] + "/edi/get_node_tcs", headers=headers,
-                            data=data_param)
+        result = atmp_json(file_content, "/edi/get_node_tcs", data_param)
         exec_case_code_list = result["data"]
-        print(exec_case_code_list)
         if test_codes is not None and len(test_codes) > 0:
             for case_code in test_codes:
                 for exec_case_code in exec_case_code_list:
                     if case_code in exec_case_code:
                         return True
     return run_flag
+
+
+def atmp_post(f, url, data):
+    path = f["atmp_url"] + url
+    print(path)
+    headers = {"Content-Type": "application/x-www-form-urlencoded", "User-Code": "huangl08", "User-Pwd": "dGVzdDEyMzQ="}
+    response = requests.post(url=path, headers=headers, data=data)
+    if response.status_code != 200:
+        raise Exception("接口请求错误！")
+    print(response.content.decode('utf8'))
+    result = json.loads(response.content)
+    return result
+
+
+def atmp_json(f, url, data):
+    path = f["atmp_url"] + url
+    print(path)
+    headers = {"Content-Type": "application/json;charset=UTF-8", "User-Code": "huangl08", "User-Pwd": "dGVzdDEyMzQ="}
+    response = requests.post(url=path, headers=headers, data=data)
+    if response.status_code != 200:
+        raise Exception("接口请求错误！")
+    print(response.content.decode('utf8'))
+    result = json.loads(response.content)
+    return result
 
 
 def cvt_timestamp(ct):

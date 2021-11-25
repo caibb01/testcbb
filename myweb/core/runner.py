@@ -9,9 +9,8 @@ import time
 import jinja2
 from selenium import webdriver
 
-from myweb.tools.support_atmp.support_atmp_run import report_result_to_atmp, check_case
+from myweb.tools.support_atmp_run import report_result_to_atmp, check_case
 from myweb.utils.mail import Email
-from selenium.webdriver.chrome.options import Options
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
 CASE_PATH = os.path.join(BASE_PATH, 'cases')
