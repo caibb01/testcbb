@@ -8,9 +8,9 @@ import json
 import time
 import jinja2
 from selenium import webdriver
-
 from myweb.tools.support_atmp_run import report_result_to_atmp, check_case
 from myweb.utils.mail import Email
+from selenium.webdriver.chrome.options import Options
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
 CASE_PATH = os.path.join(BASE_PATH, 'cases')
@@ -332,7 +332,6 @@ class TestCase(unittest.TestCase):
             if not os.path.exists(cls._image_file_path):
                 os.makedirs(cls._image_file_path)
         _setUp_storage(config_name=CONFIG, output=cls._output)
-        cls.run_flag = None
 
         cls._results = {
             "start_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -419,7 +418,8 @@ class TestCase(unittest.TestCase):
         self._storage["case_name"] = self._testMethodName
         _set_storage(self._storage)
         # 定义测试编号
-        self.test_code = None
+        self.test_codes = None
+        self.run_flag = None
 
     def tearDown(self):
         sys_info = self._outcome.errors[-1][-1]
@@ -463,13 +463,12 @@ class TestCase(unittest.TestCase):
         self._results['cases_info'].append(self._result)
 
         report_to_atmp = _decide_config("report_to_atmp")[0]
-        if report_to_atmp and self._check_case(self.test_code):
+        if report_to_atmp and self._check_case(self.test_codes):
             if self._result["success"] is True:
-                print(self.test_code)
-                report_result_to_atmp(self.test_code, "pass", self._result["start_timestamp"], self._result["end_timestamp"],
+                report_result_to_atmp(self.test_codes, "pass", self._result["start_timestamp"], self._result["end_timestamp"],
                                       "预期与实际结果一致")
             else:
-                report_result_to_atmp(self.test_code, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
+                report_result_to_atmp(self.test_codes, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
                                       self._result["trace"])
 
     def __getattribute__(self, item):
@@ -499,12 +498,12 @@ class TestCase(unittest.TestCase):
         f.close()
 
     def _check_case(self, test_codes):
-        if self.test_code is None:
-            self.test_code = test_codes
+        if self.test_codes is None:
+            self.test_codes = test_codes
         report_to_atmp = _decide_config("report_to_atmp")[0]
         if report_to_atmp and self.run_flag is None:
             self.run_flag = check_case(test_codes)
-            print("是否执行用例：" + str(self.test_code) + " -> " + str(self.run_flag))
+            print("是否执行用例：" + str(self.test_codes) + " -> " + str(self.run_flag))
         return self.run_flag
 
 

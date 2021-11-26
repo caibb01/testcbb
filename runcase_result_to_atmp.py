@@ -72,10 +72,10 @@ if __name__ == '__main__':
     # 在atmp平台发送企业微信消息
     """
     data = {"task_id": task_id, "send_type": "weixin"}
-    result = send_atmp(file_content, "/edi/send_report", data)
+    result = atmp_post(file_content, "/edi/send_report", data)
 
     data = {"task_id": task_id, "send_type": "email"}
-    result = send_atmp(file_content, "/edi/send_report", data)
+    result = atmp_post(file_content, "/edi/send_report", data)
     """
     # 执行完用例后将批次号置为空
     file_content["parameter"]["task_log_id"] = ""

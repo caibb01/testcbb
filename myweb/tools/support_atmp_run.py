@@ -5,8 +5,8 @@ import time
 import uuid
 import requests
 
-BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))[0]
-ATMP_CONFIG_PATH = os.path.join(BASE_PATH, 'conf')
+BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
+CONFIG_PATH = os.path.join(BASE_PATH, 'conf')
 ATMP_FILE = "run_atmp_param.json"
 
 
@@ -18,7 +18,7 @@ def report_result_to_atmp(test_codes, case_exec_result, start_timestamp, end_tim
 
 
 def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_timestamp, memo):
-    atmp_config_path = os.path.join(ATMP_CONFIG_PATH, ATMP_FILE)
+    atmp_config_path = os.path.join(CONFIG_PATH, ATMP_FILE)
     # 判断配置文件是否存在
     if os.path.exists(atmp_config_path):
         json_file = JsonConfigATMP(atmp_config_path)
@@ -53,7 +53,7 @@ def check_case(test_codes):
     :return:
     """
     run_flag = False
-    atmp_config_path = os.path.join(ATMP_CONFIG_PATH, ATMP_FILE)
+    atmp_config_path = os.path.join(CONFIG_PATH, ATMP_FILE)
     # 判断配置文件是否存在
     if os.path.exists(atmp_config_path):
         json_file = JsonConfigATMP(atmp_config_path)
@@ -89,7 +89,7 @@ def atmp_json(f, url, data):
     path = f["atmp_url"] + url
     print(path)
     headers = {"Content-Type": "application/json;charset=UTF-8", "User-Code": "huangl08", "User-Pwd": "dGVzdDEyMzQ="}
-    response = requests.post(url=path, headers=headers, data=data)
+    response = requests.post(url=path, headers=headers, data=json.dumps(data))
     if response.status_code != 200:
         raise Exception("接口请求错误！")
     print(response.content.decode('utf8'))
