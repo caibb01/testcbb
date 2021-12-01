@@ -1,15 +1,10 @@
 from myweb.core.runner import TestCase
 import unittest
-import time
 
 
 class DemoTestCase02(TestCase):
-    def test_case_03(self):
-        """
-        test_case_03 success
-        """
-        print("test_case_03 success")
-        time.sleep(0.3)
+    def test_case_01(self):
+        print("用例执行：test_case_01")
         pass
 
 
