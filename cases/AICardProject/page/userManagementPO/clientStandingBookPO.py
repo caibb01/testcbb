@@ -35,6 +35,8 @@ class clientStandingBook(BasePage,TestCase):
         "集团客户-导出列表": (By.XPATH, "//div[@class='right']/button[@class = 'ant-btn ant-btn-primary']"),
         "集团客户-导出": (By.XPATH, "//div[@class='tc']/button"),
         "集团客户-下载":(By.XPATH,'//button[@class="ant-btn ant-btn-link"]'),
+        "业务关系表":(By.XPATH,'//div[@class="ant-modal-title"]'),
+        "来去拓扑图":(By.XPATH,'//div[@class="ant-modal-title"]'),
         # 区域客户
         "选择区域客户": (By.XPATH, "//div[@class='components-manager_customer-tabs-index-module_1TcjH']/a[2]/div"),
         "区域客户-客户电话": (By.XPATH, "//span/input[@class='ant-input']"),
@@ -91,6 +93,7 @@ class clientStandingBook(BasePage,TestCase):
         "项目客户-导出列表": (By.XPATH, "//div[@class='right']/button[@class = 'ant-btn ant-btn-primary']"),
         "项目客户-导出": (By.XPATH, "//div[@class='tc']/button"),
         "项目客户-导出状态": (By.XPATH, "//div[@class='ant-table-content']/div[@class='ant-table-body']/table/tbody/tr[1]/td[4]/div"),
+        "导出状态-创建时间": (By.XPATH, "//div[@class='ant-table-content']/div[@class='ant-table-body']/table/tbody/tr[1]/td[2]/div"),
         #"项目客户-下载": (By.XPATH, "//tbody/tr[1]/td[6]/span/a"),
         "项目客户-下载":(By.XPATH,'//button[@class="ant-btn ant-btn-link"]'),
         #"项目客户-下载": (By.XPATH, '//button/span[text()="下载"]'),
@@ -199,6 +202,7 @@ class clientStandingBook(BasePage,TestCase):
         if len(list) == 0:
             str_data = "18816851537"
             return str_data
+
         if (check_phone_type == '1') & (len(list) != 0):
             str_data = list[0].text
             if  str_data == "":
@@ -260,7 +264,7 @@ class clientStandingBook(BasePage,TestCase):
     #     self.inquire('集团客户-')
     #     sleep(1)
 
-    def group_customer_inquiry(self,parameter = None):
+    def group_customer_inquiry(self,parameter = None,checkData = None):
         '''集团客户--查询'''
         #输入电话号码
         if  parameter['phone'] != '':
@@ -276,6 +280,7 @@ class clientStandingBook(BasePage,TestCase):
         #点击查询
         self.inquire('集团客户-')
         sleep(3)
+        self.contrast_list_data(checkData,phone)
 
 
     # def regional_customer_inquiry(self, parameter=None):
@@ -314,7 +319,7 @@ class clientStandingBook(BasePage,TestCase):
     #     self.inquire('区域客户-')
     #     sleep(1)
 
-    def regional_customer_inquiry(self, parameter=None):
+    def regional_customer_inquiry(self, parameter=None,checkData = None):
         '''区域客户--查询'''
         # 输入电话号码
         if parameter['phone'] != '':
@@ -350,6 +355,7 @@ class clientStandingBook(BasePage,TestCase):
         # 点击查询
         self.inquire('区域客户-')
         sleep(3)
+        self.contrast_list_data(checkData,phone)
 
     # def project_customer_inquiry(self, parameter=None):
     #     '''项目客户-查询'''
@@ -407,7 +413,7 @@ class clientStandingBook(BasePage,TestCase):
     #     self.inquire('项目客户-')
     #     sleep(1)
 
-    def project_customer_inquiry(self, parameter=None):
+    def project_customer_inquiry(self, parameter=None,checkData = None):
         '''项目客户-查询'''
         # 输入电话号码
         if parameter['phone'] != '':
@@ -458,6 +464,7 @@ class clientStandingBook(BasePage,TestCase):
         # 点击查询
         self.inquire('项目客户-')
         sleep(3)
+        self.contrast_list_data(checkData,phone)
 
     # def booking_customer_inquiry(self, parameter=None):
     #     '''预约客户-查询'''
@@ -554,7 +561,7 @@ class clientStandingBook(BasePage,TestCase):
     #         self.find_element(self.control['预约客户-查询']).click()
     #     sleep(1)
 
-    def booking_customer_inquiry(self, parameter=None):
+    def booking_customer_inquiry(self, parameter=None,checkData = None):
         '''预约客户-查询'''
         sleep(3)
         #选择项目名称
@@ -651,6 +658,7 @@ class clientStandingBook(BasePage,TestCase):
         if self.is_exist_element(self.control['预约客户-查询']):
             self.find_element(self.control['预约客户-查询']).click()
         sleep(3)
+        self.contrast_list_data(checkData,phone)
 
     #公共方法
     def switch_to_tab(self,tab_name):
@@ -725,6 +733,7 @@ class clientStandingBook(BasePage,TestCase):
         self.wait_eleVisible(self.control[mode+'导出列表'])
         self.find_element(self.control[mode+'导出列表']).click()
 
+
     def get_reportList(self):
         '''获取导出列表第一条记录的导出状态（适用于集团客户、区域客户、项目客户）'''
         reportStatus = ''
@@ -734,10 +743,13 @@ class clientStandingBook(BasePage,TestCase):
 
     def export_function(self,mode = None):
         '''导出客户列表，导出并下载'''
+        start_time = self.find_element(self.control['导出状态-创建时间']).text
         self.wait_eleVisible(self.control[mode + '导出'])
         self.find_element(self.control[mode + '导出']).click()
         # 识别导出列表第一条记录的导出状态
         sleep(2)
+        end_time = self.find_element(self.control['导出状态-创建时间']).text
+        self.assertFalse(start_time == end_time,'导出不成功')
         reportStatus = self.get_reportList()
         sleep(1)
         while (reportStatus != '导出成功'):
@@ -766,6 +778,8 @@ class clientStandingBook(BasePage,TestCase):
             self.wait_eleVisible(self.control[mode + '点击业务关系表'])
             self.find_elements(self.control[mode + '点击业务关系表'],0).click()
             self.error_message_prompt()
+            self.assertTrue(self.is_exist_element(self.control['业务关系表']),'关系列表不存在')
+
 
 
     def close_business_relationship_table(self,mode = None):
@@ -792,6 +806,7 @@ class clientStandingBook(BasePage,TestCase):
             self.wait_eleVisible(self.control[mode+'查看来去拓扑图'])
             self.find_elements(self.control[mode + '查看来去拓扑图'],0).click()
             self.error_message_prompt()
+            self.assertTrue(self.is_exist_element(self.control['来去拓扑图']), '关系列表不存在')
 
     def close_topological_graph(self,mode = None):
         '''关闭来去拓扑图'''
@@ -819,6 +834,8 @@ class clientStandingBook(BasePage,TestCase):
             self.find_elements(self.control['预约客户-查看详情'], 0).click()
             sleep(1)
             self.error_message_prompt()
+            self.assertTrue(self.is_exist_element(self.control['预约客户-判断预约客户明细']),'查看预约客户列表详情失败')
+
 
     def close_customer_detail(self):
         '''关闭预约客户明细页面'''
@@ -851,7 +868,7 @@ class clientStandingBook(BasePage,TestCase):
                     self.click_next()
         return flag
 
-    def contrast_list_data(self,checkData = None):
+    def contrast_list_data(self,checkData = None,standardData = None):
         '''判断输入的值是否在列表,并返回第几个'''
         flag = False
         typeBolle = True
@@ -864,7 +881,7 @@ class clientStandingBook(BasePage,TestCase):
             for b in bodyContent:
                 # print(countNum,":",checkData['standardData'])
                 # print(countNum,":",b.text)
-                if b.text == checkData['standardData']:
+                if b.text == standardData:
                     flag = True
                     break
                 countNum += 1
@@ -876,16 +893,18 @@ class clientStandingBook(BasePage,TestCase):
                 if typeBolle:
                     self.click_next_page()
             if countNum == len(bodyContent):
-                countNum = countNum - 1;
-        #self.check_assert(flag,checkData['flag'],checkData['msg'])
-
+                countNum = countNum - 1
+        self.public_assert(flag,checkData['expectResult'],checkData['msg'])
         return flag,countNum
 
-    def check_assert(self,flag,checkFlag,message):
-        if checkFlag == 'True' :
-            self.assertTrue(flag,msg= message)
+    def public_assert(self,actualResult,expectResult,message):
+        #
+        #预期结果为true，实际结果为flase时，断言提示message
+        if expectResult == 'True' :
+            self.assertTrue(actualResult,msg= message)
+        #预期结果为false，实际结果为true时，断言提示message
         else:
-            self.assertFalse(flag,msg= message)
+            self.assertFalse(actualResult,msg= message)
 
     # def check_button_clickable(self):
     #     #     '''检查下一页按钮是否可点击'''

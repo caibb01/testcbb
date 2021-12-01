@@ -42,6 +42,7 @@ class test_Comments(TestCase):
     )
     def test_case_01_save_comments(self, data):
         # 新增评论
+        if not self._check_case(["C00307"]): return
         params = {
             'project_name': data['project_name'],
             'nick_name': data['nick_name'],
@@ -56,6 +57,7 @@ class test_Comments(TestCase):
     )
     def test_case_02_reply_comments(self, data):
         # 回复评论
+        if not self._check_case(["C00308"]): return
         params = {
             'reply_content': data['reply_content']
         }
@@ -64,6 +66,7 @@ class test_Comments(TestCase):
 
     def test_case_03_delete_comments(self):
         # 删除评论
+        if not self._check_case(["C00310"]): return
         self.commentsLg.delete_comments()
         time.sleep(3)
 
@@ -87,6 +90,7 @@ class test_Comments(TestCase):
     )
     def test_case_07_search_comments(self, data):
         # 列表查询
+        if not self._check_case(["C00311"]): return
         params = {
             'start_date': data['start_date'],
             'end_date': data['end_date'],

@@ -63,11 +63,13 @@ class test_clientStandingBook(TestCase):
                 'startDate': data['startDate'],
                 'endDate': data['endDate'],
                 'userIntent': data['userIntent'],
+                #1为精确查询，2为模糊查询
                 'check_phone_type':data['check_phone_type']
             },
             'checkData': {
+                #查找列表标准值
                 'standardData': data['standardData'],
-                'flag': data['flag'],
+                'expectResult': data['expectResult'],
                 'msg': data['msg']
             }
         }
@@ -89,7 +91,7 @@ class test_clientStandingBook(TestCase):
             },
             'checkData': {
                 'standardData': data['standardData'],
-                'flag': data['flag'],
+                'expectResult': data['expectResult'],
                 'msg': data['msg']
             }
         }
@@ -112,7 +114,7 @@ class test_clientStandingBook(TestCase):
             },
             'checkData': {
                 'standardData': data['standardData'],
-                'flag': data['flag'],
+                'expectResult': data['expectResult'],
                 'msg': data['msg']
             }
         }
@@ -138,7 +140,7 @@ class test_clientStandingBook(TestCase):
             },
             'checkData': {
                 'standardData': data['standardData'],
-                'flag': data['flag'],
+                'expectResult': data['expectResult'],
                 'msg': data['msg']
             }
         }
@@ -149,17 +151,12 @@ class test_clientStandingBook(TestCase):
         '''查看业务关系表，关闭业务关系表'''
         params = {
         "modelName" : data['model'],
-        "standardName" : data['standardName'],
-        "checkData":{
-            "standardData" : data['standardPhone'],
-            "flag":data['flag'],
-            "msg":data['msg']
-        },
-            "checkData1":{
-            "standardData" : data['standardName'],
-            "flag":data['flag'],
-            "msg":data['msg']
-        }
+        "standardName" : data['standardName']
+        # "checkData":{
+        #     "standardData" : data['standardPhone'],
+        #     "flag":data['flag'],
+        #     "msg":data['msg']
+        # }
         }
         self.clientStandingBookLg.review_business_relationship_table_lg(params)
 
@@ -168,12 +165,13 @@ class test_clientStandingBook(TestCase):
     def test_06_review_topological_graph(self,data):
         '''查看来去拓扑图,关闭拓扑图'''
         params = {
-        'modelName' : data['model'],
-            "checkData": {
-                "standardData": data['standardPhone'],
-                "flag":data['flag'],
-                "msg":data['msg']
-            }
+        'modelName' : data['model']
+            # ,
+            # "checkData": {
+            #     "standardData": data['standardPhone'],
+            #     "flag":data['flag'],
+            #     "msg":data['msg']
+            # }
         }
         self.clientStandingBookLg.review_topological_graph_lg(params)
 

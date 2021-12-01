@@ -43,7 +43,7 @@ class test_articleContent(TestCase):
         self.articleContentLg.newContent()
         time.sleep(3)
         """
-        if not self._check_case(["C00033","C00035","C00040"]): return
+        if not self._check_case(["C00041","C00043","C00048"]): return
         params = {
             "titleName": "新的文章呀",
             "content": "全局",
@@ -56,7 +56,7 @@ class test_articleContent(TestCase):
         """
         新建原创文章-开启活动
         """
-        if not self._check_case(["C00037","C00038"]): return
+        if not self._check_case(["C00045","C00046"]): return
         params = {
             "title": "JK标题",
             "content": "JK内容",
@@ -72,7 +72,7 @@ class test_articleContent(TestCase):
         """
         编辑文章
         """
-        if not self._check_case(["C00041","C00047"]): return
+        if not self._check_case(["C00049","C00055"]): return
         params = {
             "queryTitle": "新的文章呀",
             "newTitle": "新的标题",
@@ -86,7 +86,7 @@ class test_articleContent(TestCase):
         """
         发布文章后进行编辑
         """
-        if not self._check_case(["C00043"]): return
+        if not self._check_case(["C00051"]): return
         params = {
             "newQueryTitle": "新的标题",
             "postNewTitle": "发布后的新的标题",
@@ -100,7 +100,7 @@ class test_articleContent(TestCase):
         """
         关闭文章
         """
-        if not self._check_case(["C00044"]): return
+        if not self._check_case(["C00052"]): return
         params = "已发布"
         self.articleContentLg.closeArticle(params)
         sleep(3)
@@ -109,7 +109,7 @@ class test_articleContent(TestCase):
         """
         报名列表
         """
-        if not self._check_case(["C00049"]): return
+        if not self._check_case(["C00059"]): return
         params = {
             'publish_status': "全部",
             'title': "JK",
@@ -120,7 +120,7 @@ class test_articleContent(TestCase):
 
     def test_07_page_turning(self):
         # 翻页
-        if not self._check_case(["C00051"]): return
+        if not self._check_case(["C00061"]): return
         self.articleContentLg.page_turning()
         sleep(3)
 

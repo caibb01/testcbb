@@ -124,7 +124,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_08_reception_list(self,data):
         '''打开接待列表，项目接待列表-人员选择,勾选checkbox'''
-        if not self._check_case(["C00014","C00016","C00020"]): return
+        if not self._check_case(["C00017","C00019","C00023"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -134,7 +134,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_09_reception_list_people_search(self,data):
         '''项目接待列表-人员搜索'''
-        if not self._check_case(["C00015"]): return
+        if not self._check_case(["C00018"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -144,7 +144,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_11_reception_list_people_hide(self,data):
         '''项目接待列表-人员隐藏'''
-        if not self._check_case(["C00017"]): return
+        if not self._check_case(["C00020"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -154,7 +154,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_12_reception_list_people_sort(self,data):
         '''项目接待列表-人员排序'''
-        if not self._check_case(["C00018"]): return
+        if not self._check_case(["C00021"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -164,7 +164,7 @@ class test_projectManagement(TestCase):
     @unpack
     def test_13_reception_list_remove_personnel(self,data):
         '''项目接待列表-删除人员'''
-        if not self._check_case(["C00019"]): return
+        if not self._check_case(["C00022"]): return
         params = {
             'publishStatus': data['publishStatus']
         }
@@ -181,12 +181,12 @@ class test_projectManagement(TestCase):
 
     def test_15_copy_page_path(self):
         '''复制页面路径'''
-        if not self._check_case(["C00021"]): return
+        # if not self._check_case(["C00021"]): return
         self.projectManagementLg.copy_page_path_lg()
 
     def test_16_page_switching(self):
         '''切换每页显示条数，切换下一页/上一页/跳至x页'''
-        if not self._check_case(["C00022"]): return
+        if not self._check_case(["C00025"]): return
         self.projectManagementLg.page_switching_lg()
 
     def tearDown(self):

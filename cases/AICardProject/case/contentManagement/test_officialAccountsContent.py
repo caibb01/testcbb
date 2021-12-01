@@ -48,7 +48,7 @@ class test_officialAccounts(TestCase):
     )
     def test_case_01_newOfficialAccounts(self, data):
         # 新增公众号文章
-        if not self._check_case(["C00025"]): return
+        if not self._check_case(["C00029"]): return
         params = {
             'title': data['title'],
             'content': data['content'],
@@ -66,7 +66,7 @@ class test_officialAccounts(TestCase):
     )
     def test_case_02_updateOfficialAccounts(self, data):
         # 编辑公众号文章
-        if not self._check_case(["C00026"]): return
+        if not self._check_case(["C00030"]): return
         params = {
             'title': data['title'],
             'content': data['content'],
@@ -80,20 +80,20 @@ class test_officialAccounts(TestCase):
 
     def test_case_03_delOfficialAccounts(self):
         # 删除公众号文章
-        if not self._check_case(["C00027"]): return
+        if not self._check_case(["C00031"]): return
         self.officialAccountsManagementLg.delOfficialAccounts()
         time.sleep(3)
 
 
     def test_case_04_queryOfficialAccounts(self):
         # 搜索公众号文章
-        if not self._check_case(["C00028","C00029"]): return
+        if not self._check_case(["C00032","C00033"]): return
         self.officialAccountsManagementLg.queryOfficialAccounts("全局")
         time.sleep(3)
 
     def test_case_05_page_turning(self):
         # 翻页
-        if not self._check_case(["C00030"]): return
+        if not self._check_case(["C00036"]): return
         self.officialAccountsManagementLg.page_turning()
 
 

@@ -45,7 +45,7 @@ class test_StartupPage(TestCase):
     @unpack
     def test_01_upload_still_image_lg(self,data):
         '''启动页配置，上传静态图片，预览，保存，刷新页面'''
-        if not self._check_case(["C00203","C00206"]): return
+        # if not self._check_case(["C00203","C00206"]): return
         params = {
             'path': data['path']
         }
@@ -55,7 +55,7 @@ class test_StartupPage(TestCase):
     @unpack
     def test_02_upload_dynamic_image_lg(self,data):
         '''启动页配置，上传动态图片，预览，保存，刷新页面'''
-        if not self._check_case(["C00204"]): return
+        # if not self._check_case(["C00204"]): return
         params = {
             'path': data['path']
         }
@@ -65,7 +65,7 @@ class test_StartupPage(TestCase):
     @unpack
     def test_03_upload_image_refresh_page_lg(self,data):
         '''启动页配置，上传图片，刷新'''
-        if not self._check_case(["C00205"]): return
+        # if not self._check_case(["C00205"]): return
         params = {
             'path': data['path']
         }
@@ -75,7 +75,7 @@ class test_StartupPage(TestCase):
     @unpack
     def test_04_upload_images_larger_than_2M_lg(self,data):
         '''启动页配置，上传大于2M的图片'''
-        if not self._check_case(["C00207"]): return
+        # if not self._check_case(["C00207"]): return
         params = {
             'path': data['path']
         }

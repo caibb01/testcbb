@@ -42,7 +42,7 @@ class test_pasterContent(TestCase):
         cls.sort = "分类" + now_time
 
     def test_01_addPaster(self):
-        if not self._check_case(["C00089"]): return
+        if not self._check_case(["C00114","C00115"]): return
         # 新增海报
         params = {
             "title": self.title,
@@ -52,7 +52,7 @@ class test_pasterContent(TestCase):
         sleep(3)
 
     def test_02_editPaster(self):
-        if not self._check_case(["C00090"]): return
+        if not self._check_case(["C00116"]): return
         # 编辑海报
         params = {
             # "pasterTitle": self.title,
@@ -63,7 +63,7 @@ class test_pasterContent(TestCase):
         sleep(3)
 
     def test_03_delPaster(self):
-        if not self._check_case(["C00093"]): return
+        if not self._check_case(["C00119"]): return
         # 删除海报
         # params = {
         #     "searchTitle": "新的海报"
@@ -73,7 +73,7 @@ class test_pasterContent(TestCase):
 
     def test_04_search_poster(self):
         # 搜索海报
-        if not self._check_case(["C00094","C00095","C00096","C00097","C00098"]): return
+        if not self._check_case(["C00120","C00121","C00122","C00123","C00124"]): return
         params = {
             "poster_title": "海报"
         }
@@ -82,13 +82,13 @@ class test_pasterContent(TestCase):
 
     def test_05_poster_page_turning(self):
         # 海报列表翻页
-        if not self._check_case(["C00099"]): return
+        if not self._check_case(["C00127"]): return
         self.pasterManagementLg.poster_page_turning()
         sleep(3)
 
     def test_06_addSort(self):
         # 新增分类
-        if not self._check_case(["C00088","C00100"]): return
+        if not self._check_case(["C00128"]): return
         params = {
             "sortTitle": self.sort
         }
@@ -97,7 +97,7 @@ class test_pasterContent(TestCase):
 
     def test_07_edit_sort(self):
         # 编辑分类
-        if not self._check_case(["C00101"]): return
+        if not self._check_case(["C00129"]): return
         params = {
             "sort_title": "编辑后的分类"
         }
@@ -106,13 +106,13 @@ class test_pasterContent(TestCase):
 
     def test_08_del_sort(self):
         # 删除分类
-        if not self._check_case(["C00102"]): return
+        if not self._check_case(["C00130"]): return
         self.pasterManagementLg.del_sort()
         sleep(3)
 
     def test_09_sort_page_turning(self):
         # 海报分类翻页
-        if not self._check_case(["C00103"]): return
+        if not self._check_case(["C00132"]): return
         self.pasterManagementLg.sort_page_turning()
         sleep(3)
 
@@ -122,7 +122,7 @@ class test_pasterContent(TestCase):
     )
     def test_10_search_sort(self, data):
         # 搜索分类
-        if not self._check_case(["C00104","C00105"]): return
+        if not self._check_case(["C00133","C00134"]): return
         params = {
             "keywords": data['keywords']
         }

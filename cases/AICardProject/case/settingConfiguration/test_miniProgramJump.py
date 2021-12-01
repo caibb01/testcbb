@@ -47,7 +47,7 @@ class test_miniProgramJump(TestCase):
     @unpack
     def test_01_add_mini_program(self,data):
         """新增小程序,保存"""
-        if not self._check_case(["C00166"]): return
+        if not self._check_case(["C00201"]): return
         params = {
             'parameter':{
                 'contentName': data['contentName'],
@@ -68,7 +68,7 @@ class test_miniProgramJump(TestCase):
     @unpack
     def test_02_cancel_add_mini_program(self, data):
         """新增小程序，取消保存"""
-        if not self._check_case(["C00168"]): return
+        if not self._check_case(["C00203"]): return
         params = {
             'parameter': {
                 'contentName2': data['contentName2'],
@@ -86,7 +86,7 @@ class test_miniProgramJump(TestCase):
     @unpack
     def test_03_delete_mini_program(self,data):
         """删除小程序"""
-        if not self._check_case(["C00169"]): return
+        if not self._check_case(["C00204"]): return
         params = {
             'checkData': {
                 'expectData': data['expectData'],

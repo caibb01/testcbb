@@ -82,7 +82,7 @@ class clientStandingBookLg():
         '''查询集团客户'''
         #切换集团客户/区域客户/项目客户/预约客户的Tab
         self.clientStandingBookPO.switch_to_tab(var['modelName'])
-        self.clientStandingBookPO.group_customer_inquiry(var['parameter'])
+        self.clientStandingBookPO.group_customer_inquiry(var['parameter'],var['checkData'])
         #对比列表中的数据，当前页没有找到点击下一页继续找，直到最后一页
         #self.clientStandingBookPO.contrast_list_data(var['checkData'])
 
@@ -92,7 +92,7 @@ class clientStandingBookLg():
         #切换集团客户/区域客户/项目客户/预约客户的Tab
         self.clientStandingBookPO.switch_to_tab(var['modelName'])
         #区域客户-查询
-        self.clientStandingBookPO.regional_customer_inquiry(var['parameter'])
+        self.clientStandingBookPO.regional_customer_inquiry(var['parameter'],var['checkData'])
         #对比列表中的数据，当前页没有找到点击下一页继续找，直到最后一页
         #self.clientStandingBookPO.contrast_list_data(var['checkData'])
 
@@ -102,7 +102,7 @@ class clientStandingBookLg():
         #切换集团客户/区域客户/项目客户/预约客户的Tab
         self.clientStandingBookPO.switch_to_tab(var['modelName'])
         #项目客户-查询
-        self.clientStandingBookPO.project_customer_inquiry(var['parameter'])
+        self.clientStandingBookPO.project_customer_inquiry(var['parameter'],var['checkData'])
         #对比列表中的数据，当前页没有找到点击下一页继续找，直到最后一页
         #self.clientStandingBookPO.contrast_list_data(var['checkData'])
 
@@ -112,7 +112,7 @@ class clientStandingBookLg():
         #切换集团客户/区域客户/项目客户/预约客户的Tab
         self.clientStandingBookPO.switch_to_tab(var['modelName'])
         #预约客户-查询
-        self.clientStandingBookPO.booking_customer_inquiry(var['parameter'])
+        self.clientStandingBookPO.booking_customer_inquiry(var['parameter'],var['checkData'])
         #对比列表中的数据，当前页没有找到点击下一页继续找，直到最后一页
         #self.clientStandingBookPO.contrast_list_data(var['checkData'])
 

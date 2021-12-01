@@ -41,7 +41,7 @@ class test_H5Management(TestCase):
     )
     def test_case_01_save_h5Link(self, data):
         # 新增H5链接(直接选择项目和城市)
-        if not self._check_case(["C00068"]): return
+        if not self._check_case(["C00088"]): return
         params = {
             'title': data['title'],
             'description': data['description'],
@@ -56,7 +56,7 @@ class test_H5Management(TestCase):
 
     def test_case_02_edit_h5Link(self, data):
         # 编辑h5链接
-        if not self._check_case(["C00069"]): return
+        if not self._check_case(["C00089"]): return
         params = {
             'title': data['title'],
             'description': data['description'],
@@ -67,7 +67,7 @@ class test_H5Management(TestCase):
 
     def test_case_03_delete_h5Link(self):
         # 删除h5链接
-        if not self._check_case(["C00070"]): return
+        if not self._check_case(["C00090"]): return
         self.h5ManagementLg.delete_h5Link()
         time.sleep(3)
 
@@ -94,7 +94,7 @@ class test_H5Management(TestCase):
     )
     def test_case_04_search_h5Link(self, data):
         # 列表搜索
-        if not self._check_case(["C00071","C00072","C00073"]): return
+        if not self._check_case(["C00091","C00092","C00093"]): return
         params = {
             'link_type': data['link_type'],
             'search_type': data['search_type'],
@@ -105,7 +105,7 @@ class test_H5Management(TestCase):
 
     def test_case_05_page_turning(self):
         # 翻页
-        if not self._check_case(["C00074"]): return
+        if not self._check_case(["C00096"]): return
         self.h5ManagementLg.page_turning()
 
 
