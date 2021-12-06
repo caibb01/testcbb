@@ -1,25 +1,28 @@
-﻿#-*- coding:utf-8 -*-
+﻿# -*- coding:utf-8 -*-
 
 # from selenium import webdriver
+from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 # from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-import time,logging
-from pykeyboard import PyKeyboard
+import time, logging
+# from pykeyboard import PyKeyboard
 import myweb.core.runner as cf
 import datetime, os
 import platform
-if(platform.system()=='Windows'):
+
+if (platform.system() == 'Windows'):
     import win32gui
     import win32con
+
 
 class BasePage(object):
     """description of class"""
 
-    #webdriver instance
+    # webdriver instance
     def __init__(self, driver):
         '''
         initialize selenium webdriver, use chrome as default webdriver
@@ -52,10 +55,10 @@ class BasePage(object):
             else:
                 raise NameError("Please correct the type in function parameter")
         except Exception as err:
-            raise ValueError("No such element found"+ str(element))
+            raise ValueError("No such element found" + str(element))
         ActionChains(self.driver).move_to_element(el).perform()
 
-    def find_element(self,element):
+    def find_element(self, element):
         '''
         :param element:
         :return: 找单个控件
@@ -64,7 +67,7 @@ class BasePage(object):
         self._mark(element)
         return element
 
-    def find_elements(self,element,num):
+    def find_elements(self, element, num):
         '''
         :param element: 找多个控件的第num个元素
         :param num:
@@ -74,28 +77,28 @@ class BasePage(object):
             type = element[0]
             value = element[1]
             global elem
-            if type == "id" or type == "ID" or type=="Id":
+            if type == "id" or type == "ID" or type == "Id":
                 elem = self.driver.find_elements_by_id(value)
 
-            elif type == "name" or type == "NAME" or type=="Name":
+            elif type == "name" or type == "NAME" or type == "Name":
                 elem = self.driver.find_elements_by_name(value)
 
-            elif type == "class" or type == "CLASS" or type=="Class":
+            elif type == "class" or type == "CLASS" or type == "Class":
                 elem = self.driver.find_elements_by_class_name(value)
 
-            elif type == "link_text" or type == "LINK_TEXT" or type=="Link_text":
+            elif type == "link_text" or type == "LINK_TEXT" or type == "Link_text":
                 elem = self.driver.find_elements_by_link_text(value)
 
-            elif type == "xpath" or type == "XPATH" or type=="Xpath":
+            elif type == "xpath" or type == "XPATH" or type == "Xpath":
                 elem = self.driver.find_elements_by_xpath(value)
 
-            elif type == "css" or type == "CSS" or type=="Css":
+            elif type == "css" or type == "CSS" or type == "Css":
                 elem = self.driver.find_elements_by_css_selector(value)
             else:
                 raise NameError("Please correct the type in function parameter")
         except Exception as err:
             logging.info('the len(elem) : %s' % str(len(elem)))
-            raise ValueError("No such element found"+ str(element))
+            raise ValueError("No such element found" + str(element))
         print(len(elem))
         return elem[num]
 
@@ -104,31 +107,31 @@ class BasePage(object):
             type = element[0]
             value = element[1]
             global elem
-            if type == "id" or type == "ID" or type=="Id":
+            if type == "id" or type == "ID" or type == "Id":
                 elem = self.driver.find_elements_by_id(value)
 
-            elif type == "name" or type == "NAME" or type=="Name":
+            elif type == "name" or type == "NAME" or type == "Name":
                 elem = self.driver.find_elements_by_name(value)
 
-            elif type == "class" or type == "CLASS" or type=="Class":
+            elif type == "class" or type == "CLASS" or type == "Class":
                 elem = self.driver.find_elements_by_class_name(value)
 
-            elif type == "link_text" or type == "LINK_TEXT" or type=="Link_text":
+            elif type == "link_text" or type == "LINK_TEXT" or type == "Link_text":
                 elem = self.driver.find_elements_by_link_text(value)
 
-            elif type == "xpath" or type == "XPATH" or type=="Xpath":
+            elif type == "xpath" or type == "XPATH" or type == "Xpath":
                 elem = self.driver.find_elements_by_xpath(value)
 
-            elif type == "css" or type == "CSS" or type=="Css":
+            elif type == "css" or type == "CSS" or type == "Css":
                 elem = self.driver.find_elements_by_css_selector(value)
             else:
                 raise NameError("Please correct the type in function parameter")
         except Exception as err:
             logging.info('the len(elem) : %s' % str(len(elem)))
-            raise ValueError("No such element found"+ str(element))
+            raise ValueError("No such element found" + str(element))
         return elem
 
-    def is_elem_visible(self,element):
+    def is_elem_visible(self, element):
         '''
         :param element:
         :return: 判断元素是不是可以点击
@@ -151,7 +154,7 @@ class BasePage(object):
             el = self.driver.find_element_by_tag_name(value).is_displayed()
         return el
 
-    def is_exist_element(self,element,timeout=3):
+    def is_exist_element(self, element, timeout=3):
         '''
         :param element:
         :return: 检查是否存在唯一控件
@@ -163,21 +166,21 @@ class BasePage(object):
             try:
                 type = element[0]
                 value = element[1]
-                if type == "id" or type == "ID" or type=="Id" or type == By.ID:
+                if type == "id" or type == "ID" or type == "Id" or type == By.ID:
                     elem = self.driver.find_element_by_id(value)
-                elif type == "name" or type == "NAME" or type=="Name" or type == By.NAME:
+                elif type == "name" or type == "NAME" or type == "Name" or type == By.NAME:
                     elem = self.driver.find_element_by_name(value)
 
-                elif type == "class" or type == "CLASS" or type=="Class" or type=='class name' or type == By.CLASS_NAME:
+                elif type == "class" or type == "CLASS" or type == "Class" or type == 'class name' or type == By.CLASS_NAME:
                     elem = self.driver.find_element_by_class_name(value)
 
-                elif "link" in type or type == "link_text" or type == "LINK_TEXT" or type=="Link_text" or type=='link text' or type == By.LINK_TEXT:
+                elif "link" in type or type == "link_text" or type == "LINK_TEXT" or type == "Link_text" or type == 'link text' or type == By.LINK_TEXT:
                     elem = self.driver.find_element_by_link_text(value)
 
-                elif type == "xpath" or type == "XPATH" or type=="Xpath" or type == By.XPATH:
+                elif type == "xpath" or type == "XPATH" or type == "Xpath" or type == By.XPATH:
                     elem = self.driver.find_element_by_xpath(value)
 
-                elif type == "css" or type == "CSS" or type=="Css" or type=="css selector" or type == By.CSS_SELECTOR:
+                elif type == "css" or type == "CSS" or type == "Css" or type == "css selector" or type == By.CSS_SELECTOR:
                     elem = self.driver.find_element_by_css_selector(value)
                 else:
                     raise NameError("Please correct the type in function parameter")
@@ -192,7 +195,7 @@ class BasePage(object):
             print(element)
         else:
             self._mark(elem)
-        cf._step_screenshot(driver= self.driver, ty="is_exist", type_name="判断元素", msg=str(element)+str(flag))
+        cf._step_screenshot(driver=self.driver, ty="is_exist", type_name="判断元素", msg=str(element) + str(flag))
         return flag
 
     def get_page_info(self):
@@ -228,33 +231,32 @@ class BasePage(object):
         '''
         self.driver.refresh()
 
-    def send_keys(self,keywords):
-        '''
-        :param keywords: 暂时支持TAB，回车，右建，ESC和输入字符串
-        :return: 模拟键盘输入
-        '''
-        k = PyKeyboard()
-        if "{" not in keywords:
-            k.type_string(keywords)
-        elif "TAB" in keywords:
-            k.tap_key(k.tab_key)
-        elif "ENTER" in keywords:
-            # k.press_key(k.enter_key)
-            # k.release_key(k.enter_key)
-            k.tap_key(k.enter_key)
-        elif "RIGHT" in keywords:
-            # k.press_key(k.right_key)
-            # k.release_key(k.right_key)
-            k.tap_key(k.right_key)
-        elif "ESC" in keywords:
-            k.tap_key(k.escape_key)
-        elif "BACKSPACE" in keywords:
-            k.tap_key(k.backspace_key)
-        else:
-            logging.info("keywords : %s is not support " % keywords)
+    # def send_keys(self, keywords):
+    #     '''
+    #     :param keywords: 暂时支持TAB，回车，右建，ESC和输入字符串
+    #     :return: 模拟键盘输入
+    #     '''
+    #     k = PyKeyboard()
+    #     if "{" not in keywords:
+    #         k.type_string(keywords)
+    #     elif "TAB" in keywords:
+    #         k.tap_key(k.tab_key)
+    #     elif "ENTER" in keywords:
+    #         # k.press_key(k.enter_key)
+    #         # k.release_key(k.enter_key)
+    #         k.tap_key(k.enter_key)
+    #     elif "RIGHT" in keywords:
+    #         # k.press_key(k.right_key)
+    #         # k.release_key(k.right_key)
+    #         k.tap_key(k.right_key)
+    #     elif "ESC" in keywords:
+    #         k.tap_key(k.escape_key)
+    #     elif "BACKSPACE" in keywords:
+    #         k.tap_key(k.backspace_key)
+    #     else:
+    #         logging.info("keywords : %s is not support " % keywords)
 
-
-    def open(self,url):
+    def open(self, url):
         '''
         Open web url
 
@@ -266,7 +268,7 @@ class BasePage(object):
         else:
             raise ValueError("please provide a base url")
 
-    def type(self,element,text):
+    def type(self, element, text):
         '''
         Operation input box.
 
@@ -275,8 +277,7 @@ class BasePage(object):
         '''
         element.send_keys(text)
 
-    
-    def enter(self,element):
+    def enter(self, element):
         '''
         Keyboard: hit return
 
@@ -284,21 +285,18 @@ class BasePage(object):
         self.enter(element)
         '''
         element.send_keys(Keys.RETURN)
-    
 
-    def click(self,element):
+    def click(self, element):
         '''
         Click page element, like button, image, link, etc.
         '''
         element.click()
-
 
     def quit(self):
         '''
         Quit webdriver
         '''
         self.driver.quit()
-
 
     def getAttribute(self, element, attribute):
         '''
@@ -326,7 +324,7 @@ class BasePage(object):
         '''
         return self.driver.current_url
 
-    def getScreenshot(self,targetpath):
+    def getScreenshot(self, targetpath):
         '''
         Get current screenshot and save it to target path
         '''
@@ -362,14 +360,14 @@ class BasePage(object):
         :param filepath: 文件绝对路径
         :return:
         """
-        dialog = win32gui.FindWindow("#32770", "打开") # 一级窗口
-        comboBoxEx32 = win32gui.FindWindowEx(dialog, 0, "ComboBoxEx32", None) # 二级
-        comboBox = win32gui.FindWindowEx(comboBoxEx32, 0, "ComboBox", None) # 三级
-        edit = win32gui.FindWindowEx(comboBox, 0, "Edit", None) # 四级
-        button = win32gui.FindWindowEx(dialog, 0, "Button", None) # 四级
+        dialog = win32gui.FindWindow("#32770", "打开")  # 一级窗口
+        comboBoxEx32 = win32gui.FindWindowEx(dialog, 0, "ComboBoxEx32", None)  # 二级
+        comboBox = win32gui.FindWindowEx(comboBoxEx32, 0, "ComboBox", None)  # 三级
+        edit = win32gui.FindWindowEx(comboBox, 0, "Edit", None)  # 四级
+        button = win32gui.FindWindowEx(dialog, 0, "Button", None)  # 四级
 
-        win32gui.SendMessage(edit, win32con.WM_SETTEXT, None, filepath) # 发送文件路径
-        win32gui.SendMessage(dialog, win32con.WM_COMMAND, 1, button) # 点击打开按钮
+        win32gui.SendMessage(edit, win32con.WM_SETTEXT, None, filepath)  # 发送文件路径
+        win32gui.SendMessage(dialog, win32con.WM_COMMAND, 1, button)  # 点击打开按钮
 
     def upload_new(self, image_path, el, loading_el=None, end_el=None, timeout=10):
         """
@@ -400,7 +398,8 @@ class BasePage(object):
         :param poll_frequencey: 时间间隔查询一次
         :return:
         """
-        result = WebDriverWait(self.driver, timeout=wait_times, poll_frequency=poll_frequencey).until(EC.visibility_of_all_elements_located(controls))
+        result = WebDriverWait(self.driver, timeout=wait_times, poll_frequency=poll_frequencey).until(
+            EC.visibility_of_all_elements_located(controls))
         return result
 
     def _mark(self, el):
@@ -408,4 +407,35 @@ class BasePage(object):
         if mark_flag:
             self.driver.execute_script("arguments[0].setAttribute('style', arguments[1]);", el,
                                        'border: 5px solid red;')
-    #
+
+    def compare_image(self, original_image_path):
+        """
+        图片对比
+        :param original_image: 原图路径,推荐png类型图片
+        :return: 返回对比图片的匹配度
+        """
+        current_stamp = datetime.datetime.now().timestamp()
+        file_time = datetime.datetime.fromtimestamp(current_stamp).strftime("%Y%m%d%H%M%S")
+        file_dir = os.path.split(original_image_path)
+        file_name = os.path.splitext(file_dir[1])
+        print(file_dir)
+        print(file_name)
+        new_imge_path = os.path.join(file_dir[0], file_name[0] + file_time + ".png")
+        print(new_imge_path)
+        self.driver.save_screenshot(new_imge_path)
+        from myweb.tools.image_compare import ImageCompare
+        img_comp = ImageCompare()
+        return img_comp.calc_similar_by_path(original_image_path, new_imge_path) * 100
+
+    def assert_compare_image_mach(self, original_image_path, percentage=100):
+        """
+        断言图片匹配度
+        :param original_image_path: 原图路径
+        :param percentage: 匹配程度，默认100匹配,传小数或整数
+        :return:
+        """
+        image_percentage = self.compare_image(original_image_path)
+        if image_percentage >= percentage:
+            return True
+        else:
+            return False
