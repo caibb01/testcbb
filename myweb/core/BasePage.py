@@ -9,7 +9,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time,logging
 from pykeyboard import PyKeyboard
-
 import myweb.core.runner as cf
 import datetime, os
 import platform
@@ -74,8 +73,6 @@ class BasePage(object):
         try:
             type = element[0]
             value = element[1]
-            print('type:',type)
-            print('value:', value)
             global elem
             if type == "id" or type == "ID" or type=="Id":
                 elem = self.driver.find_elements_by_id(value)
@@ -106,7 +103,6 @@ class BasePage(object):
         try:
             type = element[0]
             value = element[1]
-            print('type:',type)
             global elem
             if type == "id" or type == "ID" or type=="Id":
                 elem = self.driver.find_elements_by_id(value)
@@ -375,7 +371,7 @@ class BasePage(object):
         win32gui.SendMessage(edit, win32con.WM_SETTEXT, None, filepath) # 发送文件路径
         win32gui.SendMessage(dialog, win32con.WM_COMMAND, 1, button) # 点击打开按钮
 
-    def upload_new(self, path, el, loading_el=None, end_el=None, timeout=10):
+    def upload_new(self, image_path, el, loading_el=None, end_el=None, timeout=10):
         """
 
         :param image_path: 文件地址

@@ -1,0 +1,11 @@
+{
+    "project_name": "DemoProject",
+    "project_name_zh": "测试项目",
+    "desc": "中文字符",
+    "report_mode": true,
+    "retry": 0,
+    "email_mode": [
+        "lips02@mingyuanyun.com"
+    ],
+    "report_to_atmp": true
+}

@@ -6,7 +6,7 @@ import time
 
 class PopupManagementPage(BasePage):
     controls = {
-        "新增弹窗": (By.CSS_SELECTOR, "div.components-common-PageBlockHeader-index-module_2tJ-g > div.right > button"),
+        "新增弹窗": (By.XPATH, '//div[@class="right"]/button'),
         "弹窗名称输入框": (By.XPATH, "//div[contains(text(), '弹窗名称')]/following-sibling::div[1]/input"),
         "关联项目输入框": (By.XPATH, "//div[contains(text(), '关联项目')]/following-sibling::div[1]"),
         "关联项目下拉框": (By.XPATH, "//div[contains(@class, 'select-tree-ids')]/div[text()='{content}']"),
@@ -14,6 +14,7 @@ class PopupManagementPage(BasePage):
         "生效页面一级下拉框": (By.XPATH, "//ul[contains(@class, 'ant-select-dropdown-menu')]/li[text()='{content}']"),
         "生效页面二级输入框": (By.XPATH, "//div[contains(text(), '生效页面')]/following-sibling::div[1]/div/div[2]"),
         "生效页面二级下拉框": (By.XPATH, "//ul[contains(@class, 'ant-select-dropdown-menu')]/li[text()='{content}']"),
+        "生效页面项目下拉框": (By.XPATH, '//div[@class="ant-dropdown ant-dropdown-placement-bottomLeft"]/div/div[2]/div[text()="{content}"]'),
         "跳转页面一级输入框": (By.XPATH, "//div[contains(text(), '跳转页面')]/following-sibling::div[1]/div/div/div[1]"),
         "跳转页面一级下拉框": (By.XPATH, "//ul[contains(@class, 'ant-select-dropdown-menu')]/li[text()='{content}']"),
         "跳转页面二级输入框": (By.XPATH, "//div[contains(text(), '跳转页面')]/following-sibling::div[1]/div/div/div[2]"),
@@ -46,6 +47,7 @@ class PopupManagementPage(BasePage):
         :return:
         '''
         # 点击新增弹窗
+        time.sleep(2)
         if self.is_exist_element(self.controls["新增弹窗"]):
             self.find_element(self.controls["新增弹窗"]).click()
         # 输入弹窗名称
@@ -53,6 +55,9 @@ class PopupManagementPage(BasePage):
         # 点击关联项目，进行选择
         self._update_popup_project_relation_name(project_relation_name=params['project_relation_name'])
         # 点击生效页面，进行选择
+        if params["control_page"][0] == "项目":
+            pass
+
         self._update_popup_control_page(control_page=params['control_page'])
         # 点击跳转页面，进行选择
         self._update_popup_jump_page(jump_page=params['jump_page'])
@@ -63,14 +68,14 @@ class PopupManagementPage(BasePage):
         # 点击上传图片
         self._update_popup_image(image_path=params['image_path'])
         # 点击保存
+        time.sleep(2)
         self.find_element(self.controls["保存"]).click()
-
 
     def delete_popup(self, params):
         if self.is_exist_element(self.controls["搜索输入框"]):
             search_input_el = self.find_element(self.controls["搜索输入框"])
             search_input_el.click()
-            search_input_el.send_keys(Keys.CONTROL,'a')
+            search_input_el.send_keys(Keys.CONTROL, 'a')
             search_input_el.send_keys(Keys.BACKSPACE)
             time.sleep(2)
             self.find_element(self.controls["搜索输入框"]).send_keys(params['popup_name'])
@@ -88,15 +93,14 @@ class PopupManagementPage(BasePage):
 
 
     def editor_popup(self, params):
+        time.sleep(2)
         if self.is_exist_element(self.controls["搜索输入框"]):
-
             self.find_element(self.controls["搜索输入框"]).click()
             self.find_element(self.controls["搜索输入框"]).send_keys(params['popup_name_old'])
             self.find_element(self.controls["搜索按钮"]).click()
         editor_button_el = (self.controls["编辑按钮"][0], self.controls["编辑按钮"][1].format(content=params['popup_name_old']))
         if self.is_exist_element(editor_button_el):
             self.find_element(editor_button_el).click()
-
         if "popup_name" in params.keys():
             self._update_popup_name(params["popup_name"])
         if "project_relation_name" in params.keys():
@@ -109,6 +113,8 @@ class PopupManagementPage(BasePage):
             self._update_popup_trigger_condition(params["condition"])
         if "start_and_end_time" in params.keys():
             self._update_popup_start_and_end_time(start_time=params["start_and_end_time"][0], end_time=params["start_and_end_time"][2])
+        if "image_path" in params.keys():
+            self._update_popup_image(params["image_path"])
         # 点击保存
         self.find_element(self.controls["保存"]).click()
 
@@ -126,6 +132,7 @@ class PopupManagementPage(BasePage):
 
 
     def _update_popup_project_relation_name(self, project_relation_name):
+        time.sleep(1)
         self.find_element(self.controls["关联项目输入框"]).click()
         project_relation_element = (
         self.controls["关联项目下拉框"][0], self.controls["关联项目下拉框"][1].format(content=project_relation_name))
@@ -140,6 +147,11 @@ class PopupManagementPage(BasePage):
         if self.is_exist_element(control_page_element_one):
             self.find_element(control_page_element_one).click()
         self.find_element(self.controls["生效页面二级输入框"]).click()
+        time.sleep(1)
+        if control_page[0] == "项目":
+            control_page_pro_element_one =(
+            self.controls["生效页面项目下拉框"][0], self.controls["生效页面项目下拉框"][1].format(content=control_page[1]))
+            self.find_element(control_page_pro_element_one).click()
         control_page_element_one = (
             self.controls["生效页面二级下拉框"][0], self.controls["生效页面二级下拉框"][1].format(content=control_page[1]))
         if self.is_exist_element(control_page_element_one):
@@ -148,16 +160,19 @@ class PopupManagementPage(BasePage):
 
     def _update_popup_jump_page(self, jump_page):
         self.find_element(self.controls["跳转页面一级输入框"]).click()
+        time.sleep(1)
         control_page_element_one = (
             self.controls["跳转页面一级下拉框"][0], self.controls["跳转页面一级下拉框"][1].format(content=jump_page[0]))
         if self.is_exist_element(control_page_element_one):
             self.find_element(control_page_element_one).click()
         self.find_element(self.controls["跳转页面二级输入框"]).click()
+        time.sleep(1)
         control_page_element_one = (
             self.controls["跳转页面二级下拉框"][0], self.controls["跳转页面二级下拉框"][1].format(content=jump_page[1]))
         if self.is_exist_element(control_page_element_one):
             self.find_element(control_page_element_one).click()
         self.find_element(self.controls["跳转页面三级输入框"]).click()
+        time.sleep(1)
         control_page_element_one = (
             self.controls["跳转页面三级下拉框"][0], self.controls["跳转页面三级下拉框"][1].format(content=jump_page[2]))
         if self.is_exist_element(control_page_element_one):
@@ -194,9 +209,10 @@ class PopupManagementPage(BasePage):
         start_time = time.time()
         if self.is_exist_element(self.controls["上传图片输入框"]):
             self.find_element(self.controls["上传图片输入框"]).send_keys(image_path)
-        while time.time() - start_time <= timeout:
+
+        """        while time.time() - start_time <= timeout:
             if not self.is_exist_element(self.controls["上传图片等待"]):
                 break
         else:
-            raise Exception("upload image timeout!")
+            raise Exception("upload image timeout!")"""
 

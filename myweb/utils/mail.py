@@ -80,4 +80,3 @@ class Email(object):
             finally:
                 smtp_server.quit()
                 return flag
-

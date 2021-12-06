@@ -1,21 +1,39 @@
 {
-    "test_env": "test",
+  "test_env":"test",
     "test": {
         "url": "https://test-qmyxcg.myscrm.com.cn/login.shtml",
         "username": "yktest",
         "password": "yk_123456",
-        "orgname": "fangzhiadmin_test"
+        "orgname": "gzminjieadmin_test",
+        "loginuser": "yktest",
+        "project_name_zh": "AI云店Web自动化项目-测试环境",
+        "ai_xpath": ".//*[text()=\"智慧名片测试版\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AI云店\"]"
     },
     "g0": {
-        "url": "https://test-qmyxcg.myscrm.com.cn/login.shtml",
-        "username": "xx",
-        "password": "yk_123456",
-        "orgname": "gzminjieadmin_test"
+        "url": "https://qmyxcg.myscrm.com.cn/login.shtml",
+        "username": "public",
+        "password": "mysoft123",
+        "orgname": "kktyadmin",
+        "loginuser": "公共账号",
+        "project_name_zh": "AI云店Web自动化项目-生产G0迭代checklist回归验证",
+        "ai_xpath": ".//*[text()=\"明源云客测试七\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AI云店\"]"
     },
     "g1": {
-        "url": "https://test-qmyxcg.myscrm.com.cn/login.shtml",
-        "username": "xx",
-        "password": "yk_123456",
-        "orgname": "gzminjieadmin_test"
+        "url": "https://qmyxcg.myscrm.com.cn/login.shtml",
+        "username": "public",
+        "password": "mysoft123",
+        "orgname": "yktyadmin",
+        "loginuser": "公共账号",
+        "project_name_zh": "AI云店Web自动化项目-生产G1迭代checklist回归验证",
+        "ai_xpath": ".//*[text()=\"新房测试二\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AI云店\"]"
+    },
+    "g2": {
+        "url": "https://qmyxcg.myscrm.com.cn/login.shtml",
+        "username": "public",
+        "password": "mysoft123",
+        "orgname": "g2kktyadmin",
+        "loginuser": "public",
+        "project_name_zh": "AI云店Web自动化项目-生产G2迭代checklist回归验证",
+        "ai_xpath": ".//*[text()=\"AI门户\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AI云店\"]"
     }
 }

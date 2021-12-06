@@ -1,10 +1,10 @@
 {
     "info": [],
-    "timestamp": "20211027190323",
-    "project": "SingleResult",
-    "configPath": "D:\\testgit\\yk-ui-baseframe\\conf\\single.json",
-    "imagePath": "D:\\testgit\\yk-ui-baseframe\\outputs\\SingleResult\\20211027190323\\image",
-    "resultPath": "D:\\testgit\\yk-ui-baseframe\\outputs\\SingleResult\\20211027190323\\result.json",
-    "module_name": "test_DemoTestCase",
-    "case_name": "test_case_02"
+    "timestamp": "20211201104923",
+    "project": "DemoProject",
+    "configPath": "d:\\lab\\python\\pycharm\\yk-ui-baseframe\\conf\\demo_atmp.json",
+    "imagePath": "d:\\lab\\python\\pycharm\\yk-ui-baseframe\\outputs\\DemoProject\\20211201104923\\image",
+    "resultPath": "d:\\lab\\python\\pycharm\\yk-ui-baseframe\\outputs\\DemoProject\\20211201104923\\result.json",
+    "module_name": "test_DemoTestCase02",
+    "case_name": "test_case_01"
 }

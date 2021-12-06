@@ -1,42 +1,37 @@
-# -*- encoding=utf8 -*-
 from myweb.core.runner import TestCase
-import time
-from myweb.tools.support_atmp.is_skip_case import is_skip
+import unittest
 
 
 class DemoTestCase(TestCase):
     __author__ = "zero"
 
     def test_case_01(self):
-        self.test_code = ["C00001", ]
         """
         第一个用例 成功
         """
-        if is_skip(self.test_code):
-            time.sleep(0.2)
-            print("另一种方式执行")
-            pass
+        if not self._check_case(["C00001"]): return
+        print("用例执行：test_case_01")
+        pass
 
     def test_case_02(self):
-        self.test_code = ["C00002"]
-        """
-        第二个用例 失败
-        """
-        # print("test_case_01 fail")
-        time.sleep(0.2)
-        # print(time.time())
-        # self.assertEqual(1, 2)
+        if not self._check_case(["C00002"]): return
+        print("用例执行：test_case_02")
+        raise Exception("实际结果不一致")
 
-    # def test_case_03(self):
-    #     self.test_code = "C12001"
-    #     """
-    #     第三个用例 失败
-    #     """
-    #     time.sleep(0.2)
-    #     # raise Exception
+    def test_case_03(self):
+        print("用例执行：test_case_03")
+        pass
+
+    def test_case_04(self):
+        if not self._check_case(["C00004"]): return
+        print("用例执行：test_case_04")
+        pass
+
+    def test_case_05(self):
+        if not self._check_case(["C00005"]): return
+        print("用例执行：test_case_05")
+        pass
 
 
 if __name__ == '__main__':
-    import unittest
-
     unittest.main()

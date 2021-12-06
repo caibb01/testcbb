@@ -8,8 +8,8 @@ import json
 import time
 import jinja2
 from selenium import webdriver
-
-from myweb.tools.support_atmp.support_atmp_run import report_result_to_atmp
+from selenium.webdriver.chrome.options import Options
+from myweb.tools.support_atmp_run import report_result_to_atmp, check_case
 from myweb.utils.mail import Email
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
@@ -102,15 +102,12 @@ def _setUp_storage(config_name, output=None):
 
 def _step_screenshot(driver, ty, type_name, msg):
     if isinstance(driver, webdriver.Remote):
-
         storage = _get_storage()
-
         current_stamp = datetime.datetime.now().timestamp()
         current_time = datetime.datetime.fromtimestamp(current_stamp).strftime("%Y-%m-%d %H:%M:%S")
         file_time = datetime.datetime.fromtimestamp(current_stamp).strftime("%Y%m%d%H%M%S")
         filename = ty + '_' + file_time + '.png'
         screen_path = os.path.join(OUTPUT_PATH, storage['project'], storage['timestamp'], "image", filename)
-
         driver.get_screenshot_as_file(screen_path)
         storage["info"].append({
             "type": ty,
@@ -312,9 +309,12 @@ class TestCase(unittest.TestCase):
     def setUpClass(cls):
         if _decide_config("auto_open_driver")[0]:
             cls._global_config = _get_global_config()
-            option = webdriver.ChromeOptions()
+            # option = webdriver.ChromeOptions()
+            # chrome_options = Options()
+            # chrome_options.add_argument('--headless')
             # 浏览器默认不关闭
-            option.add_experimental_option("detach", True)
+            # option.add_experimental_option("detach", True)
+            # cls.driver = webdriver.Chrome(cls._global_config['driverPath'],chrome_options = chrome_options)
             # cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
 
         config_path = os.path.join(CONFIG_PATH, CONFIG)
@@ -414,7 +414,8 @@ class TestCase(unittest.TestCase):
         self._storage["case_name"] = self._testMethodName
         _set_storage(self._storage)
         # 定义测试编号
-        self.test_code = ""
+        self.test_codes = None
+        self.run_flag = None
 
     def tearDown(self):
         sys_info = self._outcome.errors[-1][-1]
@@ -445,7 +446,6 @@ class TestCase(unittest.TestCase):
         # 每次用例执行完毕之后，将单个用例结果写入result
         # 记录操作信息
         self._storage = _get_storage()
-        print(self._storage)
         if self._storage["info"]:
             for i in self._storage["info"]:
                 self._result["screen"].append(i)
@@ -458,12 +458,14 @@ class TestCase(unittest.TestCase):
         self._result['total_time'] = round(self._result['end_timestamp'] - self._result['start_timestamp'], 3)
         self._results['cases_info'].append(self._result)
 
-        if self._result["success"] is True:
-            print(self.test_code)
-            report_result_to_atmp(self.test_code, "pass", self._result["start_timestamp"], self._result["end_timestamp"], "预期与实际结果一致")
-        else:
-            report_result_to_atmp(self.test_code, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
-                                  self._result["trace"])
+        report_to_atmp = _decide_config("report_to_atmp")[0]
+        if report_to_atmp and self._check_case(self.test_codes):
+            if self._result["success"] is True:
+                report_result_to_atmp(self.test_codes, "pass", self._result["start_timestamp"], self._result["end_timestamp"],
+                                      "预期与实际结果一致")
+            else:
+                report_result_to_atmp(self.test_codes, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
+                                      self._result["trace"])
 
     # def check(self,code):
     def __getattribute__(self, item):
@@ -491,6 +493,17 @@ class TestCase(unittest.TestCase):
         f = open(file_name, "w", encoding='utf-8')
         json.dump(result, f, indent=4, ensure_ascii=False)
         f.close()
+
+    def _check_case(self, test_codes):
+        report_to_atmp = _decide_config("report_to_atmp")[0]
+        if not report_to_atmp:
+            return True
+        if self.test_codes is None:
+            self.test_codes = test_codes
+        if self.run_flag is None:
+            self.run_flag = check_case(test_codes)
+            print("是否执行用例：" + str(self.test_codes) + " -> " + str(self.run_flag))
+        return self.run_flag
 
 
 _get_storage()
