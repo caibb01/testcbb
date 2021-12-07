@@ -9,10 +9,10 @@ class SikuliOperate(object):
         try:
             jvmPath = jpype.getDefaultJVMPath()
             jpype.startJVM(jvmPath, "-ea", "-Djava.class.path=%s" % 'sikulix.jar')
+            Screen = JClass("org.sikuli.script.Screen")  # 调用sikuli
+            self.screen = Screen()
         except Exception as e:
             print(str(e))
-        Screen = JClass("org.sikuli.script.Screen")  # 调用sikuli
-        self.screen = Screen()
 
     def sikuli_click(self, image_path):
         """
@@ -20,7 +20,10 @@ class SikuliOperate(object):
         :param image_path:  图片路径
         :return:
         """
-        self.screen.click(image_path)
+        try:
+            self.screen.click(image_path)
+        except Exception as e:
+            print(str(e))
 
     def sikuli_send_keys(self, image_path, text):
         """
@@ -29,7 +32,10 @@ class SikuliOperate(object):
         :param text: 内容
         :return:
         """
-        self.screen.type(image_path, text)
+        try:
+            self.screen.type(image_path, text)
+        except Exception as e:
+            print(str(e))
 
     def sikuli_double_click(self, image_path):
         """
@@ -37,7 +43,10 @@ class SikuliOperate(object):
         :param image_path: 图片路径
         :return:
         """
-        self.screen.doubleClick(image_path)
+        try:
+            self.screen.doubleClick(image_path)
+        except Exception as e:
+            print(str(e))
 
     def sikuli_right_click(self, image_path):
         """
@@ -45,7 +54,10 @@ class SikuliOperate(object):
         :param image_path: 图片路径
         :return:
         """
-        self.screen.rightClick(image_path)
+        try:
+            self.screen.rightClick(image_path)
+        except Exception as e:
+            print(str(e))
 
     def sikuli_drag_drop(self, image_path1, image_path2):
         """
@@ -54,10 +66,20 @@ class SikuliOperate(object):
         :param image_path2: 拖拽后移动位置
         :return:
         """
-        self.screen.dragDrop(image_path1, image_path2)
+        try:
+            self.screen.dragDrop(image_path1, image_path2)
+        except Exception as e:
+            print(str(e))
 
     def sikuli_shutdowm(self):
-        jpype.shutdownJVM()
+        """
+        关闭sikuli
+        :return:
+        """
+        try:
+            jpype.shutdownJVM()
+        except Exception as e:
+            print(str(e))
 
 
 if __name__ == "__main__":
