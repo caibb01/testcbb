@@ -2,6 +2,7 @@
 
 # from selenium import webdriver
 from selenium import webdriver
+from selenium.common.exceptions import ElementClickInterceptedException, ElementNotInteractableException
 from selenium.webdriver.common.action_chains import ActionChains
 # from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.support import expected_conditions as EC
@@ -58,11 +59,12 @@ class BasePage(object):
             raise ValueError("No such element found" + str(element))
         ActionChains(self.driver).move_to_element(el).perform()
 
-    def find_element(self, element):
+    def find_element(self, element, wait_times=10):
         '''
         :param element:
         :return: 找单个控件
         '''
+        self.wait_eleVisible(element, wait_times=wait_times)
         element = self.driver.find_element(*element)
         self._mark(element)
         return element
@@ -290,7 +292,14 @@ class BasePage(object):
         '''
         Click page element, like button, image, link, etc.
         '''
-        element.click()
+        try:
+            element.click()
+        except ElementClickInterceptedException:
+            self.driver.execute_script('arguments[0].click()', element)
+        except ElementNotInteractableException:
+            self.driver.execute_script('arguments[0].click()', element)
+        except:
+            ActionChains(self.driver).move_to_element(element).click().perform()
 
     def quit(self):
         '''
