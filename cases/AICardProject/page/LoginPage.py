@@ -29,10 +29,10 @@ class LoginPage(BasePage):
             self.find_element(self.controls["登录按钮"]).click()
 
     def login_check(self, loginuser='400'):
-        sleep(2)
+        # sleep(2)
         if self.is_exist_element(self.controls["更新说明"]):
             self.find_element(self.controls["更新说明"]).click()
-        sleep(2)
+        # sleep(2)
         # qs = self.find_element(self.controls["关闭登录广告弹窗"]).text
         # if len(qs) == "":
         #     print(u"没有找到元素")
@@ -54,17 +54,14 @@ class LoginPage(BasePage):
             print(u"登录账号和预期不一致！")
 
     def openAI(self,ai_xpath = None):
-        sleep(3)
         for i in range(2, 10):  # 也可以设置一个较大的数，一下到底
             js = "var q=document.documentElement.scrollTop={}".format(i * 100)  # javascript语句
             self.driver.execute_script(js)
         # 选择云店入口打开智慧名片测试版，存在的问题是，如果运营主体取消置顶会出现定位不到的现象---用xpath 解决了这个问题
         self.driver.find_element_by_xpath(ai_xpath).click()
         #self.find_element(self.controls["点击智慧名片测试版"]).click()
-        sleep(6)
         bz = self.find_element(self.controls["检查是否打开AI云店"]).text
         if bz == u"智慧名片测试版":
             print(u"成功打开AI云店")
         else:
             print(u"打开失败")
-        sleep(2)

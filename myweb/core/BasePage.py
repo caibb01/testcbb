@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time, logging
-from pykeyboard import PyKeyboard
+# from pykeyboard import PyKeyboard
 import myweb.core.runner as cf
 import datetime, os
 import platform
@@ -233,30 +233,30 @@ class BasePage(object):
         '''
         self.driver.refresh()
 
-    def send_keys(self, keywords):
-        '''
-        :param keywords: 暂时支持TAB，回车，右建，ESC和输入字符串
-        :return: 模拟键盘输入
-        '''
-        k = PyKeyboard()
-        if "{" not in keywords:
-            k.type_string(keywords)
-        elif "TAB" in keywords:
-            k.tap_key(k.tab_key)
-        elif "ENTER" in keywords:
-            # k.press_key(k.enter_key)
-            # k.release_key(k.enter_key)
-            k.tap_key(k.enter_key)
-        elif "RIGHT" in keywords:
-            # k.press_key(k.right_key)
-            # k.release_key(k.right_key)
-            k.tap_key(k.right_key)
-        elif "ESC" in keywords:
-            k.tap_key(k.escape_key)
-        elif "BACKSPACE" in keywords:
-            k.tap_key(k.backspace_key)
-        else:
-            logging.info("keywords : %s is not support " % keywords)
+    # def send_keys(self, keywords):
+    #     '''
+    #     :param keywords: 暂时支持TAB，回车，右建，ESC和输入字符串
+    #     :return: 模拟键盘输入
+    #     '''
+    #     k = PyKeyboard()
+    #     if "{" not in keywords:
+    #         k.type_string(keywords)
+    #     elif "TAB" in keywords:
+    #         k.tap_key(k.tab_key)
+    #     elif "ENTER" in keywords:
+    #         # k.press_key(k.enter_key)
+    #         # k.release_key(k.enter_key)
+    #         k.tap_key(k.enter_key)
+    #     elif "RIGHT" in keywords:
+    #         # k.press_key(k.right_key)
+    #         # k.release_key(k.right_key)
+    #         k.tap_key(k.right_key)
+    #     elif "ESC" in keywords:
+    #         k.tap_key(k.escape_key)
+    #     elif "BACKSPACE" in keywords:
+    #         k.tap_key(k.backspace_key)
+    #     else:
+    #         logging.info("keywords : %s is not support " % keywords)
 
     def open(self, url):
         '''

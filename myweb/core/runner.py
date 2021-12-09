@@ -315,7 +315,7 @@ class TestCase(unittest.TestCase):
             # 浏览器默认不关闭
             # option.add_experimental_option("detach", True)
             # cls.driver = webdriver.Chrome(cls._global_config['driverPath'],chrome_options = chrome_options)
-            # cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
+            cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
 
         config_path = os.path.join(CONFIG_PATH, CONFIG)
         cls._config = cls._get_result(cls, config_path)
@@ -346,13 +346,13 @@ class TestCase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        # if not _decide_config("driver_always_open")[0]:
-        #     # 浏览器常关配置，设置为True则不会自动关闭浏览器
-        #     if isinstance(cls.driver, webdriver.Remote):
-        #         print("driver quit!")
-        #         cls.driver.quit()
-        #     else:
-        #         print("关闭浏览器失败 driver: %s" % cls.driver)
+        if not _decide_config("driver_always_open")[0]:
+            # 浏览器常关配置，设置为True则不会自动关闭浏览器
+            if isinstance(cls.driver, webdriver.Remote):
+                print("driver quit!")
+                cls.driver.quit()
+            else:
+                print("关闭浏览器失败 driver: %s" % cls.driver)
 
         cls._results['end_timestamp'] = time.time()
         cls._results['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
