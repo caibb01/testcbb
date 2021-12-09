@@ -57,7 +57,6 @@ class test_ComplianceConfiguration(TestCase):
 
     def tearDown(self):
         super(test_ComplianceConfiguration, self).tearDown()
-        self.driver.quit()
 
 
 if __name__ == '__main__':
