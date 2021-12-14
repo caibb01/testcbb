@@ -8,8 +8,11 @@ import json
 import time
 import jinja2
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from myweb.tools.support_atmp_run import report_result_to_atmp, check_case
+import base64
+import threading, shutil
+from fnmatch import fnmatch
+from concurrent.futures import ThreadPoolExecutor, wait
+from myweb.tools.support_atmp.support_atmp_run import report_result_to_atmp
 from myweb.utils.mail import Email
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
@@ -22,6 +25,11 @@ STORAGE_PATH = os.path.join(BASE_PATH, 'myweb', 'core', 'storage.json')
 CONFIG = 'single.json'
 
 STORAGE = None
+lock_storage = [threading.RLock() for i in range(6)]
+lock_mars = [threading.RLock() for j in range(3)]
+
+dir_data = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+thread_flag = False
 
 
 def _get_global_config(config_name=None):
@@ -41,11 +49,12 @@ def _get_config(config_name=None):
     获取运行用例集的配置文件信息
     :return:
     """
-    config_path = config_name if config_name else CONFIG
-    f = open(os.path.join(CONFIG_PATH, config_path), 'r', encoding='utf-8')
-    config = json.load(f)
-    f.close()
-    return config
+    with lock_mars[0]:
+        config_path = config_name if config_name else CONFIG
+        f = open(os.path.join(CONFIG_PATH, config_path), 'r', encoding='utf-8')
+        config = json.load(f)
+        f.close()
+        return config
 
 
 def _set_config(config_name=None, content=None):
@@ -53,12 +62,13 @@ def _set_config(config_name=None, content=None):
     设置运行用例集的配置文件信息
     :return:
     """
-    config_path = config_name if config_name else CONFIG
-    content = content if content else {}
-    f = open(os.path.join(CONFIG_PATH, config_path), 'w', encoding='utf-8')
-    json.dump(content, f, indent=4, ensure_ascii=False)
-    f.close()
-    return content
+    with lock_mars[0]:
+        config_path = config_name if config_name else CONFIG
+        content = content if content else {}
+        f = open(os.path.join(CONFIG_PATH, config_path), 'w', encoding='utf-8')
+        json.dump(content, f, indent=4, ensure_ascii=False)
+        f.close()
+        return content
 
 
 def _get_storage():
@@ -66,13 +76,14 @@ def _get_storage():
     获取运行任务的缓存文件
     :return:
     """
-    if not os.path.exists(STORAGE_PATH):
-        os.makedirs(STORAGE_PATH)
-    f = open(STORAGE_PATH, 'r', encoding='utf-8')
-    global STORAGE
-    STORAGE = json.load(f)
-    f.close()
-    return STORAGE
+    with lock_storage[0]:
+        if not os.path.exists(STORAGE_PATH):
+            os.makedirs(STORAGE_PATH)
+        f = open(STORAGE_PATH, 'r', encoding='utf-8')
+        global STORAGE
+        STORAGE = json.load(f)
+        f.close()
+        return STORAGE
 
 
 def _set_storage(content=None):
@@ -80,45 +91,55 @@ def _set_storage(content=None):
     修改运行任务的缓存文件
     :return:
     """
-    f = open(STORAGE_PATH, "w", encoding='utf-8')
-    if content and isinstance(content, dict):
-        json.dump(content, f, indent=4, ensure_ascii=False)
-    f.close()
+    with lock_storage[0]:
+        f = open(STORAGE_PATH, "w", encoding='utf-8')
+        if content and isinstance(content, dict):
+            json.dump(content, f, indent=4, ensure_ascii=False)
+        f.close()
 
 
 def _setUp_storage(config_name, output=None):
     # 初始化缓存文件
+    current_tread_name = threading.current_thread().name
     config = _get_config(config_name)
-    output = output if output else config['output']
-    content = {}
-    content["info"] = []
-    content['timestamp'] = output
-    content['project'] = config['project_name']
-    content['configPath'] = os.path.join(CONFIG_PATH, config_name)
-    content['imagePath'] = os.path.join(OUTPUT_PATH, config['project_name'], output, 'image')
-    content['resultPath'] = os.path.join(OUTPUT_PATH, config['project_name'], output, 'result.json')
-    _set_storage(content)
+    with lock_storage[1]:
+        storeges_ = _get_storage()
+        output = output if output else config['output'][current_tread_name]
+        content = {current_tread_name:{}}
+        content[current_tread_name]["info"] = []
+        content[current_tread_name]['timestamp'] = output.split("_")[-1]
+        content[current_tread_name]['project'] = config['project_name']
+        content[current_tread_name]['configPath'] = os.path.join(CONFIG_PATH, config_name)
+        content[current_tread_name]['reportPath'] = os.path.join(OUTPUT_PATH, config['project_name'], dir_data, output, 'result.html')
+        content[current_tread_name]['imagePath'] = os.path.join(OUTPUT_PATH, config['project_name'], dir_data, output, 'image')
+        content[current_tread_name]['resultPath'] = os.path.join(OUTPUT_PATH, config['project_name'], dir_data, output, 'result.json')
+        storeges_.update(content)
+        _set_storage(storeges_)
 
 
 def _step_screenshot(driver, ty, type_name, msg):
     if isinstance(driver, webdriver.Remote):
-        storage = _get_storage()
-        current_stamp = datetime.datetime.now().timestamp()
-        current_time = datetime.datetime.fromtimestamp(current_stamp).strftime("%Y-%m-%d %H:%M:%S")
-        file_time = datetime.datetime.fromtimestamp(current_stamp).strftime("%Y%m%d%H%M%S")
-        filename = ty + '_' + file_time + '.png'
-        screen_path = os.path.join(OUTPUT_PATH, storage['project'], storage['timestamp'], "image", filename)
-        driver.get_screenshot_as_file(screen_path)
-        storage["info"].append({
-            "type": ty,
-            "type_name": type_name,
-            "msg": msg,
-            "filename": filename,
-            "path": screen_path,
-            "timestamp": current_stamp,
-            "current_time": current_time
-        })
-        _set_storage(storage)
+        concurrent_tread_name = threading.current_thread().name
+        with lock_storage[2]:
+            storage = _get_storage()
+            current_stamp = datetime.datetime.now().timestamp()
+            current_time = datetime.datetime.fromtimestamp(current_stamp).strftime("%Y-%m-%d %H:%M:%S")
+            file_time = datetime.datetime.fromtimestamp(current_stamp).strftime("%Y%m%d%H%M%S")
+            filename = ty + '_' + file_time + '.png'
+            screen_path = os.path.join(storage[concurrent_tread_name]['imagePath'], filename)
+
+            driver.get_screenshot_as_file(screen_path)
+            storage[concurrent_tread_name]["info"].append({
+                "type": ty,
+                "type_name": type_name,
+                "msg": msg,
+                "filename": filename,
+                "path": screen_path,
+                "timestamp": current_stamp,
+                "current_time": current_time
+            })
+            _set_storage(storage)
+        return screen_path
     else:
         print("driver 类型不正确 截图失败 driver: %s ; type: %s" % (driver, type(driver)))
 
@@ -130,6 +151,186 @@ def _decide_config(el):
     return False, None
 
 
+def _get_file(path, pattern):
+    file_path_list = []
+    for root_, _, files in os.walk(path):
+        for file in files:
+            if fnmatch(file, pattern):
+                file_path = os.path.join(root_, file)
+                file_path_list.append(file_path)
+    return file_path_list
+
+
+# 多线程并行运行测试用例测试类
+class ThreadRunner(object):
+    def __init__(self, max_workers=2, thread_name_prefix="Thread_", config_name=CONFIG):
+        self._pool = ThreadPoolExecutor(max_workers=max_workers, thread_name_prefix=thread_name_prefix)
+        self._config_name = config_name
+        self._global_config = _get_global_config()
+        self._output_path = os.path.join(OUTPUT_PATH, _get_config(config_name)["project_name"], dir_data)
+        self._summary_results = None
+        self._end_timestamp = None
+        self._start_timestamp = None
+
+    # 多线程运行测试用例方法
+    def thread_run(self, case_path="", pattern=""):
+        global thread_flag
+        thread_flag = True
+        self._start_timestamp = time.time()
+        path_ = os.path.join(CASE_PATH, _get_config(config_name=self._config_name)["project_name"], "case")
+        case_path_ = path_ if case_path == "" else os.path.join(path_, case_path)
+        # 获取主线程或多线程的用例文件
+        case_file_list, main_run_list = self._get_run_case_file(case_path_, "test*.py" if pattern == "" else pattern)
+        # 多线程运行
+        all_task = [self._pool.submit(self._run_task,  case_path=case_path_, pattern=file_) for file_ in case_file_list]
+        wait(all_task)
+        self._pool.shutdown()
+        # 主线程运行
+        if len(main_run_list):
+            self._run_task(case_path=case_path_, pattern=main_run_list)
+        self._end_timestamp = time.time()
+        self._summary_thread_results(self._output_path)
+        self._move_file(self._output_path)
+        self._del_tread_dir(self._output_path)
+
+        report_mode, _ = _decide_config('report_mode')
+        email_mode, receiver = _decide_config('email_mode')
+
+        # 发送测试报告
+        if report_mode:
+            self._report()
+            if email_mode:
+                print("send email...")
+                self._mail(receiver=receiver)
+
+    # 运行测试用例方法
+    def _run_task(self, case_path, pattern):
+        run_task = Runner(config_name=self._config_name)
+        run_task.run(case_path=case_path, pattern=pattern)
+
+    # 获取指定测试用例文件名称
+    def _get_run_case_file(self, path, pattern="test*.py"):
+        """获取指定测试用例文件名称
+        待实现-------> group: 多线程执行文件分成几组
+        path: 用例根目录
+        pattern: 匹配用例名称
+        return : name_list、main_run_list
+        待实现------->   thread_run_list： 用来合理分配每个线程所执行的用例文件
+        name_list： 用来在多线程执行的用例文件, 二维数组
+        main_run_list： 用来在主线程执行的用例文件，一维数组
+        """
+        path_list = _get_file(path, pattern)
+        name_list = list(set([path.split("\\")[-1] for path in path_list]))
+        main_list = _get_config(self._config_name)["MainThread"]
+        main_run_list = []
+        for name in name_list:
+            if name in main_list:
+                name_list.remove(name)
+                main_run_list.append(name)
+        name_list = [[name] for name in name_list]
+        return name_list, main_run_list
+
+    # 汇总各自线程下的错误截图到同一目录下
+    @staticmethod
+    def _move_file(path, pattern="*.png"):
+        png_path_list = _get_file(path, pattern)
+        new_path = os.path.join(path, "image")
+        if not os.path.exists(new_path):
+            os.makedirs(new_path)
+        for png_path in png_path_list:
+            shutil.move(png_path, new_path)
+
+    # 汇总各自线程生成的result.json文件
+    def _summary_thread_results(self, path, pattern="result.json"):
+        self._summary_results = {
+            "start_time": "",
+            "start_timestamp": 0,
+            "total_time": 0,
+            "end_time": "",
+            "end_timestamp": 0,
+            "results": [],
+            "error": 0,
+            "failed": 0,
+            "success": 0,
+            "case_num": 0,
+            "passrate": "",
+            "project_name": "",
+            "project_name_zh": "",
+            "miss_case_info": [],
+            "miss_num": 0
+        }
+        # 汇总用例信息
+        get_thread_result = _get_file(path, pattern)
+        for result_file in get_thread_result:
+            if result_file != os.path.join(self._output_path, "result.json"):
+                content_ = open(result_file, 'r', encoding='utf-8')
+                result_ = json.load(content_)
+                content_.close()
+                self._summary_results["results"].extend(result_["results"])
+                self._summary_results["miss_case_info"].extend(result_["miss_case_info"])
+                self._summary_results["error"] += result_["error"]
+                self._summary_results["failed"] += result_["failed"]
+                self._summary_results["success"] += result_["success"]
+                self._summary_results["case_num"] += result_["case_num"]
+                self._summary_results["miss_num"] += result_["miss_num"]
+                self._summary_results["project_name"] = result_["project_name"]
+                self._summary_results["project_name_zh"] = result_["project_name_zh"]
+
+        # 重新计算时间
+        self._summary_results["start_timestamp"] = self._start_timestamp
+        self._summary_results["end_timestamp"] = self._end_timestamp
+        self._summary_results["total_time"] = round(self._end_timestamp - self._start_timestamp, 1)
+        self._summary_results["start_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(self._start_timestamp))
+        self._summary_results["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(self._end_timestamp))
+
+        # 重新计算通过率
+        self._summary_results['passrate'] = "%.2f%%" % (
+            float(self._summary_results["success"] * 100) /
+            (self._summary_results['case_num'] + self._summary_results["miss_num"])
+        )
+
+        # 写入汇总后的resul.json文件
+        with open(os.path.join(self._output_path, "result.json"), 'w', encoding='utf-8') as f:
+            json.dump(self._summary_results, f, indent=4, ensure_ascii=False)
+
+    # 删除指定根目录下指定的子目录(各自线程生成的目录)
+    @staticmethod
+    def _del_tread_dir(path, pattern="*Thread*"):
+        thread_dir = os.listdir(path)
+        for dir_ in thread_dir:
+            if fnmatch(dir_, pattern):
+                del_path = os.path.join(path, dir_)
+                shutil.rmtree(path=del_path, ignore_errors=True)
+                print("已成功删除目录:{}".format(del_path))
+
+    # 生成html测试报告
+    def _report(self):
+        # 生成email_html聚合报告
+        env = jinja2.Environment(
+            loader=jinja2.FileSystemLoader(TEMPLATE_PATH),
+            extensions=(),
+            autoescape=True
+        )
+        template = env.get_template("report_template.html", TEMPLATE_PATH)
+        self.email_html = template.render({"results": self._summary_results})
+        f = open(os.path.join(self._output_path, "result.html"), "w", encoding='utf-8')
+        f.write(self.email_html)
+        f.close()
+
+    # 发送email邮件
+    def _mail(self, receiver=None):
+        if receiver:
+            e = Email(title="Mars自动化测试报告邮件",
+                      receiver=receiver,
+                      server='smtp.exmail.qq.com',
+                      sender=self._global_config['email']['username'],
+                      password=self._global_config['email']['password'],
+                      sender_name="MarsUI自动化测试报告",
+                      html=self.email_html)
+            e.send()
+
+
+# 主线程运行测试类
 class Runner():
     def __init__(self, config_name=CONFIG):
         self.config_path = os.path.join(CONFIG_PATH, config_name)
@@ -145,32 +346,92 @@ class Runner():
         global CONFIG
         CONFIG = self.config_name
 
-    def run(self):
+    def run(self, pattern, case_path=""):
         self._setUp_config()
         _setUp_storage(config_name=self.config_name)
         try:
-            self.case_path = os.path.join(CASE_PATH, self.config['project_name'], "case")
+            if case_path == "":
+                self.case_path = os.path.join(CASE_PATH, self.config['project_name'], "case")
+            else:
+                self.case_path = os.path.join(CASE_PATH, self.config['project_name'], "case", case_path)
+            print("case_path:%s"%self.case_path)
         except:
             raise Exception("File '{0}' not exist <project_name>".format(self.config_path))
-        discover = unittest.defaultTestLoader.discover(self.case_path, pattern="test*.py", top_level_dir=None)
+        # 加载测试套件
+        if not thread_flag:
+            discover = unittest.defaultTestLoader.discover(
+                   self.case_path, pattern="test*.py" if pattern == "" else pattern, top_level_dir=None)
+        else:
+            discover = self._merge_discover(self.case_path, pattern)
+        # 获取测试套件所有用例名称和用例描述,返回值为dict类型，key为用例名称，value为用例描述
+        all_suit_case_dict = self._get_all_suit(discover)
+        # 运行测试套件
         runner = unittest.TextTestRunner()
         runner.run(discover)
 
         retry_mode, retry_times = _decide_config('retry')
         report_mode, _ = _decide_config('report_mode')
         email_mode, receiver = _decide_config('email_mode')
-
+        # 失败用例重试
         if retry_mode:
             self._run_fail_case(retry=retry_times)
-
+        # 重写测试报告，把丢失用例信息也写进来
+        self._rewrite_report(all_suit_case_dict)
+        # 发送测试报告
         if report_mode:
             self._get_result()
             self._report()
-            if email_mode:
+            if email_mode and not thread_flag:
                 print("send email...")
                 self._mail(receiver=receiver)
-
         self._tearDown_config()
+
+
+    def _merge_discover(self, case_path, case_file_list):
+        discover_list = [unittest.defaultTestLoader.discover(case_path, pattern=case_file) for case_file in case_file_list]
+        merge_discover = discover_list[0]
+        for d in range(1, len(discover_list)):
+            for i in discover_list[d]._tests:
+                merge_discover.addTest(i)
+        return merge_discover
+
+
+    def _get_all_suit(self, discover):
+        """获取加载测试套件的所有用例名称和描述
+        discover： 入参为测试套件
+        return: 返回字典类型，key为用例名，value为用例描述
+        """
+        # 获取测试套件用例名称和用例描述,key为用例名称，value为用例描述
+        all_suit_case_dict = {}
+        for i in discover._tests:
+            for j in i._tests:
+                for k in j._tests:
+                    all_suit_case_dict[k._testMethodName] = k._testMethodDoc.strip() if k._testMethodDoc is not None else "用例未添加描述说明~"
+        return all_suit_case_dict
+
+
+    def _rewrite_report(self, all_suit_case_dict):
+        """重写测试报告，增加丢失用例
+        all_suit_case_dict：入参为_get_all_suit的返回值
+        """
+        # 判断方法名是否在文件中，不在则属于丢失用例，把方法名和用例备注加进来
+        case_info_ = self._get_result()
+        # 获取已经执行的用例名称
+        run_case_name = []
+        for i in case_info_["results"]:
+            for j in i["cases_info"]:
+                run_case_name.append(j["case_name"])
+        # 丢失的用例信息,只存用例名称和用例描述
+        miss_case_info = []
+        for i in all_suit_case_dict.keys():
+            if i not in run_case_name:
+                miss_case_info.append({"case_name": i, "case_doc": all_suit_case_dict[i]})
+        case_info_["miss_case_info"] = miss_case_info
+        case_info_["miss_num"] = len(miss_case_info)
+        # 重写用例通过率，把丢失的也算进用例总数里
+        case_info_['passrate'] = "%.2f%%" % (
+            float(case_info_['success'] * 100) / (case_info_['case_num'] + case_info_["miss_num"]))
+        self._set_result(content=case_info_)
 
     def _run_fail_case(self, retry=2):
         # 使用TestLoader，通过py文件名 module case等方式装载用例
@@ -228,7 +489,7 @@ class Runner():
                 break
 
     def _report(self):
-
+        current_thread_name = threading.current_thread().name
         # 生成email_html聚合报告
         env = jinja2.Environment(
             loader=jinja2.FileSystemLoader(TEMPLATE_PATH),
@@ -237,16 +498,10 @@ class Runner():
         )
         template = env.get_template("report_template.html", TEMPLATE_PATH)
         self.email_html = template.render({"results": self.result})
-
-        self.mail_report_path = os.path.join(OUTPUT_PATH, STORAGE['project'], 'report.html')
-        f = open(self.mail_report_path, "w", encoding='utf-8')
+        f = open(_get_storage()[current_thread_name]['reportPath'], "w", encoding='utf-8')
         f.write(self.email_html)
         f.close()
 
-        # output_file = os.path.join(root_dir, "summary.html")
-        # with io.open(output_file, 'w', encoding="utf-8") as f:
-        #     f.write(html)
-        # pass
 
     def _mail(self, receiver=None):
 
@@ -261,7 +516,8 @@ class Runner():
             e.send()
 
     def _get_result(self):
-        self.file_path = os.path.join(OUTPUT_PATH, self.config['project_name'], self.config['output'])
+        current_tread_name = threading.current_thread().name
+        self.file_path = os.path.join(OUTPUT_PATH, self.config['project_name'], dir_data, self.config['output'][current_tread_name])
         if not os.path.exists(self.file_path):
             raise Exception("File '{0}' not exist <project_name>".format(self.file_path))
         else:
@@ -271,7 +527,8 @@ class Runner():
         return self.result
 
     def _set_result(self, content):
-        self.result_path = os.path.join(OUTPUT_PATH, self.config['project_name'], self.config['output'], 'result.json')
+        current_tread_name = threading.current_thread().name
+        self.result_path = os.path.join(OUTPUT_PATH, self.config['project_name'], dir_data, self.config['output'][current_tread_name], 'result.json')
         f = open(self.result_path, 'w', encoding='utf-8')
         json.dump(content, f, indent=4, ensure_ascii=False)
         f.close()
@@ -282,23 +539,22 @@ class Runner():
         初始化配置文件，将运行时间作为output文件夹名称保存在配置文件中
         :return:
         """
-        self.config = _get_config(config_name=self.config_name)
-        self.config['output'] = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        _set_config(config_name=self.config_name, content=self.config)
+        current_tread_name = threading.current_thread().name
+        with lock_mars[1]:
+            self.config = _get_config(config_name=self.config_name)
+            self.config['output'][current_tread_name] = current_tread_name + "_" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+            _set_config(config_name=self.config_name, content=self.config)
 
     def _tearDown_config(self):
         """
         删除初始化时保存的output文件夹名称
         :return:
         """
-        self.config = _get_config(config_name=self.config_name)
-        del self.config['output']
-        _set_config(config_name=self.config_name, content=self.config)
-
-        # f = open(self.config_path, "w", encoding='utf-8')
-        # del self.config['output']
-        # json.dump(self.config, f, indent=4, ensure_ascii=False)
-        # f.close()
+        current_tread_name = threading.current_thread().name
+        with lock_mars[2]:
+            self.config = _get_config(config_name=self.config_name)
+            del self.config['output'][current_tread_name]
+            _set_config(config_name=self.config_name, content=self.config)
 
 
 class TestCase(unittest.TestCase):
@@ -307,21 +563,20 @@ class TestCase(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        current_tread_name = threading.current_thread().name
         if _decide_config("auto_open_driver")[0]:
             cls._global_config = _get_global_config()
-            # option = webdriver.ChromeOptions()
-            # chrome_options = Options()
-            # chrome_options.add_argument('--headless')
+            option = webdriver.ChromeOptions()
             # 浏览器默认不关闭
-            # option.add_experimental_option("detach", True)
-            # cls.driver = webdriver.Chrome(cls._global_config['driverPath'],chrome_options = chrome_options)
-            cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
+            option.add_experimental_option("detach", True)
+            # cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
 
         config_path = os.path.join(CONFIG_PATH, CONFIG)
         cls._config = cls._get_result(cls, config_path)
         cls._output = cls._config[
-            'output'] if 'output' in cls._config.keys() else datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-        cls._file_path = os.path.join(OUTPUT_PATH, cls._config['project_name'], cls._output)
+            'output'][current_tread_name] if current_tread_name in cls._config["output"].keys() \
+            else current_tread_name + "_" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        cls._file_path = os.path.join(OUTPUT_PATH, cls._config['project_name'], dir_data, cls._output)
         cls._image_file_path = os.path.join(cls._file_path, "image")
         if not os.path.exists(cls._file_path):
             os.makedirs(cls._file_path)
@@ -339,20 +594,21 @@ class TestCase(unittest.TestCase):
             "project_name": cls._config['project_name'] if 'project_name' in cls._config.keys() else None,
             "project_name_zh": cls._config['project_name_zh'] if 'project_name' in cls._config.keys() else None,
         }
+        with lock_storage[5]:
+            cls._storage = _get_storage()
+            cls._storage[current_tread_name]["module_name"] = cls.__module__
+            _set_storage(cls._storage)
 
-        cls._storage = _get_storage()
-        cls._storage["module_name"] = cls.__module__
-        _set_storage(cls._storage)
 
     @classmethod
     def tearDownClass(cls):
-        if not _decide_config("driver_always_open")[0]:
-            # 浏览器常关配置，设置为True则不会自动关闭浏览器
-            if isinstance(cls.driver, webdriver.Remote):
-                print("driver quit!")
-                cls.driver.quit()
-            else:
-                print("关闭浏览器失败 driver: %s" % cls.driver)
+        # if not _decide_config("driver_always_open")[0]:
+        #     # 浏览器常关配置，设置为True则不会自动关闭浏览器
+        #     if isinstance(cls.driver, webdriver.Remote):
+        #         print("driver quit!")
+        #         cls.driver.quit()
+        #     else:
+        #         print("关闭浏览器失败 driver: %s" % cls.driver)
 
         cls._results['end_timestamp'] = time.time()
         cls._results['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -391,11 +647,11 @@ class TestCase(unittest.TestCase):
         all_results_info['project_name_zh'] = cls._config[
             'project_name_zh'] if 'project_name' in cls._config.keys() else None
 
-        print(all_results_info['case_num'])
         cls._write_result(cls, result_path, all_results_info)
 
     def setUp(self):
         # 每次执行用例前先将result初始化total_time
+        current_tread_name = threading.current_thread().name
         self._test_filename = inspect.getsourcefile(self.__class__)
         self._has_assert_error = False
         self._result = {"case_name": self._testMethodName,
@@ -408,16 +664,17 @@ class TestCase(unittest.TestCase):
                         "is_error": False,
                         "failed_line_num": -1,
                         "screen": [],
+                        "image": "",
                         "retry": 0}
-
-        self._storage = _get_storage()
-        self._storage["case_name"] = self._testMethodName
-        _set_storage(self._storage)
+        with lock_storage[3]:
+            self._storage = _get_storage()
+            self._storage[current_tread_name]["case_name"] = self._testMethodName
+            _set_storage(self._storage)
         # 定义测试编号
-        self.test_codes = None
-        self.run_flag = None
+        self.test_code = ""
 
     def tearDown(self):
+        current_thread_name = threading.current_thread().name
         sys_info = self._outcome.errors[-1][-1]
         test_method = getattr(self, self._testMethodName)
         source_line = inspect.getsourcelines(test_method)
@@ -440,34 +697,37 @@ class TestCase(unittest.TestCase):
             else:
                 self._result["trace"] = stack_lines[-1]
                 self._result["is_error"] = True
-            _step_screenshot(driver=self.driver, ty="fail", type_name="用例执行失败", msg="")
+            _step_screenshot(driver=self.driver, ty="fail_"+self._result["case_name"], type_name="用例执行失败", msg="")
         else:
             self._result["success"] = True
+
+        if self._result["is_failure"] is True or self._result["is_error"] is True:
+            image_object = open(_get_storage()[current_thread_name]["info"][0]['path'], "rb")
+            image = image_object.read()
+            image_object.close()
+            self._result["image"] = "data:image/png;base64," + base64.b64encode(image).decode()
+
         # 每次用例执行完毕之后，将单个用例结果写入result
         # 记录操作信息
-        self._storage = _get_storage()
-        if self._storage["info"]:
-            for i in self._storage["info"]:
-                self._result["screen"].append(i)
-            # 清除操作缓存
-            self._storage["info"] = []
-            _set_storage(self._storage)
+        with lock_storage[4]:
+            self._storage = _get_storage()
+            if self._storage[current_thread_name]["info"]:
+                for i in self._storage[current_thread_name]["info"]:
+                    self._result["screen"].append(i)
+                # 清除操作缓存
+                self._storage[current_thread_name]["info"] = []
+                _set_storage(self._storage)
 
         self._result['end_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         self._result['end_timestamp'] = time.time()
         self._result['total_time'] = round(self._result['end_timestamp'] - self._result['start_timestamp'], 3)
         self._results['cases_info'].append(self._result)
+        if self._result["success"] is True:
+            print(self.test_code)
+            report_result_to_atmp(self.test_code, "pass", self._result["start_timestamp"], self._result["end_timestamp"], "预期与实际结果一致")
+        else:
+            report_result_to_atmp(self.test_code, "fail", self._result["start_timestamp"], self._result["end_timestamp"], self._result["trace"])
 
-        report_to_atmp = _decide_config("report_to_atmp")[0]
-        if report_to_atmp and self._check_case(self.test_codes):
-            if self._result["success"] is True:
-                report_result_to_atmp(self.test_codes, "pass", self._result["start_timestamp"], self._result["end_timestamp"],
-                                      "预期与实际结果一致")
-            else:
-                report_result_to_atmp(self.test_codes, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
-                                      self._result["trace"])
-
-    # def check(self,code):
     def __getattribute__(self, item):
         # 基本照抄MiniTest写法（Minium提供的TestCase）
         attr = super().__getattribute__(item)
@@ -494,20 +754,11 @@ class TestCase(unittest.TestCase):
         json.dump(result, f, indent=4, ensure_ascii=False)
         f.close()
 
-    def _check_case(self, test_codes):
-        report_to_atmp = _decide_config("report_to_atmp")[0]
-        if not report_to_atmp:
-            return True
-        if self.test_codes is None:
-            self.test_codes = test_codes
-        if self.run_flag is None:
-            self.run_flag = check_case(test_codes)
-            print("是否执行用例：" + str(self.test_codes) + " -> " + str(self.run_flag))
-        return self.run_flag
-
-
-_get_storage()
 
 if __name__ == '__main__':
     r = Runner(config_name='demo.json')
-    r.run()
+    r.run(pattern="")
+
+
+
+
