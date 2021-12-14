@@ -8,12 +8,13 @@ import json
 import time
 import jinja2
 from selenium import webdriver
-import base64
-import threading, shutil
-from fnmatch import fnmatch
-from concurrent.futures import ThreadPoolExecutor, wait
-from myweb.tools.support_atmp.support_atmp_run import report_result_to_atmp
+from selenium.webdriver.chrome.options import Options
+from myweb.tools.support_atmp_run import report_result_to_atmp, check_case
 from myweb.utils.mail import Email
+from concurrent.futures import ThreadPoolExecutor, wait
+import threading
+import shutil
+from fnmatch import fnmatch
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
 CASE_PATH = os.path.join(BASE_PATH, 'cases')
@@ -628,7 +629,7 @@ class TestCase(unittest.TestCase):
                                                    1)
         all_results_info['end_time'] = cls._results['end_time']
         all_results_info['end_timestamp'] = cls._results['end_timestamp']
-
+        print(all_results_info)
         if 'results' in all_results_info:
             all_results_info['results'].append(cls._results)
         else:
@@ -702,10 +703,14 @@ class TestCase(unittest.TestCase):
             self._result["success"] = True
 
         if self._result["is_failure"] is True or self._result["is_error"] is True:
-            image_object = open(_get_storage()[current_thread_name]["info"][0]['path'], "rb")
-            image = image_object.read()
-            image_object.close()
-            self._result["image"] = "data:image/png;base64," + base64.b64encode(image).decode()
+            # 忽略不是UI自动化没有截图，找不到图片而报错
+            try:
+                image_object = open(_get_storage()[current_thread_name]["info"][0]['path'], "rb")
+                image = image_object.read()
+                image_object.close()
+                self._result["image"] = "data:image/png;base64," + base64.b64encode(image).decode()
+            except IndexError:
+                pass
 
         # 每次用例执行完毕之后，将单个用例结果写入result
         # 记录操作信息
@@ -753,6 +758,18 @@ class TestCase(unittest.TestCase):
         f = open(file_name, "w", encoding='utf-8')
         json.dump(result, f, indent=4, ensure_ascii=False)
         f.close()
+
+    def _check_case(self, test_codes):
+        report_to_atmp = _decide_config("report_to_atmp")[0]
+        if not report_to_atmp:
+            return True
+        if self.test_codes is None:
+            self.test_codes = test_codes
+        if self.run_flag is None:
+            self.run_flag = check_case(test_codes)
+            print("是否执行用例：" + str(self.test_codes) + " -> " + str(self.run_flag))
+        return self.run_flag
+
 
 
 if __name__ == '__main__':

@@ -7,13 +7,14 @@ from myweb.utils.config import JsonConfig
 
 if __name__ == '__main__':
 
-    config_path = "mars.json"
+    config_path = "demo.json"
+    print(CONFIG_PATH)
     # 获取初始配置运行参数配置
     env_param_path = os.path.join(CONFIG_PATH, "env_param_setting.json")
     env_param = JsonConfig(env_param_path).get()
     # 获取多线程开关
-    mars_path = os.path.join(CONFIG_PATH, "mars.json")
-    thread_open = JsonConfig(mars_path).get()["thread"]
+    conf_path_ = os.path.join(CONFIG_PATH, "demo.json")
+    thread_open = JsonConfig(conf_path_).get()["thread"]
     pattern = ""
     max_workers = 2
     case_path = ""
