@@ -77,6 +77,12 @@
         color: #f56c6c;
     }
 
+    .miss {
+        background-color: #ebebe0;
+        border-color: #c2c2a3;
+        color: #999966;
+    }
+
 </style>
 
 <div class='heading'>
@@ -88,7 +94,7 @@
     <p class='attribute'><strong>测试结果 : </strong> 共 {{results.case_num}}，通过 {{results.success}}，通过率 {{results.passrate}}</p>
 </div>
 <div>
-    <p><a class="tag success">成功({{results.success}})</a><a class="tag fail">失败({{results.error + results.failed}})</a></p>
+    <p><a class="tag success">成功({{results.success}})</a><a class="tag fail">失败({{results.error + results.failed}})</a><a class="tag miss">丢失({{results.miss_num}})</a></p>
 </div>
 <table>
     <tr>
@@ -97,6 +103,7 @@
         <th style="width: 5%; max-width: 20%;word-wrap:break-word; word-break:break-all;">耗时</th>
         <th style="width: 20%; max-width: 20%;word-wrap:break-word; word-break:break-all;">用例说明</th>
         <th style="width: 40%; max-width: 20%;word-wrap:break-word; word-break:break-all;">错误堆栈</th>
+        <th style="width: 40%; max-width: 20%;word-wrap:break-word; word-break:break-all;">错误截图</th>
         <th style="width: 5%; max-width: 20%;word-wrap:break-word; word-break:break-all;">重试</th>
     </tr>
     {% for result in results.results %}
@@ -115,6 +122,7 @@
                 <td>{{case.total_time}}s</td>
                 <td>{{case.case_doc}}</td>
                 <td class="trace">{{case.trace}}</td>
+                <td class="image"><img style="width: 100px;" onclick="imgClick(this.src)" src={{case.image}}>-</td>
                 <td>
                     <a href="https://www.baidu.com" class="tag">重试</a>
                 </td>
@@ -123,5 +131,17 @@
     {% endfor %}
 
 </table>
+<div id="box" onclick="boxClick()" style="width: 100%; position: fixed; top: 0; left: 0; border: 1px solid #ccc; padding: 10px; background: #fff; display: none">
+    <img id="images" style="width: 100%;" onclick="imgClick()" src="">
+</div>
+<script>
+        function imgClick (image_base64) {
+			document.getElementById("box").style.display = "block"
+			document.getElementById("images").src = image_base64
+        }
+		function boxClick() {
+		document.getElementById("box").style.display = "none"
+		}
+</script>
 </body>
 </html>

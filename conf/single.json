@@ -6,5 +6,6 @@
     "email_mode": false,
     "retry": 2,
     "driver_always_open": false,
-    "auto_open_driver": true
+    "auto_open_driver": true,
+    "output": {}
 }

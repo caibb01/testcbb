@@ -6,5 +6,17 @@
     "retry": 0,
     "email_mode": [
         "xxxx@mingyuanyun.com"
-    ]
+    ],
+    "screen": [
+        "fail",
+        "is_exist"
+    ],
+    "mark": true,
+    "driver_always_open": false,
+    "auto_open_driver": true,
+    "thread": false,
+    "MainThread": [
+        "xxxxx.py"
+    ],
+    "output": {}
 }
