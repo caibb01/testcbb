@@ -1,24 +1,25 @@
-#-*- encoding=utf-8 -*-
+# -*- encoding=utf-8 -*-
 
 import os
 import unittest
 import sys
-from ddt import ddt,data,unpack
+from ddt import ddt, data, unpack
 from myweb.utils.config import JsonConfig
 from myweb.core.runner import TestCase
 from cases.AICardProject.logic.LoginLogic import LoginLogic
 from cases.AICardProject.logic.settingConfigurationLG.areaSettingLg import areaSettingLg
 from time import sleep
 from selenium.webdriver.common.keys import Keys
-from  random import randint
+from random import randint
 from myweb.tools.env_params import get_env_params
+
 
 @ddt
 class test_areaSetting(TestCase):
     __author__ = "lips"
     # 当前模块名
     __module = sys._getframe().f_code.co_name
-    #登录配置数据
+    # 登录配置数据
     __data_path = os.path.join(os.path.abspath(os.path.join(os.path.abspath(__file__), "../../..")), 'data',
                                'loginInfo.json')
     # 获取登录数据
@@ -36,113 +37,17 @@ class test_areaSetting(TestCase):
                              orgname=cls.env_param['orgname'])
         cls.loginLogic.logincheck(cls.env_param['loginuser'])
         cls.loginLogic.openAI(cls.env_param['ai_xpath'])
-        cls.areaSettingLg.into_areaSetting_page()
 
     def setUp(self):
         super(test_areaSetting, self).setUp()
 
-    @data([{'name': '全国首页O'}])
-    @unpack
-    def test_01_open_location_matching_settings(self, data):
+    def test_01_open_location_matching_settings(self):
         '''定位匹配设置-开启定位重定向'''
-        if not self._check_case(["C00164"]): return
-        params = {
-            'name': data['name']
-        }
-        self.areaSettingLg.open_location_matching_settings_lg(params)
-        sleep(3)
-
-    @data([{'name': '全国首页C'}])
-    @unpack
-    def test_02_close_location_matching_settings(self, data):
-        '''定位匹配设置-关闭定位重定向'''
-        if not self._check_case(["C00165"]): return
-        params = {
-            'name': data['name']
-        }
-        self.areaSettingLg.close_location_matching_settings_lg(params)
-        sleep(3)
-
-    rand = 'test_'+str(randint(100,999))
-    @data([{'area_name': rand}])
-    @unpack
-    def test_03_add_area_01(self,data):
-        '''新增区域,不关联项目'''
-        if not self._check_case(["C00166"]): return
-        params = {
-                'area_name':data['area_name']
-        }
-        self.areaSettingLg.add_area_01_lg(params)
-        sleep(3)
-
-    rand2 = 'test2_' + str(randint(100, 999))
-    @data([{'area_name': rand2}])
-    @unpack
-    def test_04_add_area_02(self, data):
-        '''新增区域,关联项目'''
-        if not self._check_case(["C00167"]): return
-        params = {
-            'area_name': data['area_name']
-        }
-        self.areaSettingLg.add_area_02_lg(params)
-        sleep(3)
-
-    @data([{'area_name': rand}])
-    @unpack
-    def test_05_edit_area(self,data):
-        '''编辑区域'''
-        if not self._check_case(["C00168","C00169"]): return
-        params = {
-                'area_name': data['area_name']
-        }
-        self.areaSettingLg.edit_area_lg(params)
-        sleep(3)
-
-    @data([{'area_name': rand}])
-    @unpack
-    def test_06_edit_area_delete_area(self,data):
-        '''编辑区域,删除辖区范围'''
-        if not self._check_case(["C00170"]): return
-        params = {
-            'area_name': data['area_name']
-        }
-        self.areaSettingLg.edit_area_delete_area_lg(params)
-        sleep(3)
-
-    @data([{'area_name': rand}],
-          [{'area_name': rand2}])
-    @unpack
-    def test_07_delete_area(self,data):
-        '''删除区域'''
-        if not self._check_case(["C00171"]): return
-        #新增区域
-        params = {
-            'area_name': data['area_name']
-        }
-        # self.areaSettingLg.add_area_lg(params)
-        # sleep(3)
-        #删除区域
-        self.areaSettingLg.delete_area_lg(params)
-        sleep(3)
-
-    def test_08_unbound_project(self):
-        '''打开未绑定项目'''
-        if not self._check_case(["C00172"]): return
-        self.areaSettingLg.unbound_project_lg()
-        sleep(3)
-
-    def test_09_page_switching(self):
-        '''切换每页显示条数，切换下一页/上一页/跳至x页'''
-        if not self._check_case(["C00173"]): return
-        self.areaSettingLg.unbound_project_lg()
-        self.areaSettingLg.page_switching_lg()
-        sleep(3)
-        self.areaSettingLg.maintained_area_lg()
-        self.areaSettingLg.page_switching_lg()
-
+        self.areaSettingLg.into_areaSetting_page()
 
     def tearDown(self):
         super(test_areaSetting, self).tearDown()
+
 
 if __name__ == '__main__':
     unittest.main()

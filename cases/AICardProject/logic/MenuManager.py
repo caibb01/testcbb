@@ -75,12 +75,9 @@ class MenuManager(BasePage):
         3、两个都不为空则直接点击
         """
         if firstLevelMenu != "" and SecondaryMenu != "":
-            sleep(1)
             self.find_element(self.controls[firstLevelMenu]).click()
-            sleep(2)
             self.find_element(self.controls[SecondaryMenu]).click()
         elif firstLevelMenu != "" and SecondaryMenu == "":
-            print(333)
             self.find_element(self.controls[firstLevelMenu]).click()
         else:
             return u"输入格式不正确！"

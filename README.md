@@ -80,18 +80,52 @@ class DemoTestCase(TestCase):
 
 **run.py**
 
-```python
-from myweb.core.runner import Runner
+注意：支持多线程运行，原则上不影响原有的运行方式，如果不想开启多线程则把demo.json的thread开关设置为false即可，或者命令行方式启动thread:false
 
+```python
+from myweb.core.runner import Runner, CONFIG_PATH, ThreadRunner
+from myweb.utils.config import JsonConfig
+import os
 
 if __name__ == '__main__':
-    # 指定项目的配置文件名称，这里不需要写全路径，会自动匹配
-    config_path = "aicard.json" 
-    r = Runner(config_path=config_path)
-    r.run()
+    config_path = "demo.json"
+    # 获取初始配置运行参数配置
+    env_param_path = os.path.join(CONFIG_PATH, "env_param_setting.json")
+    env_param = JsonConfig(env_param_path).get()
+    # 获取多线程开关
+    mars_path = os.path.join(CONFIG_PATH, "demo.json")
+    thread_open = JsonConfig(mars_path).get()["thread"]
+    
+    此次省略代码...
+    
+    # 开始运行自动化用例
+    if thread_open:
+        tread_run = ThreadRunner(max_workers=max_workers, config_name=config_path)
+        tread_run.thread_run(case_path=case_path, pattern=pattern)
+    else:
+        main_run = Runner(config_name=config_path)
+        main_run.run(case_path=case_path, pattern=pattern)
+        
 ```
+运行时，需要在run.py文件中修改指定的配置路径。
+支持命令行方式运行：格式python run.py [key:value]...
+例如：python run.py env:test trace_branch:matser path:TestP1 pattern:test*.py thread:true num:3
 
-运行时，需要在run.py文件中修改指定的配置路径。后期可能会优化运行方式（支持命令行运行/脚本运行），让其更加简洁。
+
+其中key可为env、trace_branch、pattern、path、thread、num
+
+env表示运行环境，值可为test、g0、g2，值根据各自项目组配置而定
+
+trace_branch表示泳道名称，只有test环境才会生效
+
+path表示用例根目录下的子目录，如DemoProject/case还存在子目录A，则可为A
+
+pattern表示用例文件名称，支持模糊,如test*.py
+
+thread表示是否开启多线程，为true或false且不区分大小写
+
+num表示多线程最大并发数，只能为数字且不能为0
+
 
 ### 配置文件介绍
 
@@ -110,7 +144,14 @@ if __name__ == '__main__':
     "screen": ["fail", "click", "..."],
     "mark": true,
     "driver_always_open": true,
-    "auto_open_driver": true
+    "auto_open_driver": true,
+    "thread": true,
+    "MainThread": [
+        "xxxx.py",
+        "yyyy.py"
+    ],
+    "output": {
+    }
 }
 ```
 
@@ -135,6 +176,12 @@ mark:是否高亮选择/点击元素
 driver_always_open:是否需要浏览器执行后不关闭
 
 auto_open_driver:是否打开webDriver # 启动driver的方法写在TestCase.setUpClass
+
+thread: 是否开启多线程运行
+
+MainThread： 只能在主线程运行的用例文件，会在多线程运行完后再在主线程上运行
+
+output: 自动加载删除，测试结果的输出目录，不需要设置和配置，可忽略
 
 持续补充...
 

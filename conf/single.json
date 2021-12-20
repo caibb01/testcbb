@@ -5,6 +5,7 @@
     "report_mode": true,
     "email_mode": false,
     "retry": 2,
-    "driver_always_open": true,
-    "auto_open_driver": true
+    "driver_always_open": false,
+    "auto_open_driver": true,
+    "output": {}
 }

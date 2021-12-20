@@ -53,11 +53,9 @@ class ComplianceConfiguration(BasePage,TestCase):
 
     def select_project(self,projectName):
         '''选择项目'''
-        sleep(2)
         self.wait_eleVisible(self.control["关联项目"])
         self.find_element(self.control["关联项目"]).click()
         self.find_element(self.control["请选择项目"]).click()
-        sleep(2)
         i = -1
         # 用于判定是否查询到有我们的判定值
         numFlag = False
@@ -75,9 +73,7 @@ class ComplianceConfiguration(BasePage,TestCase):
             self.wait_eleVisible(self.control["项目列表"])
             ele = self.find_elements(self.control["项目列表"], 0)
             ele.click()
-        sleep(2)
         self.refresh()
-        sleep(2)
 
     def input_project(self,projectName):
         '''输入项目'''
