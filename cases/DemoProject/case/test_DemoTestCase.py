@@ -22,8 +22,13 @@ class DemoTestCase(TestCase):
         print("用例执行：test_case_03")
         pass
 
-    def test_case_04(self):
-        if not self._check_case(["C00004"]): return
+    def test_case_04_01(self):
+        if not self._check_case(["C00004"], "pass_partial"): return
+        print("用例执行：test_case_04")
+        pass
+
+    def test_case_04_02(self):
+        if not self._check_case(["C00004"], "pass_all"): return
         print("用例执行：test_case_04")
         pass
 

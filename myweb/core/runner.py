@@ -417,6 +417,7 @@ class TestCase(unittest.TestCase):
         # 定义测试编号
         self.test_codes = None
         self.run_flag = None
+        self.run_result = None
 
     def tearDown(self):
         sys_info = self._outcome.errors[-1][-1]
@@ -462,7 +463,7 @@ class TestCase(unittest.TestCase):
         report_to_atmp = _decide_config("report_to_atmp")[0]
         if report_to_atmp and self._check_case(self.test_codes):
             if self._result["success"] is True:
-                report_result_to_atmp(self.test_codes, "pass", self._result["start_timestamp"], self._result["end_timestamp"],
+                report_result_to_atmp(self.test_codes, self.run_result, self._result["start_timestamp"], self._result["end_timestamp"],
                                       "预期与实际结果一致")
             else:
                 report_result_to_atmp(self.test_codes, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
@@ -494,12 +495,14 @@ class TestCase(unittest.TestCase):
         json.dump(result, f, indent=4, ensure_ascii=False)
         f.close()
 
-    def _check_case(self, test_codes):
+    def _check_case(self, test_codes, run_result="pass_all"):
         report_to_atmp = _decide_config("report_to_atmp")[0]
         if not report_to_atmp:
             return True
         if self.test_codes is None:
             self.test_codes = test_codes
+        if self.run_result is None:
+            self.run_result = run_result
         if self.run_flag is None:
             self.run_flag = check_case(test_codes)
             print("是否执行用例：" + str(self.test_codes) + " -> " + str(self.run_flag))
