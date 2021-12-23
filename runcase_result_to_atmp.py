@@ -78,7 +78,7 @@ if __name__ == '__main__':
     result = atmp_post(file_content, "/edi/send_report", data)
     """
     # 执行完用例后将批次号置为空
-    file_content["parameter"]["task_log_id"] = ""
+    file_content["parameter"]["log_id"] = ""
     file_content["parameter"]["task_id"] = ""
     file_content["parameter"]["batch_no"] = ""
     file_content["parameter"]["test_code"] = ""

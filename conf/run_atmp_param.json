@@ -3,7 +3,7 @@
     "schema_id": "2dbb8285-0ac5-11ec-bb81-0242ac110003",
     "tester_id": "ed82b619-a388-11e3-bcd5-3148d8615fb9",
     "parameter": {
-        "task_log_id": "",
+        "log_id": "",
         "server_id": "0c4ccc7b-330a-11ec-b97c-0242ac110003",
         "node_id": "b0a84280-7b86-4de7-b9b8-c6fa24831447",
         "task_id": "",

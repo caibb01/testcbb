@@ -23,7 +23,7 @@ class DemoTestCase(TestCase):
         pass
 
     def test_case_04_01(self):
-        if not self._check_case(["C00004"], "pass_partial"): return
+        if not self._check_case(["C00004"], "pass_part"): return
         print("用例执行：test_case_04")
         pass
 

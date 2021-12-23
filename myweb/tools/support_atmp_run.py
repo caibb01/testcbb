@@ -26,7 +26,7 @@ def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_ti
         # 判断是否开启上传结果到ATMP系统
         if file_content["parameter"]["batch_no"] != "":
             file_content["parameter"]["log_result"] = case_exec_result
-            file_content["parameter"]["task_log_id"] = str(uuid.uuid1())
+            file_content["parameter"]["log_id"] = str(uuid.uuid1())
             assert "" != test_code
             file_content["parameter"]["test_code"] = test_code
             file_content["parameter"]["tester"] = file_content["tester_id"]
