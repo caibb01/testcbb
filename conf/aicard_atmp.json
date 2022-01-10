@@ -3,11 +3,11 @@
     "project_name_zh": "AI云店Web自动化项目-生产G0迭代checklist回归验证",
     "desc": "",
     "report_mode": true,
+    "retry": 0,
     "email_mode": [
         "xxxx@mingyuanyun.com"
     ],
-    "retry": 0,
-    "receiver": [],
+    "report_to_atmp": true,
     "screen": [
         "fail",
         "is_exist"
@@ -15,6 +15,9 @@
     "mark": true,
     "driver_always_open": false,
     "auto_open_driver": true,
-    "output": "",
-	"report_to_atmp": true
+    "thread": false,
+    "MainThread": [
+        "xxxxx.py"
+    ],
+    "output": {}
 }

@@ -1,3 +1,4 @@
+import base64
 import os
 import unittest
 import inspect
@@ -106,7 +107,7 @@ def _setUp_storage(config_name, output=None):
     with lock_storage[1]:
         storeges_ = _get_storage()
         output = output if output else config['output'][current_tread_name]
-        content = {current_tread_name:{}}
+        content = {current_tread_name: {}}
         content[current_tread_name]["info"] = []
         content[current_tread_name]['timestamp'] = output.split("_")[-1]
         content[current_tread_name]['project'] = config['project_name']
@@ -183,7 +184,7 @@ class ThreadRunner(object):
         # 获取主线程或多线程的用例文件
         case_file_list, main_run_list = self._get_run_case_file(case_path_, "test*.py" if pattern == "" else pattern)
         # 多线程运行
-        all_task = [self._pool.submit(self._run_task,  case_path=case_path_, pattern=file_) for file_ in case_file_list]
+        all_task = [self._pool.submit(self._run_task, case_path=case_path_, pattern=file_) for file_ in case_file_list]
         wait(all_task)
         self._pool.shutdown()
         # 主线程运行
@@ -286,8 +287,8 @@ class ThreadRunner(object):
 
         # 重新计算通过率
         self._summary_results['passrate'] = "%.2f%%" % (
-            float(self._summary_results["success"] * 100) /
-            (self._summary_results['case_num'] + self._summary_results["miss_num"])
+                float(self._summary_results["success"] * 100) /
+                (self._summary_results['case_num'] + self._summary_results["miss_num"])
         )
 
         # 写入汇总后的resul.json文件
@@ -347,7 +348,7 @@ class Runner():
         global CONFIG
         CONFIG = self.config_name
 
-    def run(self, pattern, case_path=""):
+    def run(self, pattern="", case_path=""):
         self._setUp_config()
         _setUp_storage(config_name=self.config_name)
         try:
@@ -355,13 +356,13 @@ class Runner():
                 self.case_path = os.path.join(CASE_PATH, self.config['project_name'], "case")
             else:
                 self.case_path = os.path.join(CASE_PATH, self.config['project_name'], "case", case_path)
-            print("case_path:%s"%self.case_path)
+            print("case_path:%s" % self.case_path)
         except:
             raise Exception("File '{0}' not exist <project_name>".format(self.config_path))
         # 加载测试套件
         if not thread_flag:
             discover = unittest.defaultTestLoader.discover(
-                   self.case_path, pattern="test*.py" if pattern == "" else pattern, top_level_dir=None)
+                self.case_path, pattern="test*.py" if pattern == "" else pattern, top_level_dir=None)
         else:
             discover = self._merge_discover(self.case_path, pattern)
         # 获取测试套件所有用例名称和用例描述,返回值为dict类型，key为用例名称，value为用例描述
@@ -387,7 +388,6 @@ class Runner():
                 self._mail(receiver=receiver)
         self._tearDown_config()
 
-
     def _merge_discover(self, case_path, case_file_list):
         discover_list = [unittest.defaultTestLoader.discover(case_path, pattern=case_file) for case_file in case_file_list]
         merge_discover = discover_list[0]
@@ -395,7 +395,6 @@ class Runner():
             for i in discover_list[d]._tests:
                 merge_discover.addTest(i)
         return merge_discover
-
 
     def _get_all_suit(self, discover):
         """获取加载测试套件的所有用例名称和描述
@@ -409,7 +408,6 @@ class Runner():
                 for k in j._tests:
                     all_suit_case_dict[k._testMethodName] = k._testMethodDoc.strip() if k._testMethodDoc is not None else "用例未添加描述说明~"
         return all_suit_case_dict
-
 
     def _rewrite_report(self, all_suit_case_dict):
         """重写测试报告，增加丢失用例
@@ -431,7 +429,7 @@ class Runner():
         case_info_["miss_num"] = len(miss_case_info)
         # 重写用例通过率，把丢失的也算进用例总数里
         case_info_['passrate'] = "%.2f%%" % (
-            float(case_info_['success'] * 100) / (case_info_['case_num'] + case_info_["miss_num"]))
+                float(case_info_['success'] * 100) / (case_info_['case_num'] + case_info_["miss_num"]))
         self._set_result(content=case_info_)
 
     def _run_fail_case(self, retry=2):
@@ -503,7 +501,6 @@ class Runner():
         f.write(self.email_html)
         f.close()
 
-
     def _mail(self, receiver=None):
 
         if receiver:
@@ -529,7 +526,8 @@ class Runner():
 
     def _set_result(self, content):
         current_tread_name = threading.current_thread().name
-        self.result_path = os.path.join(OUTPUT_PATH, self.config['project_name'], dir_data, self.config['output'][current_tread_name], 'result.json')
+        self.result_path = os.path.join(OUTPUT_PATH, self.config['project_name'], dir_data, self.config['output'][current_tread_name],
+                                        'result.json')
         f = open(self.result_path, 'w', encoding='utf-8')
         json.dump(content, f, indent=4, ensure_ascii=False)
         f.close()
@@ -599,7 +597,6 @@ class TestCase(unittest.TestCase):
             cls._storage = _get_storage()
             cls._storage[current_tread_name]["module_name"] = cls.__module__
             _set_storage(cls._storage)
-
 
     @classmethod
     def tearDownClass(cls):
@@ -672,7 +669,9 @@ class TestCase(unittest.TestCase):
             self._storage[current_tread_name]["case_name"] = self._testMethodName
             _set_storage(self._storage)
         # 定义测试编号
-        self.test_code = ""
+        self.test_codes = None
+        self.run_flag = None
+        self.run_result = None
 
     def tearDown(self):
         current_thread_name = threading.current_thread().name
@@ -698,7 +697,7 @@ class TestCase(unittest.TestCase):
             else:
                 self._result["trace"] = stack_lines[-1]
                 self._result["is_error"] = True
-            _step_screenshot(driver=self.driver, ty="fail_"+self._result["case_name"], type_name="用例执行失败", msg="")
+            _step_screenshot(driver=self.driver, ty="fail_" + self._result["case_name"], type_name="用例执行失败", msg="")
         else:
             self._result["success"] = True
 
@@ -777,11 +776,6 @@ class TestCase(unittest.TestCase):
         return self.run_flag
 
 
-
 if __name__ == '__main__':
     r = Runner(config_name='demo.json')
     r.run(pattern="")
-
-
-
-
