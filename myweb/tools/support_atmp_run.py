@@ -32,8 +32,7 @@ def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_ti
             file_content["parameter"]["tester"] = file_content["tester_id"]
 
             # 转换时间戳为带毫秒的时间格式
-            file_content["parameter"]["firetime_start"] = cvt_timestamp(start_timestamp)
-            file_content["parameter"]["firetime_end"] = cvt_timestamp(end_timestamp)
+            file_content["parameter"]["fire_time"] = cvt_timestamp(start_timestamp)
             file_content["parameter"]["log_time"] = end_timestamp - start_timestamp
             file_content["parameter"]["memo"] = memo
             json_file.set(file_content)
@@ -41,8 +40,6 @@ def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_ti
             # 调用ATMP上传结果
             print("调用ATMP系统接口")
             post_result = atmp_json(file_content, "/edi/add_task_log", file_content["parameter"])
-            assert post_result["code"] == 0
-            post_result = atmp_json(file_content, "/edi/update_task_log", file_content["parameter"])
             assert post_result["code"] == 0
 
 

@@ -14,5 +14,6 @@ class DemoTestCase02(TestCase):
         self.driver.maximize_window()
         time.sleep(5)
 
+
 if __name__ == '__main__':
     unittest.main()

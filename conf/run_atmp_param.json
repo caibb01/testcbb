@@ -11,14 +11,13 @@
         "group_code": "YK010301",
         "test_code": "",
         "test_type": "function",
-        "run_concurrent": 0,
-        "run_cycle": 0,
         "tester": "ed82b619-a388-11e3-bcd5-3148d8615fb9",
-        "firetime_start": "",
-        "firetime_end": "",
+        "fire_time": "2022-01-10 16:19:32.073",
         "log_time": 0.0,
         "log_result": "",
-        "memo": ""
+        "memo": "",
+        "firetime_start": "",
+        "firetime_end": ""
     },
     "server_id": {
         "g0": "0c4ccc7b-330a-11ec-b97c-0242ac110003",
