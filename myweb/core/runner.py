@@ -570,7 +570,7 @@ class TestCase(unittest.TestCase):
             option = webdriver.ChromeOptions()
             # 浏览器默认不关闭
             option.add_experimental_option("detach", True)
-            # cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
+            cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
 
         config_path = os.path.join(CONFIG_PATH, CONFIG)
         cls._config = cls._get_result(cls, config_path)
