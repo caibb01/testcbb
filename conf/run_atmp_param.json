@@ -1,5 +1,5 @@
 {
-    "atmp_url": "http://10.10.4.53/regress-atmp",
+    "atmp_url": "https://test-management-platform.myscrm.cn/regress-atmp",
     "schema_id": "2dbb8285-0ac5-11ec-bb81-0242ac110003",
     "tester_id": "ed82b619-a388-11e3-bcd5-3148d8615fb9",
     "parameter": {
