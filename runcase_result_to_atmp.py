@@ -43,7 +43,7 @@ if __name__ == '__main__':
     # 在atmp平台创建任务
     generate_task_schema_data = {"schema_id": file_content["schema_id"], "tester": file_content["tester_id"]}
     result = atmp_post(file_content, "/edi/generate_task_schema", generate_task_schema_data)
-    task_id = result["data"]
+    task_id = result["data"]["task_id"]
     file_content["parameter"]["task_id"] = task_id
     json_file.set(file_content)
 
