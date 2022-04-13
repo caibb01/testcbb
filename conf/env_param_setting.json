@@ -1,5 +1,5 @@
 {
-  "test_env":"test",
+    "test_env": "test",
     "test": {
         "url": "https://test-qmyxcg.myscrm.com.cn/login.shtml",
         "username": "yktest",

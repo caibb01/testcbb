@@ -14,7 +14,7 @@
     ],
     "mark": true,
     "driver_always_open": false,
-    "auto_open_driver": true,
+    "auto_open_driver": false,
     "thread": false,
     "MainThread": [
         "xxxxx.py"
