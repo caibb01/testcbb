@@ -1,6 +1,5 @@
 import json
-import os
-from myweb.core.runner import DATA_PATH
+
 
 class JsonConfig():
     def __init__(self, path):
@@ -17,5 +16,3 @@ class JsonConfig():
         json.dump(data, f, indent=4, ensure_ascii=False)
         f.close()
 
-_configPath = os.path.join(DATA_PATH, 'config.json')
-conf = JsonConfig(_configPath).get()

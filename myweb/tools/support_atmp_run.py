@@ -4,21 +4,21 @@ import os, json
 import time
 import uuid
 import requests
+from myweb.utils.config import JsonConfig
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
 CONFIG_PATH = os.path.join(BASE_PATH, 'conf')
-ATMP_FILE = "run_atmp_param.json"
 
 
-def report_result_to_atmp(test_codes, case_exec_result, start_timestamp, end_timestamp, memo):
+def report_result_to_atmp(atmp_file, test_codes, case_exec_result, start_timestamp, end_timestamp, memo):
     """上报结果给ATMP系统"""
     if len(test_codes) > 0:
         for test_code in test_codes:
-            report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_timestamp, memo)
+            report_one_case_to_atmp(atmp_file, test_code, case_exec_result, start_timestamp, end_timestamp, memo)
 
 
-def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_timestamp, memo):
-    atmp_config_path = os.path.join(CONFIG_PATH, ATMP_FILE)
+def report_one_case_to_atmp(atmp_file, test_code, case_exec_result, start_timestamp, end_timestamp, memo):
+    atmp_config_path = os.path.join(CONFIG_PATH, atmp_file)
     # 判断配置文件是否存在
     if os.path.exists(atmp_config_path):
         json_file = JsonConfigATMP(atmp_config_path)
@@ -43,14 +43,14 @@ def report_one_case_to_atmp(test_code, case_exec_result, start_timestamp, end_ti
             assert post_result["code"] == 0
 
 
-def check_case(test_codes):
+def check_case(atmp_file, test_codes):
     """
     是否跳过执行
     :param test_codes:
     :return:
     """
     run_flag = False
-    atmp_config_path = os.path.join(CONFIG_PATH, ATMP_FILE)
+    atmp_config_path = os.path.join(CONFIG_PATH, atmp_file)
     # 判断配置文件是否存在
     if os.path.exists(atmp_config_path):
         json_file = JsonConfigATMP(atmp_config_path)
@@ -72,9 +72,9 @@ def check_case(test_codes):
 
 def atmp_post(f, url, data):
     path = f["atmp_url"] + url
-    print(path)
     headers = {"Content-Type": "application/x-www-form-urlencoded", "User-Code": "huangl08", "User-Pwd": "dGVzdDEyMzQ="}
     response = requests.post(url=path, headers=headers, data=data)
+    print(response.request.url + " >> " + response.request.body)
     if response.status_code != 200:
         raise Exception("接口请求错误！")
     print(response.content.decode('utf8'))
@@ -84,9 +84,9 @@ def atmp_post(f, url, data):
 
 def atmp_json(f, url, data):
     path = f["atmp_url"] + url
-    print(path)
     headers = {"Content-Type": "application/json;charset=UTF-8", "User-Code": "huangl08", "User-Pwd": "dGVzdDEyMzQ="}
     response = requests.post(url=path, headers=headers, data=json.dumps(data))
+    print(response.request.url + " >> " + response.request.body)
     if response.status_code != 200:
         raise Exception("接口请求错误！")
     print(response.content.decode('utf8'))

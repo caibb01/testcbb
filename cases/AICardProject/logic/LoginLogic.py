@@ -43,6 +43,23 @@ class LoginLogic(BasePage):
                    orgname=__login_data['orgname'])
         self.loginPage.openAI()
 
+    def enterAIAction(self):
+        # 登录配置数据
+        __data_path = os.path.join(os.path.abspath(os.path.join
+                                                   (os.path.abspath(__file__), "../../../..")), 'data', 'loginInfo.json')
+
+        data_path = os.path.join(getFilePath('loginInfo.json'))
+        # 获取登录数据
+        # __login_data = JsonConfig(__data_path).get()
+        __login_data = JsonConfig(data_path).get()
+        """
+        登录并打开AI云店
+        """
+        self.login(username=__login_data['username'],
+                   password=__login_data['password'],
+                   orgname=__login_data['orgname'])
+        self.loginPage.openAI()
+
     # def getpath(self):
     #     # 取上上级目录
     #     current_dir = os.path.abspath(os.path.dirname(__file__))

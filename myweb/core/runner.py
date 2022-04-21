@@ -23,7 +23,7 @@ OUTPUT_PATH = os.path.join(BASE_PATH, 'outputs')
 DATA_PATH = os.path.join(BASE_PATH, 'data')
 CONFIG_PATH = os.path.join(BASE_PATH, 'conf')
 TEMPLATE_PATH = os.path.join(BASE_PATH, 'template')
-STORAGE_PATH = os.path.join(BASE_PATH, 'myweb', 'core', 'storage.json')
+STORAGE_PATH = os.path.join(OUTPUT_PATH, 'storage.json')
 CONFIG = 'single.json'
 
 STORAGE = None
@@ -80,7 +80,8 @@ def _get_storage():
     """
     with lock_storage[0]:
         if not os.path.exists(STORAGE_PATH):
-            os.makedirs(STORAGE_PATH)
+            f = open(STORAGE_PATH, 'w', encoding='utf-8')
+            f.write('{}')
         f = open(STORAGE_PATH, 'r', encoding='utf-8')
         global STORAGE
         STORAGE = json.load(f)
@@ -322,12 +323,12 @@ class ThreadRunner(object):
     # 发送email邮件
     def _mail(self, receiver=None):
         if receiver:
-            e = Email(title="Mars自动化测试报告邮件",
+            e = Email(title="自动化测试报告邮件",
                       receiver=receiver,
                       server='smtp.exmail.qq.com',
                       sender=self._global_config['email']['username'],
                       password=self._global_config['email']['password'],
-                      sender_name="MarsUI自动化测试报告",
+                      sender_name="UI自动化测试报告",
                       html=self.email_html)
             e.send()
 
@@ -341,7 +342,7 @@ class Runner():
         # 缓存文件 存储正在执行的任务项目名称、时间戳
         self.storage_path = STORAGE_PATH
         self.storage = None
-        self.config = None
+        self.config = _get_config(config_name)
         self.result = None
         self.receiver = []
         self.email_html = None
@@ -541,6 +542,7 @@ class Runner():
         current_tread_name = threading.current_thread().name
         with lock_mars[1]:
             self.config = _get_config(config_name=self.config_name)
+            self.config['output'] = {}
             self.config['output'][current_tread_name] = current_tread_name + "_" + datetime.datetime.now().strftime("%Y%m%d%H%M%S")
             _set_config(config_name=self.config_name, content=self.config)
 
@@ -566,9 +568,12 @@ class TestCase(unittest.TestCase):
         if _decide_config("auto_open_driver")[0]:
             cls._global_config = _get_global_config()
             option = webdriver.ChromeOptions()
+
+            # 解决报错，设置无界面运行
+            # option.add_argument('--headless')  # 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
             # 浏览器默认不关闭
             option.add_experimental_option("detach", True)
-            cls.driver = webdriver.Chrome(cls._global_config['driverPath'])
+            cls.driver = webdriver.Chrome(cls._global_config['driverPath'], options=option)
 
         config_path = os.path.join(CONFIG_PATH, CONFIG)
         cls._config = cls._get_result(cls, config_path)
@@ -646,6 +651,8 @@ class TestCase(unittest.TestCase):
             'project_name_zh'] if 'project_name' in cls._config.keys() else None
 
         cls._write_result(cls, result_path, all_results_info)
+        if _decide_config("auto_open_driver")[0]:
+            cls.driver.quit()
 
     def setUp(self):
         # 每次执行用例前先将result初始化total_time
@@ -675,11 +682,13 @@ class TestCase(unittest.TestCase):
 
     def tearDown(self):
         current_thread_name = threading.current_thread().name
-        sys_info = self._outcome.errors[-1][-1]
+        if len(self._outcome.errors) != 0:
+            sys_info = self._outcome.errors[-1][-1]
+        else:
+            sys_info = None
         test_method = getattr(self, self._testMethodName)
         source_line = inspect.getsourcelines(test_method)
         self._result["source"] = {"code": source_line[0], "start": source_line[1]}
-
         if sys_info:
             e_type, e_value, e_traceback = sys_info
             self._result["failed_line_num"] = -1
@@ -727,13 +736,16 @@ class TestCase(unittest.TestCase):
         self._result['total_time'] = round(self._result['end_timestamp'] - self._result['start_timestamp'], 3)
         self._results['cases_info'].append(self._result)
 
-        report_to_atmp = _decide_config("report_to_atmp")[0]
-        if report_to_atmp and self._check_case(self.test_codes):
+        atmp_report = _decide_config("atmp_report")[1]
+        atmp_file = _decide_config("atmp_file")[1]
+        if atmp_report and self._check_case(self.test_codes):
             if self._result["success"] is True:
-                report_result_to_atmp(self.test_codes, self.run_result, self._result["start_timestamp"], self._result["end_timestamp"],
+                report_result_to_atmp(atmp_file, self.test_codes, self.run_result, self._result["start_timestamp"],
+                                      self._result["end_timestamp"],
                                       "预期与实际结果一致")
             else:
-                report_result_to_atmp(self.test_codes, "fail", self._result["start_timestamp"], self._result["end_timestamp"],
+                report_result_to_atmp(atmp_file, self.test_codes, "fail", self._result["start_timestamp"],
+                                      self._result["end_timestamp"],
                                       self._result["trace"])
 
     def __getattribute__(self, item):
@@ -763,18 +775,21 @@ class TestCase(unittest.TestCase):
         f.close()
 
     def _check_case(self, test_codes, run_result="pass_all"):
-        report_to_atmp = _decide_config("report_to_atmp")[0]
-        if not report_to_atmp:
+        atmp_report = _decide_config("atmp_report")[1]
+        atmp_file = _decide_config("atmp_file")[1]
+        if not atmp_report:
             return True
         if self.test_codes is None:
             self.test_codes = test_codes
         if self.run_result is None:
             self.run_result = run_result
         if self.run_flag is None:
-            self.run_flag = check_case(test_codes)
+            self.run_flag = check_case(atmp_file, test_codes)
             print("是否执行用例：" + str(self.test_codes) + " -> " + str(self.run_flag))
         return self.run_flag
 
+
+_get_storage()
 
 if __name__ == '__main__':
     r = Runner(config_name='demo.json')

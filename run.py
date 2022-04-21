@@ -1,20 +1,18 @@
 import os
 import sys
 import re
-
-from myweb.core.runner import Runner, CONFIG_PATH, ThreadRunner
+from myweb.core.runner import Runner, ThreadRunner, CONFIG_PATH
 from myweb.utils.config import JsonConfig
 
 if __name__ == '__main__':
-
-    config_path = "demo.json"
-    print(CONFIG_PATH)
     # 获取初始配置运行参数配置
-    env_param_path = os.path.join(CONFIG_PATH, "env_param_setting.json")
+    main_file = "demo.main.json"
+    env_file = "env_param_setting.json"
+    env_param_path = os.path.join(CONFIG_PATH, env_file)
     env_param = JsonConfig(env_param_path).get()
     # 获取多线程开关
-    conf_path_ = os.path.join(CONFIG_PATH, "demo.json")
-    thread_open = JsonConfig(conf_path_).get()["thread"]
+    main_path = os.path.join(CONFIG_PATH, main_file)
+    thread_open = JsonConfig(main_path).get()["thread"]
     pattern = ""
     max_workers = 2
     case_path = ""
@@ -50,11 +48,8 @@ if __name__ == '__main__':
 
     # 开始运行自动化用例
     if thread_open:
-        tread_run = ThreadRunner(max_workers=max_workers, config_name=config_path)
+        tread_run = ThreadRunner(max_workers=max_workers, config_name=main_file)
         tread_run.thread_run(case_path=case_path, pattern=pattern)
     else:
-        main_run = Runner(config_name=config_path)
+        main_run = Runner(config_name=main_file)
         main_run.run(case_path=case_path, pattern=pattern)
-
-
-

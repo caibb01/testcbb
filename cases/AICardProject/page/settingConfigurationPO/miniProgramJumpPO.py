@@ -5,7 +5,7 @@ from myweb.core.BasePage import BasePage
 from time import sleep
 from selenium.webdriver.support.wait import WebDriverWait
 # from selenium.webdriver.common.keys import Keys
-from pymouse import PyMouse
+# from pymouse import PyMouse
 from pykeyboard import PyKeyboard
 
 class MiniProgramJumpPO(BasePage,TestCase):

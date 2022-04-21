@@ -32,6 +32,7 @@ class areaSettingPO(BasePage,TestCase):
         "关联项目-删除项目": (By.XPATH, '//i[@class="anticon anticon-close ant-select-remove-icon"]'),
         #确定列表
         "确定": (By.XPATH, '//span[text()="确 定"]/parent::button'),
+        #"确定":(By.XPATH,'//button[@class="ant-btn ant-btn-primary"]'),
 
         "取消":(By.XPATH,'//button[@class="ant-btn"]'),
         "关闭弹窗":(By.XPATH,'//span[@class="ant-modal-close-x"]/i'),
@@ -50,6 +51,7 @@ class areaSettingPO(BasePage,TestCase):
         #例：辖区:广东省深圳市南山区已经被区域:深圳南山关联过，不允许重复关联
         "错误提示":(By.XPATH,'//div[@class="ant-modal-confirm-btns"]/button[@class="ant-btn ant-btn-primary"]'),
         "blank": (By.XPATH, '//div[@class="ant-modal-body"]'),
+        "新建区域":(By.XPATH,'//div[@id="rcDialogTitle0"]'),
 
         "共计总记录": (By.XPATH, "//span[@class='primary']"),
         "每页条数": (By.XPATH, "//div[@class='ant-select-sm ant-select ant-select-enabled']/div/div/div"),
@@ -97,10 +99,10 @@ class areaSettingPO(BasePage,TestCase):
                 self.switch_to_active_element().send_keys(Keys.ARROW_DOWN)
             self.switch_to_active_element().send_keys(Keys.ENTER)
             self.find_element(self.controls['区域首字母文本']).click()
-            self.find_element((self.controls['blank'])).click()
+            #self.find_element((self.controls['blank'])).click()
             # self.wait_eleVisible(self.controls["确定"])
             sleep(2)
-            self.find_elements(self.controls["确定"],0).click()
+            self.find_element(self.controls["确定"]).click()
             sleep(2)
             if self.is_exist_element(self.controls["错误提示知道了"]):
                 i=i+1
@@ -110,10 +112,12 @@ class areaSettingPO(BasePage,TestCase):
                 flag = False
             if i > 34 :
                 flag = False
+                self.find_element(self.controls["取消"]).click()
         self.assertTrue(check_flag,msg="未成功新增区域")
 
     def add_area_02(self,area_name):
         '''新增区域，关联项目'''
+        sleep(2)
         self.wait_eleVisible(self.controls["已维护区域"])
         self.find_element(self.controls["已维护区域"]).click()
         self.wait_eleVisible(self.controls["新增区域"])
@@ -152,10 +156,10 @@ class areaSettingPO(BasePage,TestCase):
                 self.switch_to_active_element().send_keys(Keys.ARROW_DOWN)
             self.switch_to_active_element().send_keys(Keys.ENTER)
             self.find_element(self.controls['区域首字母文本']).click()
-            self.find_element((self.controls['blank'])).click()
+            #self.find_element((self.controls['blank'])).click()
             # self.wait_eleVisible(self.controls["确定"])
             sleep(2)
-            self.find_elements(self.controls["确定"],0).click()
+            self.find_element(self.controls["确定"]).click()
             sleep(2)
             if self.is_exist_element(self.controls["错误提示知道了"]):
                 i=i+1
@@ -196,7 +200,7 @@ class areaSettingPO(BasePage,TestCase):
             else:
                 # self.wait_eleVisible(self.controls["确定"])
                 sleep(2)
-                self.find_elements(self.controls["确定"],0).click()
+                self.find_element(self.controls["确定"]).click()
                 sleep(2)
                 if self.is_exist_element(self.controls["错误提示知道了"]):
                     i = i + 1
@@ -218,7 +222,7 @@ class areaSettingPO(BasePage,TestCase):
             self.find_element(self.controls["辖区范围-确认删除"]).click()
         # self.wait_eleVisible(self.controls["确定"])
         sleep(2)
-        self.find_elements(self.controls["确定"],0).click()
+        self.find_element(self.controls["确定"]).click()
 
 
     def delete_area(self,area_name):
@@ -287,7 +291,7 @@ class areaSettingPO(BasePage,TestCase):
 
     def maintained_area(self):
         '''打开已维护项目'''
-        self.wait_eleVisible(self.controls["已维护区域"])
+        #self.wait_eleVisible(self.controls["已维护区域"])
         self.find_element(self.controls["已维护区域"]).click()
 
     def unbound_project(self):
@@ -384,7 +388,7 @@ class areaSettingPO(BasePage,TestCase):
             if typeBolle:
                 self.click_next()
         #self.wait_eleVisible(self.controls['编辑'])
-        print("countNum:",countNum)
+#        print("countNum:",countNum)
         self.find_elements(self.controls['编辑'], countNum).click()
 
     #点击删除

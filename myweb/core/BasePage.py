@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time, logging
-# from pykeyboard import PyKeyboard
+from pykeyboard import PyKeyboard
 import myweb.core.runner as cf
 import datetime, os
 import platform
@@ -39,17 +39,17 @@ class BasePage(object):
         try:
             type = element[0]
             value = element[1]
-            if type == "id" or type == "ID" or type == "Id" or type == By.ID:
+            if type.lower() == "id" or type.lower() == By.ID:
                 el = self.driver.find_element_by_id(value)
-            elif type == "name" or type == "NAME" or type == "Name" or type == By.NAME:
+            elif type.lower() == "name" or type.lower() == By.NAME:
                 el = self.driver.find_element_by_name(value)
-            elif "class" in type or type == "CLASS" or type == "Class" or type == By.CLASS_NAME:
+            elif "class" in type or type.lower() == "class" or type.lower() == By.CLASS_NAME:
                 el = self.driver.find_element_by_class_name(value)
-            elif type == "link_text" or type == "LINK_TEXT" or type == "Link_text" or type == By.LINK_TEXT:
+            elif type.lower() == "link_text" or type.lower() == By.LINK_TEXT:
                 el = self.driver.find_element_by_link_text(value)
-            elif type == "xpath" or type == "XPATH" or type == "Xpath" or type == By.XPATH:
+            elif type.lower() == "xpath" or type.lower() == By.XPATH:
                 el = self.driver.find_element_by_xpath(value)
-            elif "css" in type or type == "CSS" or type == "Css" or type == By.CSS_SELECTOR:
+            elif "css" in type or type.lower() == "css" or type.lower() == By.CSS_SELECTOR:
                 el = self.driver.find_element_by_css_selector(value)
             elif "tag" in type:
                 el = self.driver.find_element_by_tag_name(value)
@@ -79,22 +79,22 @@ class BasePage(object):
             type = element[0]
             value = element[1]
             global elem
-            if type == "id" or type == "ID" or type == "Id":
+            if type.lower() == "id" or type.lower() == By.ID:
                 elem = self.driver.find_elements_by_id(value)
 
-            elif type == "name" or type == "NAME" or type == "Name":
+            elif type.lower() == "name" or type.lower() == By.NAME:
                 elem = self.driver.find_elements_by_name(value)
 
-            elif type == "class" or type == "CLASS" or type == "Class":
+            elif type.lower() == "class" or type.lower() == By.CLASS_NAME:
                 elem = self.driver.find_elements_by_class_name(value)
 
-            elif type == "link_text" or type == "LINK_TEXT" or type == "Link_text":
+            elif type.lower() == "link_text" or type.lower() == By.LINK_TEXT:
                 elem = self.driver.find_elements_by_link_text(value)
 
-            elif type == "xpath" or type == "XPATH" or type == "Xpath":
+            elif type.lower() == "xpath" or type.lower() == By.XPATH:
                 elem = self.driver.find_elements_by_xpath(value)
 
-            elif type == "css" or type == "CSS" or type == "Css":
+            elif type.lower() == "css" or type.lower() == By.CSS_SELECTOR:
                 elem = self.driver.find_elements_by_css_selector(value)
             else:
                 raise NameError("Please correct the type in function parameter")
@@ -109,22 +109,22 @@ class BasePage(object):
             type = element[0]
             value = element[1]
             global elem
-            if type == "id" or type == "ID" or type == "Id":
+            if type.lower() == "id" or type.lower() == By.ID:
                 elem = self.driver.find_elements_by_id(value)
 
-            elif type == "name" or type == "NAME" or type == "Name":
+            elif type.lower() == "name" or type.lower() == By.NAME:
                 elem = self.driver.find_elements_by_name(value)
 
-            elif type == "class" or type == "CLASS" or type == "Class":
+            elif type.lower() == "class" or type.lower() == By.CLASS_NAME:
                 elem = self.driver.find_elements_by_class_name(value)
 
-            elif type == "link_text" or type == "LINK_TEXT" or type == "Link_text":
+            elif type.lower() == "link_text" or type.lower() == By.LINK_TEXT:
                 elem = self.driver.find_elements_by_link_text(value)
 
-            elif type == "xpath" or type == "XPATH" or type == "Xpath":
+            elif type.lower() == "xpath" or type.lower() == By.XPATH:
                 elem = self.driver.find_elements_by_xpath(value)
 
-            elif type == "css" or type == "CSS" or type == "Css":
+            elif type.lower() == "css" or type.lower() == By.CSS_SELECTOR:
                 elem = self.driver.find_elements_by_css_selector(value)
             else:
                 raise NameError("Please correct the type in function parameter")
@@ -140,17 +140,17 @@ class BasePage(object):
         '''
         type = element[0]
         value = element[1]
-        if type == "id" or type == "ID" or type == "Id":
+        if type.lower() == "id" or type.lower() == By.ID:
             el = self.driver.find_element_by_id(value).is_displayed()
-        elif type == "name" or type == "NAME" or type == "Name":
+        elif type.lower() == "name" or type.lower() == By.NAME:
             el = self.driver.find_element_by_name(value).is_displayed()
-        elif "class" in type or type == "CLASS" or type == "Class":
+        elif "class" in type or type.lower() == "class" or type.lower() == By.CLASS_NAME:
             el = self.driver.find_element_by_class_name(value).is_displayed()
-        elif type == "link_text" or type == "LINK_TEXT" or type == "Link_text":
+        elif type.lower() == "link_text" or type.lower() == By.LINK_TEXT:
             el = self.driver.find_element_by_link_text(value).is_displayed()
-        elif type == "xpath" or type == "XPATH" or type == "Xpath":
+        elif type.lower() == "xpath" or type.lower() == By.XPATH:
             el = self.driver.find_element_by_xpath(value).is_displayed()
-        elif "css" in type or type == "CSS" or type == "Css":
+        elif "css" in type or type.lower() == By.CSS_SELECTOR:
             el = self.driver.find_element_by_css_selector(value).is_displayed()
         else:
             el = self.driver.find_element_by_tag_name(value).is_displayed()
@@ -193,8 +193,7 @@ class BasePage(object):
                     flag = True
                     break
         if not flag:
-            print('未找到元素：')
-            print(element)
+            print('未找到元素：', element)
         else:
             self._mark(elem)
         cf._step_screenshot(driver=self.driver, ty="is_exist", type_name="判断元素", msg=str(element) + str(flag))
@@ -233,30 +232,30 @@ class BasePage(object):
         '''
         self.driver.refresh()
 
-    # def send_keys(self, keywords):
-    #     '''
-    #     :param keywords: 暂时支持TAB，回车，右建，ESC和输入字符串
-    #     :return: 模拟键盘输入
-    #     '''
-    #     k = PyKeyboard()
-    #     if "{" not in keywords:
-    #         k.type_string(keywords)
-    #     elif "TAB" in keywords:
-    #         k.tap_key(k.tab_key)
-    #     elif "ENTER" in keywords:
-    #         # k.press_key(k.enter_key)
-    #         # k.release_key(k.enter_key)
-    #         k.tap_key(k.enter_key)
-    #     elif "RIGHT" in keywords:
-    #         # k.press_key(k.right_key)
-    #         # k.release_key(k.right_key)
-    #         k.tap_key(k.right_key)
-    #     elif "ESC" in keywords:
-    #         k.tap_key(k.escape_key)
-    #     elif "BACKSPACE" in keywords:
-    #         k.tap_key(k.backspace_key)
-    #     else:
-    #         logging.info("keywords : %s is not support " % keywords)
+    def send_keys(self, keywords):
+        '''
+        :param keywords: 暂时支持TAB，回车，右建，ESC和输入字符串
+        :return: 模拟键盘输入
+        '''
+        k = PyKeyboard()
+        if "{" not in keywords:
+            k.type_string(keywords)
+        elif "TAB" in keywords:
+            k.tap_key(k.tab_key)
+        elif "ENTER" in keywords:
+            # k.press_key(k.enter_key)
+            # k.release_key(k.enter_key)
+            k.tap_key(k.enter_key)
+        elif "RIGHT" in keywords:
+            # k.press_key(k.right_key)
+            # k.release_key(k.right_key)
+            k.tap_key(k.right_key)
+        elif "ESC" in keywords:
+            k.tap_key(k.escape_key)
+        elif "BACKSPACE" in keywords:
+            k.tap_key(k.backspace_key)
+        else:
+            logging.info("keywords : %s is not support " % keywords)
 
     def open(self, url):
         '''

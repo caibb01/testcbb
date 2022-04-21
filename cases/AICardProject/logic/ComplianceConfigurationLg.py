@@ -1,4 +1,5 @@
 #-*- encoding=utf8 -*-
+import time
 from time import sleep
 import unittest
 from myweb.core.BasePage import BasePage
@@ -48,3 +49,20 @@ class ComplianceConfigurationLg():
     def publishing_agreement_lg(self):
         '''发布协议'''
         self.ComplianceConfigurationPO.publishing_agreement()
+
+    def add_authorized_protocol_lg(self, var):
+        """增加授权协议"""
+        self.ComplianceConfigurationPO.add_authorized_protocol(var['protocol_name'], var['filePath'])
+
+    def edit_authorized_protocol_lg(self):
+        """编辑授权协议"""
+        self.ComplianceConfigurationPO.edit_authorized_protocol()
+
+    def delete_authorized_protocol_lg(self, var):
+        """删除授权协议"""
+        self.ComplianceConfigurationPO.delete_authorized_protocol(var['protocol_name'])
+
+    def publish_authorized_protocol_lg(self):
+        """发布授权协议"""
+        self.ComplianceConfigurationPO.publish_authorized_protocol()
+

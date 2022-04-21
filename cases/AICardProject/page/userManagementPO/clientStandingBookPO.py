@@ -218,6 +218,8 @@ class clientStandingBook(BasePage,TestCase):
                     str_data = list[i].text[0:6]
                     if str_data != "":
                         break
+        global standardData
+        standardData = str_data
         return str_data
 
     # 姓名列表选择第一个
@@ -264,7 +266,7 @@ class clientStandingBook(BasePage,TestCase):
     #     self.inquire('集团客户-')
     #     sleep(1)
 
-    def group_customer_inquiry(self,parameter = None,checkData = None):
+    def group_customer_inquiry(self,parameter = None):
         '''集团客户--查询'''
         #输入电话号码
         if  parameter['phone'] != '':
@@ -275,12 +277,10 @@ class clientStandingBook(BasePage,TestCase):
         sleep(1)
         if parameter['startDate'] != '':
             self.input_registration_date(parameter['startDate'],parameter['endDate'],'集团客户-')
-        # print('userIntent:',parameter['userIntent'])
         self.user_intent(parameter['userIntent'],'集团客户-用户意向点击','集团客户-用户意向选择','集团客户-用户意向删除')
         #点击查询
         self.inquire('集团客户-')
         sleep(3)
-        self.contrast_list_data(checkData,phone)
 
 
     # def regional_customer_inquiry(self, parameter=None):
@@ -319,7 +319,7 @@ class clientStandingBook(BasePage,TestCase):
     #     self.inquire('区域客户-')
     #     sleep(1)
 
-    def regional_customer_inquiry(self, parameter=None,checkData = None):
+    def regional_customer_inquiry(self, parameter=None):
         '''区域客户--查询'''
         # 输入电话号码
         if parameter['phone'] != '':
@@ -355,7 +355,6 @@ class clientStandingBook(BasePage,TestCase):
         # 点击查询
         self.inquire('区域客户-')
         sleep(3)
-        self.contrast_list_data(checkData,phone)
 
     # def project_customer_inquiry(self, parameter=None):
     #     '''项目客户-查询'''
@@ -413,7 +412,7 @@ class clientStandingBook(BasePage,TestCase):
     #     self.inquire('项目客户-')
     #     sleep(1)
 
-    def project_customer_inquiry(self, parameter=None,checkData = None):
+    def project_customer_inquiry(self, parameter=None):
         '''项目客户-查询'''
         # 输入电话号码
         if parameter['phone'] != '':
@@ -464,7 +463,6 @@ class clientStandingBook(BasePage,TestCase):
         # 点击查询
         self.inquire('项目客户-')
         sleep(3)
-        self.contrast_list_data(checkData,phone)
 
     # def booking_customer_inquiry(self, parameter=None):
     #     '''预约客户-查询'''
@@ -561,7 +559,7 @@ class clientStandingBook(BasePage,TestCase):
     #         self.find_element(self.control['预约客户-查询']).click()
     #     sleep(1)
 
-    def booking_customer_inquiry(self, parameter=None,checkData = None):
+    def booking_customer_inquiry(self, parameter=None):
         '''预约客户-查询'''
         sleep(3)
         #选择项目名称
@@ -658,7 +656,6 @@ class clientStandingBook(BasePage,TestCase):
         if self.is_exist_element(self.control['预约客户-查询']):
             self.find_element(self.control['预约客户-查询']).click()
         sleep(3)
-        self.contrast_list_data(checkData,phone)
 
     #公共方法
     def switch_to_tab(self,tab_name):
@@ -743,6 +740,7 @@ class clientStandingBook(BasePage,TestCase):
 
     def export_function(self,mode = None):
         '''导出客户列表，导出并下载'''
+        sleep(2)
         start_time = self.find_element(self.control['导出状态-创建时间']).text
         self.wait_eleVisible(self.control[mode + '导出'])
         self.find_element(self.control[mode + '导出']).click()
@@ -764,12 +762,6 @@ class clientStandingBook(BasePage,TestCase):
         self.wait_eleVisible(self.control['项目客户-导出页面关闭'])
         self.find_element(self.control['项目客户-导出页面关闭']).click()
 
-    # def review_business_relationship_table(self,links = None,mode = None):
-    #     '''查看业务关系表（适用于集团客户、区域客户、项目客户）'''
-    #     sleep(2)
-    #     self.wait_eleVisible(self.control[mode + '点击业务关系表'])
-    #     self.find_elements(self.control[mode + '点击业务关系表'],links).click()
-    #     self.error_message_prompt()
 
     def review_business_relationship_table(self,mode = None):
         '''查看业务关系表（适用于集团客户、区域客户、项目客户）'''
@@ -828,7 +820,7 @@ class clientStandingBook(BasePage,TestCase):
     #         self.error_message_prompt()
     #         return flag
 
-    def review_customer_detail(self,line = None,var = None):
+    def review_customer_detail(self):
         '''查看预约客户列表详情'''
         if self.is_exist_element(self.control['预约客户-查看详情']):
             self.find_elements(self.control['预约客户-查看详情'], 0).click()
@@ -868,7 +860,7 @@ class clientStandingBook(BasePage,TestCase):
                     self.click_next()
         return flag
 
-    def contrast_list_data(self,checkData = None,standardData = None):
+    def contrast_list_data(self,checkData = None):
         '''判断输入的值是否在列表,并返回第几个'''
         flag = False
         typeBolle = True
@@ -876,11 +868,8 @@ class clientStandingBook(BasePage,TestCase):
         while (typeBolle):
             sleep(2)
             bodyContent = self.find_elements_list(self.control['当前页面列表数据'])
-            #print('len(bodyContent):',len(bodyContent))
             countNum = 0
             for b in bodyContent:
-                # print(countNum,":",checkData['standardData'])
-                # print(countNum,":",b.text)
                 if b.text == standardData:
                     flag = True
                     break
@@ -894,11 +883,10 @@ class clientStandingBook(BasePage,TestCase):
                     self.click_next_page()
             if countNum == len(bodyContent):
                 countNum = countNum - 1
-        self.public_assert(flag,checkData['expectResult'],checkData['msg'])
+        self.public_assert(flag,checkData['expectResult'],checkData['msg'] % standardData)
         return flag,countNum
 
     def public_assert(self,actualResult,expectResult,message):
-        #
         #预期结果为true，实际结果为flase时，断言提示message
         if expectResult == 'True' :
             self.assertTrue(actualResult,msg= message)
@@ -906,30 +894,13 @@ class clientStandingBook(BasePage,TestCase):
         else:
             self.assertFalse(actualResult,msg= message)
 
-    # def check_button_clickable(self):
-    #     #     '''检查下一页按钮是否可点击'''
-    #     #     nextNum = self.find_elements_list(self.control['下一页'])
-    #     #     for i in range(int(len(nextNum)-1)):
-    #     #         self.driver.execute_script("arguments[0].removeAttribute(arguments[1]);", nextNum[i], 'title')
-    #     #         #print('i.is_enabled()',nextNum[i].get_attribute('title'))
-    #     #     #print('++++++++++:',int(len(self.find_elements_list(self.control['下一页']))))
-    #     #     button_clickable= self.is_exist_element(self.control['获取可点击的下一页'])
-    #     #     #print('check_test:',button_clickable)
-    #     #     return button_clickable
 
     def check_next_clickable(self):
         '''检查下一页按钮是否可点击'''
         button_clickable = self.is_exist_element(self.control['获取可点击的下一页'])
         return button_clickable
 
-    # def click_next(self):
-    #     '''点击下一页'''
-    #     nextNum = len(self.find_elements_list(self.control['下一页']))
-    #     if nextNum > 2:
-    #         self.find_elements(self.control['下一页'], int(len(nextNum) - 1)).click()
-    #     else:
-    #         if self.is_exist_element(self.control['获取可点击的下一页']):
-    #             self.find_element(self.control['获取可点击的下一页']).click()
+
 
     def click_next_page(self):
         '''点击下一页'''
@@ -945,16 +916,7 @@ class clientStandingBook(BasePage,TestCase):
             else:
                 flag = False
 
-    # def check_button_previous_page(self):
-    #     '''检查上一页按钮是否可点击'''
-    #     nextNum = self.find_elements_list(self.control['上一页'])
-    #     for i in range(int(len(nextNum)-1)):
-    #         self.driver.execute_script("arguments[0].removeAttribute(arguments[1]);", nextNum[i], 'title')
-    #         #print('i.is_enabled()',nextNum[i].get_attribute('title'))
-    #     #print('++++++++++:',int(len(self.find_elements_list(self.control['上一页']))))
-    #     button_clickable= self.is_exist_element(self.control['获取可点击的上一页'])
-    #     #print('check_test:',button_clickable)
-    #     return button_clickable
+
 
     def check_previous_clickable(self):
         '''检查上一页按钮是否可点击'''
@@ -973,34 +935,11 @@ class clientStandingBook(BasePage,TestCase):
             return self.find_element(self.control['每页条数']).text
         return 1
 
-    # def click_previous_page(self):
-    #     '''点击上一页'''
-    #     sleep(2)
-    #     total_data = int(self.total_data())
-    #     number_page = int(self.Number_page())
-    #     page = int(total_data/number_page)
-    #     if page > 1:
-    #         self.wait_eleVisible(self.control['跳转至第几页'])
-    #         self.find_element(self.control['跳转至第几页']).send_keys(page+1)
-    #         sleep(2)
-    #         self.find_element(self.control['用户管理目录']).click()
-    #         sleep(2)
-    #         #获取可点击的上一页
-    #         while(self.check_button_previous_page()):
-    #             sleep(1)
-    #             nextNum = self.find_elements_list(self.control['上一页'])
-    #             #print('nextNum:', len(nextNum))
-    #             if self.is_exist_element(self.control['上一页']):
-    #                 self.find_elements(self.control['上一页'], int(len(nextNum) - 1)).click()
+
 
     def click_previous_page(self):
         '''点击上一页'''
         sleep(2)
-        # total_data = int(self.total_data())
-        # number_page = int(self.Number_page())
-        # page = int(total_data/number_page)
-        # if page > 10:
-        #
         page = 10
         if (page > 1) & (self.is_exist_element(self.control['跳转至第几页'])):
             if self.is_exist_element(self.control['跳转至第几页']) :
@@ -1034,15 +973,6 @@ class clientStandingBook(BasePage,TestCase):
                 # print("000:",userIntent,"----",user.text)
                 if userIntent in user.text :
                     user.click()
-                # else:
-                #     i += 1
-        #else:
-            # 选择用户意向
-            # self.find_element(self.control[userClick]).click()
-            # sleep(2)
-            # self.find_elements(self.control[userSelect],0).click()
-            # sleep(2)
-            # self.find_element(self.control[userDel]).click()
 
 
 

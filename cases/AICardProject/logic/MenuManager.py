@@ -20,6 +20,7 @@ class MenuManager(BasePage):
         "内容管理-项目管理": (By.XPATH, ".//*[text()='项目管理']"),
         "内容管理-公众号文章": (By.XPATH, ".//*[text()='公众号文章']"),
         "内容管理-原创文章": (By.XPATH, ".//*[text()='原创文章']"),
+        "内容管理-推荐文章": (By.XPATH, ".//*[text()='推荐文章']"),
         "内容管理-图片管理": (By.XPATH, ".//*[text()='图片管理']"),
         "内容管理-视频管理": (By.XPATH, ".//*[text()='视频管理']"),
         "内容管理-H5链接": (By.XPATH, ".//*[text()='H5链接']"),
@@ -31,9 +32,10 @@ class MenuManager(BasePage):
         "营销业务中心-弹窗管理": (By.XPATH, ".//*[text()='弹窗管理']"),
         "营销业务中心-渠道管理": (By.XPATH, ".//*[text()='一渠一码（原渠道管理）']"),
         "营销业务中心-任务中心": (By.XPATH, ".//span[text()='任务中心']"),
-        "营销业务中心-预约看房管理": (By.XPATH, ".//*[text()='预约看房管理']"),
+        "营销业务中心-预约管理": (By.XPATH, "//*[text()='预约管理']"),
         "营销业务中心-角色功能管理": (By.XPATH, ".//*[text()='角色功能管理']"),
         "营销业务中心-评论": (By.XPATH, ".//span[text()='评论']"),
+        "营销业务中心-常用语设置": (By.XPATH, "//span[text()='常用语设置']"),
         "营销业务中心-H5单页": (By.XPATH, ".//span[text()='H5单页']"),
         "活动中心": (By.XPATH, ".//*[text()='活动中心']"),
         "活动中心-报名活动": (By.XPATH, ".//*[text()='报名活动']"),
@@ -75,9 +77,13 @@ class MenuManager(BasePage):
         3、两个都不为空则直接点击
         """
         if firstLevelMenu != "" and SecondaryMenu != "":
+            sleep(1)
             self.find_element(self.controls[firstLevelMenu]).click()
+            sleep(2)
             self.find_element(self.controls[SecondaryMenu]).click()
         elif firstLevelMenu != "" and SecondaryMenu == "":
+            print(333)
             self.find_element(self.controls[firstLevelMenu]).click()
         else:
             return u"输入格式不正确！"
+

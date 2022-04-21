@@ -1,31 +1,40 @@
 {
-    "test_env": "test",
+    "env": "test",
     "test": {
         "url": "https://test-qmyxcg.myscrm.com.cn/login.shtml",
         "username": "yktest",
         "password": "yk_123456",
         "orgname": "gzminjieadmin_test",
         "loginuser": "yktest",
-        "project_name_zh": "AIÔÆµêWeb×Ô¶¯»¯ÏîÄ¿-²âÊÔ»·¾³",
-        "ai_xpath": ".//*[text()=\"ÖÇ»ÛÃûÆ¬²âÊÔ°æ\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AIÔÆµê\"]"
+        "project_name_zh": "AIäº‘åº—Webè‡ªåŠ¨åŒ–é¡¹ç›®-æµ‹è¯•ç¯å¢ƒ",
+        "ai_xpath": ".//*[text()=\"æ™ºæ…§åç‰‡æµ‹è¯•ç‰ˆ\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AIäº‘åº—\"]"
+    },
+    "g0_v1": {
+        "url": "https://qmyxcg.myscrm.com.cn/login.shtml",
+        "username": "public",
+        "password": "mysoft123",
+        "orgname": "kktyadmin",
+        "loginuser": "å…¬å…±è´¦å·",
+        "project_name_zh": "AIäº‘åº—Webè‡ªåŠ¨åŒ–é¡¹ç›®-ç”Ÿäº§G0ç¨³å®šæ€§æµ‹è¯•",
+        "ai_xpath": ".//*[text()=\"æ˜æºäº‘å®¢æµ‹è¯•ä¸ƒ\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AIäº‘åº—\"]"
     },
     "g0": {
         "url": "https://qmyxcg.myscrm.com.cn/login.shtml",
         "username": "public",
         "password": "mysoft123",
         "orgname": "kktyadmin",
-        "loginuser": "¹«¹²ÕËºÅ",
-        "project_name_zh": "AIÔÆµêWeb×Ô¶¯»¯ÏîÄ¿-Éú²úG0µü´úchecklist»Ø¹éÑéÖ¤",
-        "ai_xpath": ".//*[text()=\"Ã÷Ô´ÔÆ¿Í²âÊÔÆß\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AIÔÆµê\"]"
+        "loginuser": "å…¬å…±è´¦å·",
+        "project_name_zh": "AIäº‘åº—Webè‡ªåŠ¨åŒ–é¡¹ç›®-ç”Ÿäº§G0è¿­ä»£checklistå›å½’éªŒè¯",
+        "ai_xpath": ".//*[text()=\"æ˜æºäº‘å®¢æµ‹è¯•ä¸ƒ\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AIäº‘åº—\"]"
     },
     "g1": {
         "url": "https://qmyxcg.myscrm.com.cn/login.shtml",
         "username": "public",
         "password": "mysoft123",
         "orgname": "yktyadmin",
-        "loginuser": "¹«¹²ÕËºÅ",
-        "project_name_zh": "AIÔÆµêWeb×Ô¶¯»¯ÏîÄ¿-Éú²úG1µü´úchecklist»Ø¹éÑéÖ¤",
-        "ai_xpath": ".//*[text()=\"ĞÂ·¿²âÊÔ¶ş\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AIÔÆµê\"]"
+        "loginuser": "å…¬å…±è´¦å·",
+        "project_name_zh": "AIäº‘åº—Webè‡ªåŠ¨åŒ–é¡¹ç›®-ç”Ÿäº§G1è¿­ä»£checklistå›å½’éªŒè¯",
+        "ai_xpath": ".//*[text()=\"æ–°æˆ¿æµ‹è¯•äºŒ\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AIäº‘åº—\"]"
     },
     "g2": {
         "url": "https://qmyxcg.myscrm.com.cn/login.shtml",
@@ -33,7 +42,7 @@
         "password": "mysoft123",
         "orgname": "g2kktyadmin",
         "loginuser": "public",
-        "project_name_zh": "AIÔÆµêWeb×Ô¶¯»¯ÏîÄ¿-Éú²úG2µü´úchecklist»Ø¹éÑéÖ¤",
-        "ai_xpath": ".//*[text()=\"AIÃÅ»§\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AIÔÆµê\"]"
+        "project_name_zh": "AIäº‘åº—Webè‡ªåŠ¨åŒ–é¡¹ç›®-ç”Ÿäº§G2è¿­ä»£checklistå›å½’éªŒè¯",
+        "ai_xpath": ".//*[text()=\"AIé—¨æˆ·\"]/../../div/div[@class=\"yzh-caro-box\"]/div/ul/li/a/div[text()=\"AIäº‘åº—\"]"
     }
 }
