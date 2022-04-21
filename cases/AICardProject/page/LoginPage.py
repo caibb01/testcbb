@@ -47,14 +47,14 @@ class LoginPage(BasePage):
         #     if self.is_exist_element(self.controls["登录蒙层"]):
         #         self.find_element(self.controls["登录蒙层"]).click()
         # 检查是否登录成功
-        self.wait_eleVisible(self.controls["获取登录用户名"])
-        logintext = self.find_element(self.controls["获取登录用户名"]).text
-        print("logintext=", logintext)
-        print("loginuser=", loginuser)
-        if logintext == loginuser:
-            print(u"登录成功！")
-        else:
-            print(u"登录账号和预期不一致！")
+        # self.wait_eleVisible(self.controls["获取登录用户名"])
+        # logintext = self.find_element(self.controls["获取登录用户名"]).text
+        # print("logintext=", logintext)
+        # print("loginuser=", loginuser)
+        # if logintext == loginuser:
+        #     print(u"登录成功！")
+        # else:
+        #     print(u"登录账号和预期不一致！")
 
     def openAI(self,ai_xpath = None):
         sleep(2)

@@ -1,3 +1,4 @@
+import datetime
 import os
 import time
 import unittest
@@ -31,12 +32,13 @@ class test_popup_Management(TestCase):
                              username=cls.env_param['username'],
                              password=cls.env_param['password'],
                              orgname=cls.env_param['orgname'])
-        # cls.loginLogic.logincheck(cls.env_param['loginuser'])
+        cls.loginLogic.logincheck(cls.env_param['loginuser'])
         cls.loginLogic.openAI(cls.env_param['ai_xpath'])
 
     @data(
         {
-            "path": IMAGE_PATH}
+            "path": IMAGE_PATH,
+        }
     )
     def test_case_01_new_marketing_popup(self, data):
         if not self._check_case(["C00267"]): return
@@ -45,7 +47,7 @@ class test_popup_Management(TestCase):
             "associated_items": "mbb新建营销弹窗勿动",
             "entry_name": "全局",
             "start_date": "2022/04/02 00:00",
-            "end_date": "2023/04/01 23:59",
+            "end_date": "2060/04/02 23:59",
 
         }
         # 进入预约管理-弹窗管理

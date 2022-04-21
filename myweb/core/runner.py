@@ -346,6 +346,7 @@ class Runner():
         self.result = None
         self.receiver = []
         self.email_html = None
+        self.env = None
         global CONFIG
         CONFIG = self.config_name
 
@@ -706,7 +707,8 @@ class TestCase(unittest.TestCase):
             else:
                 self._result["trace"] = stack_lines[-1]
                 self._result["is_error"] = True
-            _step_screenshot(driver=self.driver, ty="fail_" + self._result["case_name"], type_name="用例执行失败", msg="")
+            if _decide_config("auto_open_driver")[0]:
+                _step_screenshot(driver=self.driver, ty="fail_" + self._result["case_name"], type_name="用例执行失败", msg="")
         else:
             self._result["success"] = True
 
