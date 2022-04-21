@@ -1,0 +1,43 @@
+{
+    "project_name": "AICardProject",
+    "project_name_zh": "AI云店Web自动化项目-生产G0环境迭代checklist回归验证",
+    "desc": "",
+    "report_mode": true,
+    "email_mode": [
+        "lips02@mingyuanyun.com",
+        "chenjj06@mingyuanyun.com",
+        "wanglz02@mingyuanyun.com",
+        "yet03@mingyuanyun.com",
+        "xiaoy15@mingyuanyun.com",
+        "zhouyh02@mingyuanyun.com",
+        "guogy01@mingyuanyun.com",
+        "mabb01@mingyuanyun.com",
+        "wangzm01@mingyuanyun.com",
+        "cuilb@mingyuanyun.com",
+        "hongzw01@mingyuanyun.com"
+    ],
+    "receiver": [],
+    "screen": [
+        "fail",
+        "is_exist"
+    ],
+    "mark": true,
+    "driver_always_open": false,
+    "auto_open_driver": true,
+    "thread": false,
+    "MainThread": [
+        "test_clientStandingBook.py",
+        "test_customersManagement.py",
+        "test_dataInspector.py",
+        "test_staffManagement.py",
+        "test_areaSetting.py",
+        "test_basicInfo.py",
+        "test_h5Delivery.py",
+        "test_ComplianceConfiguration.py",
+        "test_projectManagement.py",
+        "test_StartupPage.py"
+    ],
+    "output": {
+        "MainThread": "MainThread_20220321175159"
+    }
+}

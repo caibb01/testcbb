@@ -1,0 +1,34 @@
+{
+    "project_name": "AICardProject",
+    "project_name_zh": "AI云店Web自动化项目-测试环境",
+    "desc": "",
+    "report_mode": true,
+    "email_mode": [
+        "lips02@mingyuanyun.com",
+        "chenjj06@mingyuanyun.com",
+        "wanglz02@mingyuanyun.com",
+        "yet03@mingyuanyun.com",
+        "xiaoy15@mingyuanyun.com",
+        "zhouyh02@mingyuanyun.com",
+        "guogy01@mingyuanyun.com",
+        "mabb01@mingyuanyun.com",
+        "wangzm01@mingyuanyun.com",
+        "cuilb@mingyuanyun.com",
+        "hongzw01@mingyuanyun.com"
+    ],
+    "receiver": [],
+    "atmp_report": true,
+    "atmp_file": "aicard.atmp_param.json",
+    "screen": [
+        "fail",
+        "is_exist"
+    ],
+    "mark": true,
+    "driver_always_open": false,
+    "auto_open_driver": true,
+    "thread": false,
+    "MainThread": [],
+    "output": {
+        "MainThread": "MainThread_20220420193247"
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "project_name": "DemoProject",
+    "project_name_zh": "AI云店Web自动化项目-生产G0迭代checklist回归验证",
+    "desc": "中文字符",
+    "report_mode": true,
+    "retry": 0,
+    "email_mode": [
+        "chenjj06@mingyuanyun.com"
+    ],
+    "atmp_report": true,
+    "atmp_file": "demo.atmp_param.json",
+    "screen": [],
+    "mark": true,
+    "driver_always_open": false,
+    "auto_open_driver": false,
+    "thread": false,
+    "MainThread": [],
+    "output": {}
+}
