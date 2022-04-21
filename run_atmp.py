@@ -42,8 +42,8 @@ if __name__ == '__main__':
 
     # 替换对应的参数
     if "env" in parameters_dict.keys():
-        env_param["test_env"] = parameters_dict["env"]
-        file_content["parameter"]["server_id"] = file_content["server_id"][env_param["test_env"]]
+        env_param["env"] = parameters_dict["env"]
+        file_content["parameter"]["server_id"] = file_content["server_id"][env_param["env"]]
         json_file.set(file_content)
     if "trace_branch" in parameters_dict.keys():
         env_param["test"]["trace_branch"] = parameters_dict["trace_branch"]
