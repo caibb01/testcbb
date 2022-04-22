@@ -573,6 +573,8 @@ class TestCase(unittest.TestCase):
             # 解决报错，设置无界面运行
             # option.add_argument('--headless')  # 浏览器不提供可视化页面. linux下如果系统不支持可视化不加这条会启动失败
             # 浏览器默认不关闭
+            if 'binaryPath' in cls._global_config:
+                option.binary_location = cls._global_config['binaryPath']
             option.add_experimental_option("detach", True)
             cls.driver = webdriver.Chrome(cls._global_config['driverPath'], options=option)
 

@@ -10,7 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time, logging
-from pykeyboard import PyKeyboard
+# from pykeyboard import PyKeyboard
 import myweb.core.runner as cf
 import datetime, os
 import platform
@@ -232,6 +232,7 @@ class BasePage(object):
         '''
         self.driver.refresh()
 
+    """
     def send_keys(self, keywords):
         '''
         :param keywords: 暂时支持TAB，回车，右建，ESC和输入字符串
@@ -256,6 +257,7 @@ class BasePage(object):
             k.tap_key(k.backspace_key)
         else:
             logging.info("keywords : %s is not support " % keywords)
+    """
 
     def open(self, url):
         '''
