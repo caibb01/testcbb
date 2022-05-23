@@ -4,7 +4,7 @@ import unittest
 
 class DemoTestCase02(TestCase):
     def test_case_01(self):
-        print("用例执行：test_case_01")
+        print("用例执行：1.02.001")
         pass
 
 

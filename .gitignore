@@ -143,4 +143,3 @@ cython_debug/
 
 # test report
 /outputs
-/myweb/core/storage.json

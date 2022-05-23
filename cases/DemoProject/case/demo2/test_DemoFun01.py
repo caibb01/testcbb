@@ -7,13 +7,12 @@ class DemoTestCase(TestCase):
 
     def test_case_01(self):
         if not self._check_case(["C11001"]): return
-        print("用例执行：test_case_01")
+        print("用例执行：2.01.001")
         pass
 
     def test_case_02(self):
-        if not self._check_case(["C11002"]): return
-        print("用例执行：test_case_02")
-        raise Exception("实际结果不一致")
+        print("用例执行：2.01.002")
+        pass
 
 
 if __name__ == '__main__':
