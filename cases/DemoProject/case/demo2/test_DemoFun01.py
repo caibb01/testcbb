@@ -6,7 +6,6 @@ class DemoTestCase(TestCase):
     __author__ = "zero"
 
     def test_case_01(self):
-        if not self._check_case(["C11001"]): return
         print("用例执行：2.01.001")
         pass
 
