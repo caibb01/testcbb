@@ -8,6 +8,8 @@ from myweb.utils.config import JsonConfig
 
 BASE_PATH = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
 CONFIG_PATH = os.path.join(BASE_PATH, 'conf')
+USER_CODE = "chenjj06"
+USER_PWD = "d29yazgwMTA="
 
 
 def report_result_to_atmp(atmp_file, test_codes, case_exec_result, start_timestamp, end_timestamp, memo):
@@ -72,24 +74,24 @@ def check_case(atmp_file, test_codes):
 
 def atmp_post(f, url, data):
     path = f["atmp_url"] + url
-    headers = {"Content-Type": "application/x-www-form-urlencoded", "User-Code": "huangl08", "User-Pwd": "dGVzdDEyMzQ="}
+    headers = {"Content-Type": "application/x-www-form-urlencoded", "User-Code": USER_CODE, "User-Pwd": USER_PWD}
     response = requests.post(url=path, headers=headers, data=data)
     print(response.request.url + " >> " + response.request.body)
+    print(response.content.decode('utf8'))
     if response.status_code != 200:
         raise Exception("接口请求错误！")
-    print(response.content.decode('utf8'))
     result = json.loads(response.content)
     return result
 
 
 def atmp_json(f, url, data):
     path = f["atmp_url"] + url
-    headers = {"Content-Type": "application/json;charset=UTF-8", "User-Code": "huangl08", "User-Pwd": "dGVzdDEyMzQ="}
+    headers = {"Content-Type": "application/json;charset=UTF-8", "User-Code": USER_CODE, "User-Pwd": USER_PWD}
     response = requests.post(url=path, headers=headers, data=json.dumps(data))
     print(response.request.url + " >> " + response.request.body)
+    print(response.content.decode('utf8'))
     if response.status_code != 200:
         raise Exception("接口请求错误！")
-    print(response.content.decode('utf8'))
     result = json.loads(response.content)
     return result
 
